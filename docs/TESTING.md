@@ -33,3 +33,17 @@ Two clients (or a client + a second account): **A** = host/admin, **B** = constr
     - run it with Player2's chip ejected (not installed)
     - `/execute as Player1 run construct hack constructchip:scanner` (not a construct)
 19. Deep Scan: hold the chip (eject it first), `/construct skill points 5`, `/construct skill unlock constructchip:deep_scan`, reinstall. Blocks 20 blocks away should now scan (range 24).
+
+## Step 4: capture snapshot and restore
+20. Give Player2 a mixed inventory first: armor on, something in the offhand, a full hotbar, enchanted items, a filled shulker box,
+    some XP levels (`/xp add Player2 25 levels`), an effect (`/effect give Player2 speed 600`), and put them in survival
+    in the Nether. Lower their health a bit. Then `/construct givechip Player1 Player2`.
+    Player2 should end up with an empty inventory, 0 XP, no effects, in adventure (then spectator while the chip is loose).
+21. `/construct snapshot Player2` should list what was saved (stack count, level 25, survival, the Nether, health, effects).
+22. `/construct release Player2`. Every item should be back in the same slot (armor and offhand too), plus level 25, the speed effect with its
+    remaining time, the same health and hunger, survival, and the exact spot and facing in the Nether.
+23. Offline release: capture again, have Player2 disconnect, `/construct release Player2`, Player2 rejoins. They should be fully restored on join.
+24. Crash: capture Player2, then close the Player1 window without saving (or kill the terminal). Start again. Player2 should
+    still be a construct with the snapshot intact (`/construct snapshot Player2`), and releasing should still restore everything.
+25. Player2 carrying someone else's captured chip when captured: that chip should drop on the ground (still tracked) and not vanish.
+26. `/construct givechip Player2 Player2` should be refused (a construct can't carry their own chip).

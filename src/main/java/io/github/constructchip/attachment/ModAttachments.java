@@ -2,6 +2,8 @@ package io.github.constructchip.attachment;
 
 import com.mojang.serialization.Codec;
 import io.github.constructchip.ConstructChip;
+import io.github.constructchip.capture.CaptureSnapshot;
+import java.util.Optional;
 import java.util.function.Supplier;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -32,6 +34,16 @@ public final class ModAttachments {
     public static final Supplier<AttachmentType<Boolean>> OPTED_OUT = REGISTER.register("opted_out",
             () -> AttachmentType.builder(() -> Boolean.FALSE)
                     .serialize(Codec.BOOL)
+                    .copyOnDeath()
+                    .build());
+
+    /**
+     * On the CAPTURED player: their state from just before capture (inventory, XP, game mode, position, vitals).
+     * Empty when not captured. Survives death so a /kill-ed construct can still be restored.
+     */
+    public static final Supplier<AttachmentType<Optional<CaptureSnapshot>>> CAPTURE_SNAPSHOT =
+            REGISTER.register("capture_snapshot", () -> AttachmentType.<Optional<CaptureSnapshot>>builder(Optional::empty)
+                    .serialize(CaptureSnapshot.OPTIONAL_CODEC)
                     .copyOnDeath()
                     .build());
 

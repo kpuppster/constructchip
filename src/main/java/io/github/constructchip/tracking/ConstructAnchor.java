@@ -1,6 +1,7 @@
 package io.github.constructchip.tracking;
 
 import io.github.constructchip.attachment.ConstructState;
+import io.github.constructchip.capture.CaptureService;
 import io.github.constructchip.attachment.ModAttachments;
 import java.util.Optional;
 import net.minecraft.core.GlobalPos;
@@ -16,8 +17,9 @@ import net.minecraft.world.phys.Vec3;
  * ItemEntity or carrier, or held at the last known position when STORED. Re-applied every server tick, because
  * vanilla drops the camera when a spectator sneaks or the target dies or unloads.
  *
- * <p>Step 2 note: the game mode from before the anchor is kept in {@link ConstructState}. Step 4 replaces this with the
- * full pre-capture snapshot, and step 5 adds what happens while INSTALLED (host link, hiding).
+ * <p>The game mode from before the anchor (normally adventure, the construct mode) is kept in {@link ConstructState}.
+ * The full pre-capture state is in {@code CaptureSnapshot} and comes back on release. Step 5 adds what happens while
+ * INSTALLED (host link, hiding).
  */
 public final class ConstructAnchor {
     private ConstructAnchor() {}
@@ -95,6 +97,6 @@ public final class ConstructAnchor {
     public static void clearConstruct(ServerPlayer player) {
         unanchor(player);
         player.setData(ModAttachments.CONSTRUCT_STATE, ConstructState.NONE);
-        // TODO(step 4): restore the pre-capture snapshot (inventory, XP, game mode, position).
+        CaptureService.restore(player); // inventory, XP, game mode, position, vitals (overrides the anchor's game mode)
     }
 }

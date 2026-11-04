@@ -10,6 +10,8 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.constructchip.ConstructChip;
 import io.github.constructchip.attachment.ConstructState;
+import io.github.constructchip.capture.CaptureService;
+import io.github.constructchip.capture.CaptureSnapshot;
 import io.github.constructchip.attachment.ModAttachments;
 import io.github.constructchip.chip.ChipIdentity;
 import io.github.constructchip.chip.ChipRam;
@@ -66,6 +68,10 @@ public final class ConstructCommand {
             name -> Component.translatable("commands.constructchip.givechip.already_captured", name));
     private static final DynamicCommandExceptionType HAS_CHIP_INSTALLED = new DynamicCommandExceptionType(
             name -> Component.translatable("commands.constructchip.givechip.has_chip_installed", name));
+    private static final SimpleCommandExceptionType CANNOT_CARRY_SELF =
+            new SimpleCommandExceptionType(Component.translatable("commands.constructchip.givechip.self"));
+    private static final DynamicCommandExceptionType NO_SNAPSHOT = new DynamicCommandExceptionType(
+            name -> Component.translatable("commands.constructchip.snapshot.none", name));
     private static final SimpleCommandExceptionType NOTHING_INSTALLED =
             new SimpleCommandExceptionType(Component.translatable("commands.constructchip.eject.nothing"));
     private static final SimpleCommandExceptionType NO_CHIP_TO_BUY_FOR =
@@ -103,6 +109,13 @@ public final class ConstructCommand {
                 .then(Commands.literal("releaseid").requires(ConstructCommand::isAdmin)
                         .then(Commands.argument("chipId", UuidArgument.uuid())
                                 .executes(ConstructCommand::releaseId)))
+                .then(Commands.literal("snapshot").requires(ConstructCommand::isAdmin)
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(ConstructCommand::showSnapshot)))
+                // admin override: put back a snapshot left behind with no chip (should only be needed after a bug)
+                .then(Commands.literal("restore").requires(ConstructCommand::isAdmin)
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(ConstructCommand::forceRestore)))
                 .then(Commands.literal("chips").requires(ConstructCommand::isAdmin)
                         .executes(ConstructCommand::listChips))
                 .then(Commands.literal("givechip").requires(ConstructCommand::isAdmin)
@@ -221,6 +234,32 @@ public final class ConstructCommand {
         return 1;
     }
 
+    private static int showSnapshot(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        String name = player.getGameProfile().getName();
+        CaptureSnapshot snap = CaptureService.snapshotOf(player).orElseThrow(() -> NO_SNAPSHOT.create(name));
+        CaptureSnapshot.Position pos = snap.position();
+        int count = snap.items().stream().mapToInt(i -> i.stack().getCount()).sum();
+        ctx.getSource().sendSuccess(() -> Component.literal(String.format(java.util.Locale.ROOT,
+                "%s: %d stacks (%d items), level %d, %s, %s %.1f %.1f %.1f, health %.1f, food %d, %d effect(s), captured at tick %d",
+                name, snap.items().size(), count, snap.xp().level(), snap.gameMode().getName(), pos.dimension().location(),
+                pos.pos().x, pos.pos().y, pos.pos().z, snap.vitals().health(), snap.vitals().food(),
+                snap.vitals().effects().size(), snap.capturedAt())), false);
+        return snap.items().size();
+    }
+
+    private static int forceRestore(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = EntityArgument.getPlayer(ctx, "player");
+        String name = player.getGameProfile().getName();
+        if (ChipTracker.isConstruct(player)) {
+            ctx.getSource().sendFailure(Component.translatable("commands.constructchip.restore.is_construct", name));
+            return 0;
+        }
+        if (!CaptureService.restore(player)) throw NO_SNAPSHOT.create(name);
+        ctx.getSource().sendSuccess(() -> Component.translatable("commands.constructchip.restore.done", name), true);
+        return 1;
+    }
+
     private static int listChips(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack src = ctx.getSource();
         Map<UUID, ChipEntry> all = ChipRegistry.get(src.getServer()).all();
@@ -250,8 +289,8 @@ public final class ConstructCommand {
     }
 
     /**
-     * Debug capture: puts {@code captured} on a new chip and hands it to the single target. Registers the chip, so the
-     * construct is immediately anchored to it. The real capture flow (Soul Killer, step 11) will snapshot the player first.
+     * Debug capture: snapshots and strips {@code captured}, puts them on a new chip and hands it to the single target.
+     * Registers the chip, so the construct is anchored right away. The Soul Killer (step 11) will use the same CaptureService.
      */
     private static int giveCaptured(CommandContext<CommandSourceStack> ctx, Collection<ServerPlayer> targets,
                                     ServerPlayer captured) throws CommandSyntaxException {
@@ -263,6 +302,8 @@ public final class ConstructCommand {
             throw ALREADY_CAPTURED.create(name);
         }
         if (!ChipTracker.installedChip(captured).isEmpty()) throw HAS_CHIP_INSTALLED.create(name);
+        if (target == captured) throw CANNOT_CARRY_SELF.create();
+        if (!CaptureService.capture(captured)) throw ALREADY_CAPTURED.create(name); // stale snapshot: release first
 
         long now = ChipRegistry.now(ctx.getSource().getServer());
         ItemStack chip = ChipStacks.createCaptured(captured, ctx.getSource().getLevel().getGameTime());

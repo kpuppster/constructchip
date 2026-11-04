@@ -20,6 +20,14 @@ The captured player lives in a host's mind, is visible only to the host, and act
 - Capture machine ("Soul Killer") is a Create addon (Create is a hard dependency). **Build it LAST.** Reuse Create's SeatBlock/SeatEntity
   if possible. States: IDLE, SEATED, AWAITING_CONSENT, CAPTURING, DONE.
 - Before capture, save inventory, XP, gamemode and position into a persistent attachment so release can always restore them.
+  Implemented (step 4): `CaptureSnapshot` (all 41 inventory slots, XP level/progress/total, game mode, dimension + exact
+  position + rotation, health, food, saturation, potion effects) in the `capture_snapshot` attachment (copyOnDeath).
+  `CaptureService.capture` writes the snapshot before stripping anything (the construct becomes adventure, empty,
+  0 XP, full health, no effects). Captured chips they carry are dropped, not snapshotted. `restore` clears the snapshot before applying it,
+  so it can never run twice. Release (online), or the next login (offline), restores and teleports back to the capture spot.
+  Login self-heal: a registry chip for a non-construct is released; a leftover snapshot on a non-construct is restored.
+  Admin: `/construct snapshot <player>` (inspect) and `/construct restore <player>` (force).
+  Not saved: ender chest (untouched, constructs can't open it anyway), spawn point, advancements.
 
 ## The chip
 - While in use the chip is NOT an inventory item. "Install" moves the stack into a host attachment (`installedChip`, `ItemStack.OPTIONAL_CODEC`).
@@ -125,7 +133,7 @@ From class signatures only (**VERIFY** with a decompiler):
 1. Chip components, chip item, `/construct givechip`. **(done, tested in game)**
 2. Install/eject with the chipId check, `ChipRegistry`, anchor logic. **(done, tested in game; see docs/TESTING.md)**
 3. Skill registry + central hack validator **(written; see `hack/QuickhackService`)**
-4. Save/restore of captured-player state (test heavily by command)
+4. Save/restore of captured-player state (test heavily by command) **(written; see `capture/`)**
 5. Ghost restrictions, host link, client render hiding, sync payload
 6. Host HUD + read-only inventory menu
 7. Scanner, then Overclock and lockout

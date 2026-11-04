@@ -4,6 +4,7 @@ import io.github.constructchip.ConstructChip;
 import io.github.constructchip.ModGameRules;
 import io.github.constructchip.attachment.ConstructState;
 import io.github.constructchip.attachment.ModAttachments;
+import io.github.constructchip.capture.CaptureService;
 import io.github.constructchip.chip.ChipIdentity;
 import io.github.constructchip.chip.ChipItemEntity;
 import io.github.constructchip.chip.ChipStacks;
@@ -329,5 +330,17 @@ public final class ChipTracker {
                 ConstructAnchor.clearConstruct(player);
             }
         });
+
+        // Player data and the registry are saved at different times; heal either half of a crash.
+        if (!player.getData(ModAttachments.CONSTRUCT_STATE).isConstruct()) {
+            // Registry still has a chip for them but their data says they're free: drop the stale chip.
+            ChipRegistry.get(server).chipOf(player.getUUID()).ifPresent(chipId ->
+                    release(server, chipId, "player data says not captured (login self-heal)"));
+            // A release that cleared the state but never restored them.
+            if (CaptureService.restore(player)) {
+                ConstructChip.LOGGER.info("{} logged in with an unrestored capture snapshot; restored",
+                        player.getGameProfile().getName());
+            }
+        }
     }
 }

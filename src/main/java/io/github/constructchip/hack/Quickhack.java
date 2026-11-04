@@ -30,6 +30,14 @@ public interface Quickhack {
 
     HackResult execute(HackContext context);
 
+    /**
+     * True if {@link #execute} draws its own lightning. Otherwise the service fires the standard red bolt to the
+     * target (or a crackle over the host) after every success; see {@code fx.BoltFx}.
+     */
+    default boolean drawsOwnFx() {
+        return false;
+    }
+
     enum TargetType {
         /** Acts on the host or the construct, no target needed. */
         NONE,

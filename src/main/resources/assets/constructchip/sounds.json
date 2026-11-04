@@ -453,5 +453,35 @@
         "stream": false
       }
     ]
+  },
+  "crackle": {
+    "subtitle": "subtitles.constructchip.crackle",
+    "sounds": [
+      {
+        "name": "constructchip:crackle_1",
+        "stream": false
+      },
+      {
+        "name": "constructchip:crackle_2",
+        "stream": false
+      },
+      {
+        "name": "constructchip:crackle_3",
+        "stream": false
+      },
+      {
+        "name": "constructchip:crackle_4",
+        "stream": false
+      }
+    ]
+  },
+  "zap": {
+    "subtitle": "subtitles.constructchip.zap",
+    "sounds": [
+      {
+        "name": "constructchip:zap",
+        "stream": false
+      }
+    ]
   }
 }

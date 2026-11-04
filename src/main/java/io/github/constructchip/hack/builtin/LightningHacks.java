@@ -3,6 +3,8 @@ package io.github.constructchip.hack.builtin;
 import io.github.constructchip.hack.HackContext;
 import io.github.constructchip.hack.HackResult;
 import io.github.constructchip.hack.SimpleQuickhack;
+import io.github.constructchip.fx.BoltFx;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import net.minecraft.network.chat.Component;
@@ -13,9 +15,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.phys.Vec3;
 
 /**
- * The construct's red lightning. Damage is credited to the host (indirect magic: the construct is the direct source,
+ * The construct's red lightning: Fry (one target, id {@code red_lightning}) and High Voltage (every hostile around,
+ * id {@code lightning_storm}). Both draw Capri's bolts through {@link BoltFx}. Damage is credited to the host (indirect magic: the construct is the direct source,
  * the host the attacker), so kills, aggro and loot work as if the host did it.
  */
 public final class LightningHacks {
@@ -25,9 +29,11 @@ public final class LightningHacks {
         return ctx.host().damageSources().indirectMagic(ctx.construct(), ctx.host());
     }
 
-    /** One creature, 6 damage. */
+    /** Fry: one creature, 6 damage. */
     public static final class RedLightning extends SimpleQuickhack {
         public RedLightning() { super(5f, 8 * 20, TargetType.ENTITY, 16); }
+
+        @Override public boolean drawsOwnFx() { return true; }
 
         @Override
         public HackResult execute(HackContext ctx) {
@@ -35,19 +41,22 @@ public final class LightningHacks {
                 return HackResult.fail(Component.translatable("message.constructchip.hack.wrong_target"));
             }
             ServerLevel level = ctx.level();
-            HackFx.arc(level, ctx.host().getEyePosition().add(0, -0.3, 0), HackFx.chest(target));
+            BoltFx.send(level, BoltFx.Preset.FRY, ctx.host(), BoltFx.hand(ctx.host()), List.of(BoltFx.chest(target), target.position()));
             target.hurt(source(ctx), 6f);
             level.playSound(null, target.blockPosition(), ModSounds.BOLT.get(), SoundSource.PLAYERS, 1f, 1f);
+            BoltFx.crackle(level, BoltFx.chest(target), 1f);
             HackFx.glitchFlash(ctx.construct(), 10, 0.4f, 0.5f);
             return HackResult.success(Component.translatable("message.constructchip.red_lightning", target.getDisplayName()));
         }
     }
 
-    /** Every hostile within 12 blocks (nearest 12), 5 damage each. */
+    /** High Voltage: every hostile within 12 blocks (nearest 12), 5 damage each. */
     public static final class Storm extends SimpleQuickhack {
         public static final double RADIUS = 12;
 
         public Storm() { super(8f, 60 * 20, TargetType.NONE, 0); }
+
+        @Override public boolean drawsOwnFx() { return true; }
 
         @Override
         public HackResult execute(HackContext ctx) {
@@ -58,10 +67,14 @@ public final class LightningHacks {
                     .stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(host))).limit(12).toList();
             if (targets.isEmpty()) return HackResult.fail(Component.translatable("message.constructchip.storm.none"));
             DamageSource src = source(ctx);
+            List<Vec3> points = new ArrayList<>();
             for (LivingEntity target : targets) {
-                HackFx.arc(level, host.getEyePosition().add(0, -0.3, 0), HackFx.chest(target));
+                points.add(BoltFx.chest(target)); // chest and feet pairs: the sky bolt lands on the chest, the burst on the ground
+                points.add(target.position());
                 target.hurt(src, 5f);
+                BoltFx.crackle(level, BoltFx.chest(target), 0.7f);
             }
+            BoltFx.send(level, BoltFx.Preset.HIGH_VOLTAGE, host, BoltFx.hand(host), points);
             level.playSound(null, host.blockPosition(), ModSounds.STORM.get(), SoundSource.PLAYERS, 1f, 1f);
             HackFx.glitchFlash(ctx.construct(), 20, 0.8f, 0.8f);
             return HackResult.success(Component.translatable("message.constructchip.storm", targets.size()));

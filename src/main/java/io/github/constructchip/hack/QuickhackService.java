@@ -185,6 +185,7 @@ public final class QuickhackService {
         host.setData(ModAttachments.INSTALLED_CHIP, chip); // mark the attachment dirty so it saves
         ChipSync.syncHost(host); // RAM spent, cooldown started: update both HUDs now
         Net.send(construct, new io.github.constructchip.network.GlitchPayload(5, 0f, 0f)); // small flash on every successful hack
+        io.github.constructchip.fx.BoltFx.afterHack(context, hack); // red lightning to the target, for everyone nearby
         return new Attempt(Status.OK, result.message(), result.display());
     }
 

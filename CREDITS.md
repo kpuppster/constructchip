@@ -12,3 +12,6 @@
 - **Create** (MIT): the Soul Killer's seat positioning follows the approach of Create's seats.
 - **Rajdhani** font (HUD text): Copyright (c) 2014, Indian Type Foundry. SIL Open Font License 1.1, see
   `src/main/resources/licenses/OFL-Rajdhani.txt`.
+
+- Electric crackle and zap sounds (`crackle_1-4.ogg`, `zap.ogg`) are our own, synthesized by `scripts/gen_crackle.py`. CC0.
+- The quickhack lightning renderer follows Ikeda's Capri bolt look (path shape, widths, branching, flicker), re-implemented in our code with permission.

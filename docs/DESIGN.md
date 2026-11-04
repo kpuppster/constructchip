@@ -155,7 +155,7 @@ consent screen / skill-tree header / mod logo; `chip_panel` → nine-slice GUI s
 an installed construct; falls back to a scanline overlay if another post effect is active); sounds → `registry/ModSounds`
 (chip in/out, construct appear/vanish, hack, bolt, storm, menu blip/hover). Credits in `CREDITS.md` and mods.toml.
 Not used: their Capri character rig/renderer (needs their code; our construct is a real player), the AI-chat persona,
-their Java code. Powers are our own implementations: Red Lightning, Lightning Storm, Patch Job, Ping side counts.
+their Java code. Powers are our own implementations: Fry (id `red_lightning`), High Voltage (id `lightning_storm`), Patch Job, Ping side counts.
 
 ## Reference mod (do NOT copy)
 `sorcery_age_incarnation` (Forge 1.20.1, ARR, requires the JJK mod). Use it only as a design cross-check. Ask MrShrimpyUW before reusing anything.

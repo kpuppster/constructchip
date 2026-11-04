@@ -227,6 +227,13 @@ public class SoulKillerBlockEntity extends BlockEntity implements GeoBlockEntity
         var c = worldPosition.getCenter();
         level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, target.getX(), target.getY() + 1, target.getZ(), 4, 0.3, 0.6, 0.3, 0.01);
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK, c.x, c.y + 0.6, c.z, 3, 0.3, 0.2, 0.3, 0.05);
+        // Capri's red lightning pours into the sitter's head, faster as the capture goes on
+        int every = progress < CAPTURE_TICKS / 2 ? 8 : 5;
+        if (progress % every == 0) {
+            io.github.constructchip.fx.BoltFx.send(level, io.github.constructchip.fx.BoltFx.Preset.CAPTURE, target,
+                    target.getEyePosition(), java.util.List.of(target.position().add(0, 0.25, 0)));
+            io.github.constructchip.fx.BoltFx.crackle(level, target.getEyePosition(), 0.6f + 0.6f * progress / CAPTURE_TICKS);
+        }
         if (progress % 20 == 0) {
             level.playSound(null, worldPosition, SoundEvents.SCULK_CLICKING, SoundSource.BLOCKS, 1f, 0.5f + progress / 200f);
             target.displayClientMessage(Component.translatable("message.constructchip.soul_killer.progress",
@@ -236,6 +243,9 @@ public class SoulKillerBlockEntity extends BlockEntity implements GeoBlockEntity
     }
 
     private void complete(ServerLevel level, ServerPlayer target, ServerPlayer op) {
+        io.github.constructchip.fx.BoltFx.send(level, io.github.constructchip.fx.BoltFx.Preset.CAPTURE_END, target,
+                target.getEyePosition(), java.util.List.of(target.position().add(0, 0.25, 0)));
+        io.github.constructchip.fx.BoltFx.sound(level, target.getEyePosition(), io.github.constructchip.registry.ModSounds.ZAP.get(), 1.2f, 0.9f);
         target.stopRiding();
         Optional<ItemStack> chip = CaptureService.captureOntoNewChip(target, op);
         if (chip.isEmpty()) {

@@ -30,9 +30,9 @@ SKILLS = [
      "System Lock", "Quickhack: cut a target's active cyberware effects. It can't be turned back on for 30 s.", None),
 
     ("red_lightning", "intrusion", 2, 2, ["ping"], 0, "minecraft:redstone_block", "red_lightning", [],
-     "Red Lightning", "Quickhack: a red arc jumps from your host to a creature and fries it for 6 damage.", None),
+     "Fry", "Quickhack: a red bolt jumps from your host to a creature and fries it for 6 damage.", None),
     ("lightning_storm", "intrusion", 3, 3, ["red_lightning"], 0, "minecraft:lightning_rod", "lightning_storm", [],
-     "Lightning Storm", "Quickhack: red arcs hit every hostile creature within 12 blocks of your host for 5 damage.", None),
+     "High Voltage", "Quickhack: red lightning strikes every hostile creature within 12 blocks of your host for 5 damage.", None),
 
     # SUPPORT: keep the host alive
     ("vitals_link", "support", 1, 1, ["scanner"], 4, "minecraft:golden_apple", None, [],

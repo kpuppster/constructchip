@@ -11,6 +11,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import org.slf4j.Logger;
 
@@ -21,6 +22,7 @@ public final class ConstructChip {
 
     public ConstructChip(IEventBus modBus, ModContainer container) {
         ModGameRules.init();
+        container.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
         ModDataComponents.REGISTER.register(modBus);
         ModItems.REGISTER.register(modBus);
         ModEntities.REGISTER.register(modBus);

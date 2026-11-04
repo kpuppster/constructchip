@@ -73,10 +73,18 @@ Scanner is the free root and is unlocked on every new chip. Skills that no longe
 recorded on the chip but are ignored, so they come back if the mod returns. Passive effects are typed `modifiers`
 that add up (`SkillTree.total`); quickhacks are granted via the `quickhack` field (`SkillTree.grantsQuickhack`).
 
+**Skill points cost experience (DECIDED), and each one costs more.** `SkillPointCost`:
+`cost(n) = min(maxXp, round(baseXp * growth^n))` in XP *points* (not levels, so the price doesn't depend on the
+buyer's current level), with n = points this chip has ever bought (`ChipSkills.purchased`, stored on the chip, so
+handing the chip over doesn't reset it). Server config `constructchip-server.toml`: `baseXp` 160, `growth` 1.2,
+`maxXp` 20000. That gives 1st 160 XP, 5th 332, 10th 826, 15th 2054, 20th 5112. 10 points ≈ 4150 XP (about level 46 from zero),
+20 points ≈ 29900 XP. The buyer pays from their own XP; creative mode is free.
+Commands: `/construct skill price [count]` and `/construct skill buy [count]`, for the chip in your main hand or
+the one installed in you. When the skill tree screen exists (step 9), the construct will buy through it, charged to the host.
+
 **Not decided yet (proposals):**
-- Points: 1 point per 30 min installed in a host, plus 1 per 25 successful quickhacks.
 - Mk upgrades: Mk.2 and Mk.3 via a crafting or Create recipe on an ejected chip (fits the Create dependency).
-Until then, use `/construct skill points|tier`.
+Until then, the tier is set with `/construct skill tier`.
 
 | Tier | Intrusion (offence) | Core | Support (host) | Systems (RAM, devices) | Vista (only with Vista) |
 |---|---|---|---|---|---|

@@ -18,6 +18,7 @@ import io.github.constructchip.chip.ChipStacks;
 import io.github.constructchip.chip.ChipTimers;
 import io.github.constructchip.skill.ModSkills;
 import io.github.constructchip.skill.Skill;
+import io.github.constructchip.skill.SkillPointCost;
 import io.github.constructchip.skill.SkillTree;
 import io.github.constructchip.tracking.ChipEntry;
 import io.github.constructchip.tracking.ChipLocation;
@@ -46,7 +47,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 /**
- * {@code /construct}. Player commands: install, eject, optout. Everything else is admin/debug (permission level 2).
+ * {@code /construct}. Player commands: install, eject, optout, skill price/buy. Everything else is admin/debug (permission level 2).
  */
 @EventBusSubscriber(modid = ConstructChip.MODID)
 public final class ConstructCommand {
@@ -62,6 +63,8 @@ public final class ConstructCommand {
             name -> Component.translatable("commands.constructchip.givechip.has_chip_installed", name));
     private static final SimpleCommandExceptionType NOTHING_INSTALLED =
             new SimpleCommandExceptionType(Component.translatable("commands.constructchip.eject.nothing"));
+    private static final SimpleCommandExceptionType NO_CHIP_TO_BUY_FOR =
+            new SimpleCommandExceptionType(Component.translatable("commands.constructchip.skill.no_chip"));
     private static final DynamicCommandExceptionType NOT_A_CONSTRUCT = new DynamicCommandExceptionType(
             name -> Component.translatable("commands.constructchip.release.not_a_construct", name));
 
@@ -111,15 +114,25 @@ public final class ConstructCommand {
                         .then(Commands.literal("spend")
                                 .then(Commands.argument("amount", FloatArgumentType.floatArg(0f))
                                         .executes(ConstructCommand::spendRam))))
-                .then(Commands.literal("skill").requires(ConstructCommand::isAdmin)
-                        .then(Commands.literal("list").executes(ConstructCommand::listSkills))
-                        .then(Commands.literal("points")
+                .then(Commands.literal("skill")
+                        // player: buy points with XP for the chip in your main hand, or the one installed in you
+                        .then(Commands.literal("price")
+                                .executes(ctx -> showPrice(ctx, 1))
+                                .then(Commands.argument("count", IntegerArgumentType.integer(1, 100))
+                                        .executes(ctx -> showPrice(ctx, IntegerArgumentType.getInteger(ctx, "count")))))
+                        .then(Commands.literal("buy")
+                                .executes(ctx -> buyPoints(ctx, 1))
+                                .then(Commands.argument("count", IntegerArgumentType.integer(1, 100))
+                                        .executes(ctx -> buyPoints(ctx, IntegerArgumentType.getInteger(ctx, "count")))))
+                        // admin / debug
+                        .then(Commands.literal("list").requires(ConstructCommand::isAdmin).executes(ConstructCommand::listSkills))
+                        .then(Commands.literal("points").requires(ConstructCommand::isAdmin)
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
                                         .executes(ConstructCommand::setPoints)))
-                        .then(Commands.literal("tier")
+                        .then(Commands.literal("tier").requires(ConstructCommand::isAdmin)
                                 .then(Commands.argument("tier", IntegerArgumentType.integer(1, ChipSkills.MAX_TIER))
                                         .executes(ConstructCommand::setTier)))
-                        .then(Commands.literal("unlock")
+                        .then(Commands.literal("unlock").requires(ConstructCommand::isAdmin)
                                 .then(Commands.argument("skill", ResourceLocationArgument.id())
                                         .suggests((ctx, builder) -> SharedSuggestionProvider.suggestResource(
                                                 ModSkills.get(ctx.getSource().registryAccess()).keySet(), builder))
@@ -295,6 +308,52 @@ public final class ConstructCommand {
     }
 
     // ------------------------------------------------------------ skills
+
+    /** The valid chip the player is buying for: main hand first, then the one installed in them. */
+    private record ChipRef(ItemStack stack, boolean installed) {}
+
+    private static ChipRef buyerChip(ServerPlayer player) throws CommandSyntaxException {
+        ItemStack hand = player.getMainHandItem();
+        if (ChipStacks.isCaptured(hand)) {
+            if (ChipTracker.currentEntry(player.server, hand).isEmpty()) throw CHIP_BLANK.create();
+            return new ChipRef(hand, false);
+        }
+        ItemStack installed = ChipTracker.installedChip(player);
+        if (!installed.isEmpty() && ChipTracker.currentEntry(player.server, installed).isPresent()) {
+            return new ChipRef(installed, true);
+        }
+        throw NO_CHIP_TO_BUY_FOR.create();
+    }
+
+    private static int showPrice(CommandContext<CommandSourceStack> ctx, int count) throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayerOrException();
+        ChipSkills skills = ChipStacks.skills(buyerChip(player).stack());
+        long cost = SkillPointCost.costOf(skills.purchased(), count);
+        long have = SkillPointCost.totalXp(player);
+        ctx.getSource().sendSuccess(() -> Component.translatable("commands.constructchip.skill.price",
+                count, cost, have, skills.purchased()), false);
+        return (int) Math.min(Integer.MAX_VALUE, cost);
+    }
+
+    private static int buyPoints(CommandContext<CommandSourceStack> ctx, int count) throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayerOrException();
+        ChipRef chip = buyerChip(player);
+        ChipSkills skills = ChipStacks.skills(chip.stack());
+        long cost = SkillPointCost.costOf(skills.purchased(), count);
+        if (!SkillPointCost.canAfford(player, cost)) {
+            ctx.getSource().sendFailure(Component.translatable("commands.constructchip.skill.cannot_afford",
+                    count, cost, SkillPointCost.totalXp(player)));
+            return 0;
+        }
+        SkillPointCost.charge(player, cost);
+        ChipSkills next = skills.withPurchased(count);
+        ChipStacks.setSkills(chip.stack(), next);
+        if (chip.installed()) player.setData(ModAttachments.INSTALLED_CHIP, chip.stack()); // mark the attachment dirty
+        long nextPrice = SkillPointCost.costOf(next.purchased());
+        ctx.getSource().sendSuccess(() -> Component.translatable("commands.constructchip.skill.bought",
+                count, cost, next.points(), nextPrice), false);
+        return count;
+    }
 
     private static int listSkills(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         ItemStack stack = heldChip(ctx);

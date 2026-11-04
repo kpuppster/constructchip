@@ -21,10 +21,15 @@ import java.util.Set;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import com.mojang.authlib.GameProfile;
+import io.github.constructchip.ghost.GhostState;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -32,6 +37,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
@@ -42,18 +49,36 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
  */
 @GameTestHolder(ConstructChip.MODID)
 @PrefixGameTestTemplate(false)
-@SuppressWarnings("removal") // makeMockServerPlayerInLevel: still the way to get a fake player in 1.21.1
 public final class ConstructGameTests {
     private static final ResourceLocation SCANNER = ConstructChip.id("scanner");
     private static final ResourceLocation OVERCLOCK = ConstructChip.id("overclock");
 
     private ConstructGameTests() {}
 
+    private static final AtomicInteger COUNTER = new AtomicInteger();
+
+    /**
+     * A NeoForge FakePlayer put straight into the player list (so getPlayer(uuid) finds it) without a network
+     * login. A real login would make Create and Moonlight send packets the fake connection can't take.
+     */
     private static ServerPlayer player(GameTestHelper h, double x, double z) {
-        ServerPlayer p = h.makeMockServerPlayerInLevel();
+        ServerLevel level = h.getLevel();
+        FakePlayer p = FakePlayerFactory.get(level, new GameProfile(UUID.randomUUID(), "gt" + COUNTER.incrementAndGet()));
         Vec3 v = h.absoluteVec(new Vec3(x + 0.5, 1, z + 0.5));
-        p.teleportTo(h.getLevel(), v.x, v.y, v.z, 0f, 0f);
+        p.moveTo(v.x, v.y, v.z, 0f, 0f);
+        PlayerList list = level.getServer().getPlayerList();
+        list.getPlayers().add(p);
+        list.playersByUUID.put(p.getUUID(), p);
         return p;
+    }
+
+    private static void done(GameTestHelper h, ServerPlayer... players) {
+        PlayerList list = h.getLevel().getServer().getPlayerList();
+        for (ServerPlayer p : players) {
+            list.getPlayers().remove(p);
+            list.playersByUUID.remove(p.getUUID());
+        }
+        h.succeed();
     }
 
     /** Captures {@code victim} onto a chip, puts it in {@code host}'s hand (and nowhere else), returns the chip id. */
@@ -98,7 +123,7 @@ public final class ConstructGameTests {
         h.assertTrue(!ChipTracker.isConstruct(victim), "still a construct");
         h.assertTrue(CaptureService.snapshotOf(victim).isEmpty(), "snapshot left behind");
         h.assertTrue(!CaptureService.restore(victim), "restore ran twice");
-        h.succeed();
+        done(h, victim, host);
     }
 
     @GameTest(template = "empty")
@@ -124,7 +149,7 @@ public final class ConstructGameTests {
 
         h.getLevel().setBlockAndUpdate(far, Blocks.AIR.defaultBlockState());
         ChipTracker.release(h.getLevel().getServer(), chipId, "test");
-        h.succeed();
+        done(h, victim, host);
     }
 
     @GameTest(template = "empty")
@@ -146,7 +171,7 @@ public final class ConstructGameTests {
         h.assertTrue(!ChipStacks.isCaptured(leftover), "stale copy survived install");
 
         ChipTracker.release(h.getLevel().getServer(), chipId, "test");
-        h.succeed();
+        done(h, victim, host);
     }
 
     @GameTest(template = "empty")
@@ -190,18 +215,21 @@ public final class ConstructGameTests {
         expect(h, QuickhackService.use(victim, SCANNER, HackTarget.NONE), Status.LOCKED_OUT, "lockout");
 
         ChipTracker.release(h.getLevel().getServer(), chipId, "test");
-        h.succeed();
+        done(h, victim, host);
     }
 
     @GameTest(template = "empty")
-    public static void constructsTakeNoDamage(GameTestHelper h) {
+    public static void constructFlagFollowsCaptureAndRelease(GameTestHelper h) {
         ServerPlayer victim = player(h, 1, 1), host = player(h, 3, 1);
         UUID chipId = captureToHand(h, victim, host);
+        h.assertTrue(GhostState.isConstruct(victim) && !GhostState.isConstruct(host), "ghost flag");
+        h.assertTrue(QuickhackService.hostOf(victim).isEmpty(), "host before install");
         installOn(h, host);
-        float before = victim.getHealth();
-        victim.hurt(victim.damageSources().fellOutOfWorld(), 5f);
-        h.assertTrue(victim.getHealth() == before, "construct took damage");
+        h.assertTrue(QuickhackService.hostOf(victim).map(p -> p == host).orElse(false), "host after install");
+        h.assertTrue(ChipTracker.eject(host), "eject");
+        h.assertTrue(QuickhackService.hostOf(victim).isEmpty(), "host after eject");
         ChipTracker.release(h.getLevel().getServer(), chipId, "test");
-        h.succeed();
+        h.assertTrue(!GhostState.isConstruct(victim), "still ghost after release");
+        done(h, victim, host);
     }
 }

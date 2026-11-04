@@ -28,7 +28,7 @@ public final class HudLayer {
         return Component.translatable("quickhack." + hack.getNamespace() + "." + hack.getPath());
     }
 
-    /** Rajdhani (SIL Open Font License, see assets/constructchip/font/OFL-Rajdhani.txt), with vanilla as fallback. */
+    /** Rajdhani (SIL Open Font License, see licenses/OFL-Rajdhani.txt in the jar), with vanilla as fallback. */
     public static final ResourceLocation HUD_FONT = ResourceLocation.fromNamespaceAndPath("constructchip", "hud");
 
     private static Component hud(Component c) {

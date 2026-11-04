@@ -8,13 +8,11 @@ jobs:
     steps:
       - name: Probe
         run: |
-          echo "=== cloudsmith"; curl -sL https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/software/bernie/geckolib/geckolib-neoforge-1.21.1/maven-metadata.xml | grep -E "<version>|<latest>|<release>" | tail -8
-          echo "=== modrinth"; curl -sG "https://api.modrinth.com/v2/project/geckolib/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0:3][] | .version_number + "  " + .id + "  " + .files[0].filename'
-          v=$(curl -sL https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/software/bernie/geckolib/geckolib-neoforge-1.21.1/maven-metadata.xml | grep -oP '(?<=<release>)[^<]+')
-          curl -sL -o g.jar "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/software/bernie/geckolib/geckolib-neoforge-1.21.1/$v/geckolib-neoforge-1.21.1-$v.jar"
-          ls -la g.jar
-          for c in software/bernie/geckolib/model/GeoModel software/bernie/geckolib/renderer/GeoBlockRenderer software/bernie/geckolib/animatable/GeoBlockEntity software/bernie/geckolib/animation/AnimatableManager\$ControllerRegistrar software/bernie/geckolib/animation/AnimationController software/bernie/geckolib/animation/RawAnimation; do
-            echo "=== $c"; javap -cp g.jar "$c" | grep -vE "lambda" | head -40
+          for a in player-animation-lib-forge player-animation-lib-neoforge player-animation-lib; do
+            echo "=== kosmx $a"; curl -sL https://maven.kosmx.dev/dev/kosmx/player-anim/$a/maven-metadata.xml | grep -E "<version>" | grep -i "1.21" | tail -6
           done
-          echo "=== rotateBlock"; javap -c -p -cp g.jar software/bernie/geckolib/renderer/GeoBlockRenderer | grep -A40 "void rotateBlock" | grep -E "getstatic|ldc|invoke" | head -20
-          echo "=== cube x"; javap -c -p -cp g.jar software/bernie/geckolib/loading/object/BakedModelFactory\$Builtin 2>/dev/null | grep -B2 -A6 "fneg\|dneg" | head -30
+          echo "=== modrinth"; curl -sG "https://api.modrinth.com/v2/project/playeranimator/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0:3][] | .version_number + "  " + .id + "  " + .files[0].url'
+          url=$(curl -sG "https://api.modrinth.com/v2/project/playeranimator/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0].files[0].url')
+          curl -sL -o pa.jar "$url"; unzip -l pa.jar | awk '{print $4}' | grep -E "\.class$" | grep -iE "PlayerAnimationAccess|PlayerAnimationRegistry|KeyframeAnimationPlayer|ModifierLayer|PlayerAnimationFactory|AnimationStack|IAnimation\.class" | head
+          for c in $(unzip -l pa.jar | awk '{print $4}' | grep -E "(PlayerAnimationAccess|PlayerAnimationRegistry|KeyframeAnimationPlayer|ModifierLayer|PlayerAnimationFactory|AnimationStack)\.class$"); do echo "=== $c"; javap -cp pa.jar "${c%.class}" | grep -v lambda | head -30; done
+          unzip -p pa.jar META-INF/neoforge.mods.toml | grep -E "modId|version" | head

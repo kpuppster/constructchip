@@ -37,6 +37,10 @@ public final class ClientPayloadHandlers {
         ctx.enqueueWork(() -> ClientCyber.set(payload));
     }
 
+    public static void berserk(io.github.constructchip.network.BerserkPayload payload, IPayloadContext ctx) {
+        ctx.enqueueWork(() -> ClientBerserk.start(payload.targetId(), payload.ticks()));
+    }
+
     public static void consent(ConsentRequestPayload payload, IPayloadContext ctx) {
         ctx.enqueueWork(() -> Minecraft.getInstance().setScreen(new ConsentScreen(payload)));
     }

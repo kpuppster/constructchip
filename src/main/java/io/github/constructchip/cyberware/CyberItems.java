@@ -22,6 +22,7 @@ public final class CyberItems {
     public static final Map<Part, DeferredItem<Item>> PARTS = new EnumMap<>(Part.class);
     public static DeferredItem<Item> SOLDERING_IRON;
     public static DeferredItem<Item> IMMUNOSUPPRESSANTS;
+    public static DeferredItem<Item> GUIDE;
 
     private CyberItems() {}
 
@@ -43,6 +44,13 @@ public final class CyberItems {
             // A tool for assembly recipes: it comes back out of the crafting grid.
             @Override public boolean hasCraftingRemainingItem(ItemStack stack) { return true; }
             @Override public ItemStack getCraftingRemainingItem(ItemStack stack) { return stack.copy(); }
+        });
+        GUIDE = ModItems.REGISTER.register("guide", () -> new Item(new Item.Properties().stacksTo(1)) {
+            @Override
+            public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+                if (level.isClientSide) io.github.constructchip.client.ClientHooks.openGuide();
+                return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
+            }
         });
         IMMUNOSUPPRESSANTS = ModItems.REGISTER.register("immunosuppressants", () -> new Item(new Item.Properties().stacksTo(16)) {
             @Override

@@ -124,6 +124,7 @@ public final class Psychosis {
             p.addEffect(new MobEffectInstance(MobEffects.HUNGER, 40, 0, true, false));
             if (now % 40 == 0) play(p, "er_cyberpsychosis_heartbeat", 1f);
         }
+        Berserk.tick(p, s, now);
         if (s.phase == 5 && s.terminalUntil > 0) {
             // berserk: the chrome takes over
             p.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 1, true, false));

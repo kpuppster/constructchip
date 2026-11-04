@@ -36,11 +36,13 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 
 /**
- * Server-side logic tests with fake players. Run with {@code ./gradlew runGameTestServer} (CI does this).
+ * Server-side logic tests with fake players. Run with {@code ./gradlew runGameTestServer -PnoVista} (CI does this;
+ * Moonlight sends its own packets to joining players, which fake players can't receive).
  * Each test captures, checks, and releases, so tests don't leak constructs into each other.
  */
 @GameTestHolder(ConstructChip.MODID)
 @PrefixGameTestTemplate(false)
+@SuppressWarnings("removal") // makeMockServerPlayerInLevel: still the way to get a fake player in 1.21.1
 public final class ConstructGameTests {
     private static final ResourceLocation SCANNER = ConstructChip.id("scanner");
     private static final ResourceLocation OVERCLOCK = ConstructChip.id("overclock");
@@ -150,7 +152,9 @@ public final class ConstructGameTests {
     @GameTest(template = "empty")
     public static void skillTreeRulesAndPrices(GameTestHelper h) {
         Registry<Skill> reg = ModSkills.get(h.getLevel().registryAccess());
-        h.assertTrue(reg.size() >= 19, "skills loaded: " + reg.size());
+        boolean vista = net.neoforged.fml.ModList.get().isLoaded("vista");
+        h.assertTrue(reg.size() == (vista ? 22 : 19), "skills loaded: " + reg.size() + " (vista " + vista + ")");
+        h.assertTrue(vista == reg.containsKey(ConstructChip.id("camera_view")), "Vista skill condition not applied");
         ResourceLocation overclock = ConstructChip.id("overclock"), shortCircuit = ConstructChip.id("short_circuit");
         ChipSkills s = ChipSkills.DEFAULT;
         h.assertTrue(s.has(ConstructChip.id("scanner")), "scanner not free");

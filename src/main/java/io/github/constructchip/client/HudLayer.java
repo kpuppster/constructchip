@@ -41,6 +41,7 @@ public final class HudLayer {
         SandevistanFx.renderOverlay(g);
         if (mc.options.hideGui || mc.player == null) return;
         CyberHud.render(g);
+        ConstructTalk.render(g);
         ChipStatusPayload chip = ClientChipState.chip();
         if (!chip.present()) return;
         Font font = mc.font;

@@ -156,3 +156,14 @@ and roll it back. With any implant installed, **food stops healing you**.
 - **Edgerunner's Guide** (book + redstone + iron nugget): the full manual in game.
 - **Phase V berserk**: during the terminal window the chrome sometimes takes over. Third person, it hunts the nearest
   creature or player and you can't steer, but nothing can hurt you.
+
+### The construct talking to its host
+While the construct's chip is installed in someone, anything the construct types in chat goes **only to that host**. It
+doesn't appear in chat. The host sees it in a speech box next to the chat area, under the construct's name. The construct
+gets a grey "(to …)" line so they know it was sent.
+
+### Lightning
+Every quickhack now fires red lightning from the host's hand to the target (the Scanner shows a thin pale strand, and
+hacks without a target make sparks crawl over the host). **Fry** (single target) and **High Voltage** (every hostile
+nearby, with bolts out of the sky) have bigger versions, and the Soul Killer pours lightning into the sitter while it
+captures them.

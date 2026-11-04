@@ -44,6 +44,8 @@ public final class ModNetwork {
                 (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.highlight(p, c));
         registrar.playToClient(GlitchPayload.TYPE, GlitchPayload.STREAM_CODEC,
                 (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.glitch(p, c));
+        registrar.playToClient(ConstructSayPayload.TYPE, ConstructSayPayload.STREAM_CODEC,
+                (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.say(p, c));
         registrar.playToClient(BoltFxPayload.TYPE, BoltFxPayload.STREAM_CODEC,
                 (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.bolt(p, c));
         registrar.playToClient(ConsentRequestPayload.TYPE, ConsentRequestPayload.STREAM_CODEC,

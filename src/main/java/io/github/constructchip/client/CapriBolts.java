@@ -232,6 +232,7 @@ public final class CapriBolts {
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
         BOLTS.clear();
         PENDING.clear();
+        ConstructTalk.reset();
     }
 
     @SubscribeEvent

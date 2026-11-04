@@ -33,6 +33,10 @@ public final class ClientPayloadHandlers {
         ctx.enqueueWork(() -> ClientGlitch.flash(payload.ticks(), payload.red(), payload.flash()));
     }
 
+    public static void say(io.github.constructchip.network.ConstructSayPayload payload, IPayloadContext ctx) {
+        ctx.enqueueWork(() -> ConstructTalk.say(payload.name(), payload.text()));
+    }
+
     public static void bolt(io.github.constructchip.network.BoltFxPayload payload, IPayloadContext ctx) {
         ctx.enqueueWork(() -> CapriBolts.handle(payload));
     }

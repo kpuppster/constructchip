@@ -61,8 +61,6 @@ public final class ScannerHack implements Quickhack {
         if (state.requiresCorrectToolForDrops()) {
             out.append(line("message.constructchip.scan.tier", Component.translatable(tierKey(state))));
         }
-        boolean canHarvest = ctx.host().hasCorrectToolForDrops(state);
-        out.append(line(canHarvest ? "message.constructchip.scan.host_can_harvest" : "message.constructchip.scan.host_cannot_harvest"));
         return out;
     }
 

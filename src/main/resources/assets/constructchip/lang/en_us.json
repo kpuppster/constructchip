@@ -68,8 +68,6 @@
   "message.constructchip.scan.hardness": "Hardness %s",
   "message.constructchip.scan.header": "▶ %s",
   "message.constructchip.scan.health": "Health %s / %s",
-  "message.constructchip.scan.host_can_harvest": "Your host's tool can harvest it",
-  "message.constructchip.scan.host_cannot_harvest": "Your host's tool can't harvest it",
   "message.constructchip.scan.tier": "Drops only with %s or better",
   "message.constructchip.scan.tier.diamond": "diamond",
   "message.constructchip.scan.tier.iron": "iron",

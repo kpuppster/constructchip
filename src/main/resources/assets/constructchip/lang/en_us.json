@@ -37,7 +37,7 @@
   "gamerule.allowConstructCapture.description": "Lets players capture others onto chips and install chips on other players. Admin commands ignore this.",
   "gui.constructchip.buy_point": "Buy point (%s XP)",
   "gui.constructchip.consent.accept": "Accept",
-  "gui.constructchip.consent.capture.body": "%s wants to capture you onto a personality construct chip. Your body, items and XP are stored safely and given back when you're released. Stay in the chair for 5 seconds after accepting.",
+  "gui.constructchip.consent.capture.body": "Your mind is being rewritten into the Soulkiller program. Do you consent?",
   "gui.constructchip.consent.capture.title": "Soul Killer",
   "gui.constructchip.consent.decline": "Decline",
   "gui.constructchip.consent.install.body": "%s wants to install %s's construct chip in your head. The construct will see what you see and can act through quickhacks. You can have it ejected with /construct eject.",

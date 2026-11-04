@@ -41,7 +41,7 @@ The captured player lives in a host's mind, is visible only to the host, and act
 - Containers: block the common routes (`overrideOtherStackedOnMe`, `overrideStackedOnOther`, `Slot#mayPlace` mixin). Fallback: the STORED state
   (anchor at last known position, admin release, optional timeout).
 - Fail-safe: if the chip is confirmed gone, release the construct and restore their saved state.
-- **OPEN QUESTION:** should the construct get a veto when a new holder installs the chip?
+- **DECIDED:** the construct gets NO veto when a new holder installs the chip. Only the new host's consent (game rule + opt-out) applies.
 
 ## Quickhacks and skills
 - `Quickhack` interface (id, ramCost, cooldownTicks, range, targetType, execute) in a custom registry. A client keybind sends `UseQuickhackPayload`.

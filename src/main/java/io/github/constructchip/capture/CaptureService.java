@@ -2,7 +2,16 @@ package io.github.constructchip.capture;
 
 import io.github.constructchip.ConstructChip;
 import io.github.constructchip.attachment.ModAttachments;
+import io.github.constructchip.attachment.ConstructState;
+import io.github.constructchip.chip.ChipIdentity;
 import io.github.constructchip.chip.ChipStacks;
+import io.github.constructchip.tracking.ChipEntry;
+import io.github.constructchip.tracking.ChipLocation;
+import io.github.constructchip.tracking.ChipRegistry;
+import io.github.constructchip.tracking.ChipTracker;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,6 +85,39 @@ public final class CaptureService {
                 player.getGameProfile().getName(), items.size(), snapshot.xp().level(), snapshot.gameMode(),
                 snapshot.position().pos());
         return true;
+    }
+
+    /** Why {@code player} can't be captured right now, or null if they can (rules like opt-out are checked by callers). */
+    public static Component whyNotCapturable(ServerPlayer player) {
+        String name = player.getGameProfile().getName();
+        if (ChipTracker.isConstruct(player) || ChipRegistry.get(player.server).chipOf(player.getUUID()).isPresent()) {
+            return Component.translatable("commands.constructchip.givechip.already_captured", name);
+        }
+        if (!ChipTracker.installedChip(player).isEmpty()) {
+            return Component.translatable("commands.constructchip.givechip.has_chip_installed", name);
+        }
+        if (snapshotOf(player).isPresent()) return Component.translatable("commands.constructchip.givechip.already_captured", name);
+        return null;
+    }
+
+    /**
+     * The full capture: snapshot and strip {@code captured}, mint a new chip, register it as carried by
+     * {@code receiver}, mark the player as its construct, and hand the chip over. Used by the Soul Killer and
+     * {@code /construct givechip}. Returns empty (and changes nothing) if the snapshot step refuses.
+     */
+    public static Optional<ItemStack> captureOntoNewChip(ServerPlayer captured, ServerPlayer receiver) {
+        if (whyNotCapturable(captured) != null || captured == receiver) return Optional.empty();
+        if (!capture(captured)) return Optional.empty();
+        MinecraftServer server = captured.server;
+        ItemStack chip = ChipStacks.createCaptured(captured, captured.level().getGameTime());
+        ChipIdentity id = ChipStacks.identity(chip).orElseThrow();
+        ChipRegistry.get(server).register(id.chipId(), new ChipEntry(captured.getUUID(), captured.getGameProfile().getName(),
+                ChipTracker.serialOf(chip), ChipLocation.of(ChipLocation.State.CARRIED, receiver.getUUID(),
+                        GlobalPos.of(receiver.level().dimension(), receiver.blockPosition()), ChipRegistry.now(server))));
+        captured.setData(ModAttachments.CONSTRUCT_STATE, ConstructState.of(id.chipId()));
+        ItemStack handed = chip.copy();
+        if (!receiver.addItem(chip) && !chip.isEmpty()) receiver.drop(chip, false);
+        return Optional.of(handed);
     }
 
     /**

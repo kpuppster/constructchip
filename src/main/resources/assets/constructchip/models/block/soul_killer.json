@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "constructchip:block/soul_killer_top",
+    "bottom": "constructchip:block/soul_killer_bottom",
+    "side": "constructchip:block/soul_killer_side",
+    "front": "constructchip:block/soul_killer_front"
+  }
+}

@@ -5,19 +5,19 @@ import io.github.constructchip.attachment.ModAttachments;
 import io.github.constructchip.hack.ModQuickhacks;
 import io.github.constructchip.network.ModNetwork;
 import io.github.constructchip.registry.ModDataComponents;
+import io.github.constructchip.registry.ModBlockEntities;
 import io.github.constructchip.registry.ModBlocks;
+import io.github.constructchip.registry.ModCreativeTabs;
 import io.github.constructchip.registry.ModEntities;
 import io.github.constructchip.registry.ModMenus;
 import io.github.constructchip.skill.ModSkills;
 import io.github.constructchip.registry.ModItems;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import org.slf4j.Logger;
 
 @Mod(ConstructChip.MODID)
@@ -31,6 +31,8 @@ public final class ConstructChip {
         ModDataComponents.REGISTER.register(modBus);
         ModBlocks.REGISTER.register(modBus);
         ModItems.REGISTER.register(modBus);
+        ModBlockEntities.REGISTER.register(modBus);
+        ModCreativeTabs.REGISTER.register(modBus);
         ModEntities.REGISTER.register(modBus);
         ModAttachments.REGISTER.register(modBus);
         ModMenus.REGISTER.register(modBus);
@@ -42,18 +44,9 @@ public final class ConstructChip {
         ModQuickhacks.REGISTER.register(modBus);
         modBus.addListener(ModQuickhacks::onNewRegistry);
         modBus.addListener(ModNetwork::register);
-        modBus.addListener(ConstructChip::addCreativeTabContents);
     }
 
     public static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
-    }
-
-    private static void addCreativeTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            // Blank chip only. Captured chips must come from /construct givechip (or, later, the Soul Killer)
-            // so every captured chip gets a fresh chipId.
-            event.accept(ModItems.PERSONALITY_CHIP.get());
-        }
     }
 }

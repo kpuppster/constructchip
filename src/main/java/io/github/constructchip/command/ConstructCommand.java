@@ -299,22 +299,13 @@ public final class ConstructCommand {
         if (targets.size() != 1) throw ONE_TARGET.create();
         ServerPlayer target = targets.iterator().next();
         String name = captured.getGameProfile().getName();
-        ChipRegistry registry = ChipRegistry.get(ctx.getSource().getServer());
-        if (registry.chipOf(captured.getUUID()).isPresent() || ChipTracker.isConstruct(captured)) {
-            throw ALREADY_CAPTURED.create(name);
-        }
-        if (!ChipTracker.installedChip(captured).isEmpty()) throw HAS_CHIP_INSTALLED.create(name);
         if (target == captured) throw CANNOT_CARRY_SELF.create();
-        if (!CaptureService.capture(captured)) throw ALREADY_CAPTURED.create(name); // stale snapshot: release first
-
-        long now = ChipRegistry.now(ctx.getSource().getServer());
-        ItemStack chip = ChipStacks.createCaptured(captured, ctx.getSource().getLevel().getGameTime());
-        ChipIdentity id = ChipStacks.identity(chip).orElseThrow();
-        registry.register(id.chipId(), new ChipEntry(captured.getUUID(), name, ChipTracker.serialOf(chip),
-                ChipLocation.of(ChipLocation.State.CARRIED, target.getUUID(),
-                        GlobalPos.of(target.level().dimension(), target.blockPosition()), now)));
-        captured.setData(ModAttachments.CONSTRUCT_STATE, ConstructState.of(id.chipId()));
-        giveTo(target, chip);
+        Component problem = CaptureService.whyNotCapturable(captured);
+        if (problem != null) {
+            ctx.getSource().sendFailure(problem);
+            return 0;
+        }
+        if (CaptureService.captureOntoNewChip(captured, target).isEmpty()) throw ALREADY_CAPTURED.create(name);
         ctx.getSource().sendSuccess(() -> Component.translatable("commands.constructchip.givechip.captured",
                 name, target.getGameProfile().getName()), true);
         return 1;

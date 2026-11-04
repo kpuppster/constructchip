@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -34,6 +35,10 @@ public final class ConstructChip {
         ModAttachments.REGISTER.register(modBus);
         ModMenus.REGISTER.register(modBus);
         modBus.addListener(ModSkills::onNewDatapackRegistry);
+        if (ModList.get().isLoaded("vista")) {
+            // Only touch the compat class when Vista is present, so its imports never load otherwise.
+            io.github.constructchip.compat.vista.VistaCompat.init(modBus);
+        }
         ModQuickhacks.REGISTER.register(modBus);
         modBus.addListener(ModQuickhacks::onNewRegistry);
         modBus.addListener(ModNetwork::register);

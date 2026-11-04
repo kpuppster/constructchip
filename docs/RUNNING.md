@@ -121,4 +121,4 @@ Vista is downloaded and loaded automatically in the test game. To test without V
 
 ### Upgrading
 - **Skill points:** the host presses `K` and clicks "Buy point" (paid with the host's XP; each point costs more).
-- **Mk.2 / Mk.3:** craft a chip module and use it with the chip in your other hand, or while the chip is installed in you.
+- **Mk.2 / Mk.3:** craft a blank Mk.2 or Mk.3 construct chip (cyan or gold) and use it with the construct chip in your other hand, or while the chip is installed in you. The construct moves onto the new chip.

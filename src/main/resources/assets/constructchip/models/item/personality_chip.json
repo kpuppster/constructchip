@@ -9,6 +9,20 @@
         "constructchip:captured": 1
       },
       "model": "constructchip:item/personality_chip_captured"
+    },
+    {
+      "predicate": {
+        "constructchip:captured": 1,
+        "constructchip:tier": 2
+      },
+      "model": "constructchip:item/personality_chip_mk2"
+    },
+    {
+      "predicate": {
+        "constructchip:captured": 1,
+        "constructchip:tier": 3
+      },
+      "model": "constructchip:item/personality_chip_mk3"
     }
   ]
 }

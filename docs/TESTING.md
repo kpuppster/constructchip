@@ -86,4 +86,4 @@ Camera Jack puts Player2 behind the camera; Camera Blind cuts the feed for 20 s 
     each one aborts and returns the blank chip.
 40. Quit the game mid-capture and reload: the machine resets and returns the chip; the player isn't captured.
 41. Right-click another player with a captured chip: they get a consent screen; accept installs, decline doesn't.
-42. Mk.2 / Mk.3 modules upgrade the chip (wrong tier is refused); recipes show up in the recipe book.
+42. Mk.2 / Mk.3 chips (cyan / gold) move the construct up a tier and recolor it (wrong tier is refused); recipes show up in the recipe book.

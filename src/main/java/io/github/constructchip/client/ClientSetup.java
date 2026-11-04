@@ -30,11 +30,16 @@ public final class ClientSetup {
         event.registerBlockEntityRenderer(ModBlockEntities.SOUL_KILLER.get(), ctx -> new SoulKillerRenderer());
     }
 
-    /** Captured chips show the full-color chip art; blank ones the greyed version. */
+    /** Captured chips show the full-color chip art (red Mk.1, cyan Mk.2, gold Mk.3); blank ones the greyed version. */
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> ItemProperties.register(ModItems.PERSONALITY_CHIP.get(), ConstructChip.id("captured"),
-                (stack, level, entity, seed) -> ChipStacks.isCaptured(stack) ? 1f : 0f));
+        event.enqueueWork(() -> {
+            ItemProperties.register(ModItems.PERSONALITY_CHIP.get(), ConstructChip.id("captured"),
+                    (stack, level, entity, seed) -> ChipStacks.isCaptured(stack) ? 1f : 0f);
+            // Mk.2 chips show cyan, Mk.3 gold (same art as the Mk.2/Mk.3 chip items)
+            ItemProperties.register(ModItems.PERSONALITY_CHIP.get(), ConstructChip.id("tier"),
+                    (stack, level, entity, seed) -> ChipStacks.isCaptured(stack) ? ChipStacks.skills(stack).tier() : 0f);
+        });
     }
 
     @SubscribeEvent

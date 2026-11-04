@@ -31,7 +31,7 @@ jobs:
           ./gradlew runGameTestServer -PnoVista --no-daemon > gametest.log 2>&1
           code=$?
           echo "exit code $code"
-          grep -E "GameTest|gametest|tests? (passed|failed)|required tests|::|AssertionError|GameTestAssert|constructchip\.|Exception" gametest.log | grep -vE "DEBUG|Error loading class" | cut -c1-300 | head -80
+          grep -E "GameTest|gametest|failed|passed|required tests|::|AssertionError|GameTestAssert|constructchip\.|Exception" gametest.log | grep -vE "DEBUG|Error loading class" | cut -c1-300 | head -80
           exit $code
       - name: Boot client (virtual display)
         if: always()

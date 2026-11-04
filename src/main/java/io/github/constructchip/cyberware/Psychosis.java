@@ -42,6 +42,11 @@ public final class Psychosis {
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer p) || p.level().getGameTime() % 20 != 0 || ChipTracker.isConstruct(p)) return;
+        update(p);
+    }
+
+    /** One second of cyberpsychosis: pressure, degradation, phase, symptoms. */
+    public static void update(ServerPlayer p) {
         CyberState s = Cyberware.state(p);
         if (!s.any() && s.phase == 0 && s.pressure <= 0 && s.degradation <= 0) return;
         s.rollIfNeeded(p.getRandom());

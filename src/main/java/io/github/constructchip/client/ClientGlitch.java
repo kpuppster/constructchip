@@ -33,6 +33,8 @@ public final class ClientGlitch {
     private static int flashTicks, flashTotal;
     private static float flashRed, flashWhite;
     private static boolean hadChip;
+    /** Set if the shader failed to load once (old GPU, conflicting shader mod): use the overlay from then on. */
+    private static boolean shaderBroken;
 
     private ClientGlitch() {}
 
@@ -76,10 +78,14 @@ public final class ClientGlitch {
 
         PostChain current = renderer.currentEffect();
         boolean ours = current != null && POST.toString().equals(current.getName());
-        if (wanted && current == null) {
+        if (wanted && current == null && !shaderBroken) {
             renderer.loadEffect(POST);
             current = renderer.currentEffect();
             ours = current != null && POST.toString().equals(current.getName());
+            if (!ours) {
+                shaderBroken = true;
+                ConstructChip.LOGGER.warn("Glitch shader didn't load; using the simple overlay instead");
+            }
         } else if (!wanted && ours) {
             renderer.shutdownEffect();
             return;

@@ -3,6 +3,7 @@ package io.github.constructchip.block;
 import io.github.constructchip.registry.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,9 +14,13 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * Invisible seat for the Soul Killer chair. Exists only while someone sits on it and the chair is still there.
- * (Seat positioning follows the approach of Create's seats, which are MIT-licensed.)
+ * The sitter's feet origin is put exactly on the seat, and their body is locked to the chair's facing (the seat's
+ * own yaw, which reaches clients in the spawn packet). Looking around only turns the head, up to {@link #HEAD_LIMIT}
+ * degrees either side, like sitting in a boat.
  */
 public class ChairSeatEntity extends Entity {
+    /** How far (degrees) the sitter can turn their head away from the chair's facing. */
+    private static final float HEAD_LIMIT = 100f;
     private BlockPos chair = BlockPos.ZERO;
 
     public ChairSeatEntity(EntityType<?> type, Level level) {
@@ -23,10 +28,12 @@ public class ChairSeatEntity extends Entity {
         noPhysics = true;
     }
 
-    public ChairSeatEntity(Level level, BlockPos chair, Vec3 at) {
+    public ChairSeatEntity(Level level, BlockPos chair, Vec3 at, float yaw) {
         this(ModEntities.CHAIR_SEAT.get(), level);
         this.chair = chair.immutable();
         setPos(at.x, at.y, at.z);
+        setYRot(yaw);
+        yRotO = yaw;
     }
 
     public BlockPos chair() {
@@ -43,13 +50,27 @@ public class ChairSeatEntity extends Entity {
     @Override
     protected void positionRider(Entity passenger, MoveFunction callback) {
         if (!hasPassenger(passenger)) return;
-        double height = getPassengerRidingPosition(passenger).y - passenger.getVehicleAttachmentPoint(this).y;
-        callback.accept(passenger, getX(), height + 1.0 / 16.0, getZ());
+        callback.accept(passenger, getX(), getY(), getZ());
+        lockBody(passenger);
     }
 
     @Override
     public void onPassengerTurned(Entity entity) {
-        entity.setYHeadRot(entity.getYRot());
+        lockBody(entity);
+    }
+
+    /** Body faces the chair; the view (and with it the head) may turn at most HEAD_LIMIT degrees away. */
+    private void lockBody(Entity passenger) {
+        float seatYaw = getYRot();
+        if (passenger instanceof LivingEntity living) {
+            living.setYBodyRot(seatYaw);
+            living.yBodyRotO = seatYaw;
+        }
+        float off = Mth.wrapDegrees(passenger.getYRot() - seatYaw);
+        float clamped = Mth.clamp(off, -HEAD_LIMIT, HEAD_LIMIT);
+        passenger.yRotO += clamped - off;
+        passenger.setYRot(passenger.getYRot() + clamped - off);
+        passenger.setYHeadRot(passenger.getYRot());
     }
 
     @Override

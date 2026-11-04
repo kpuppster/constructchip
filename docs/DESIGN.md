@@ -20,7 +20,7 @@ The captured player lives in a host's mind, is visible only to the host, and act
 - Capture machine ("Soul Killer"): **CHANGED 2026-11-04: no Create.** The Soul Killer is itself a chair (own seat entity,
   powered by redstone. **Model: A24-N22's ripperdoc station (Project: Edgerunner), used with permission (user report
   2026-11-04; keep it on file)**, rendered with GeckoLib (now a required dependency). The block itself is the chair base
-  (low hitbox); the lights, arm, table and stool are decorative. Seat offset is server config (`soul_killer.seatX/Y/Z`).
+  (low hitbox); the lights, arm, table and stool are decorative. Rider offset is server config (`soul_killer.riderX/Y/Z`). The sitter's body is locked to the chair facing; only the head turns (±100°).
   States: IDLE, SEATED, AWAITING_CONSENT, CAPTURING, DONE.
 - Before capture, save inventory, XP, gamemode and position into a persistent attachment so release can always restore them.
   Implemented (step 4): `CaptureSnapshot` (all 41 inventory slots, XP level/progress/total, game mode, dimension + exact

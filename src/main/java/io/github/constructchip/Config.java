@@ -16,11 +16,12 @@ public final class Config {
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
         b.push("soul_killer");
-        b.comment("Where the sitter sits, in blocks from the Soul Killer block's center, for a chair facing north",
-                "(rotated with the chair). Nudge these if the player doesn't line up with the cushion.");
-        SEAT_X = b.defineInRange("seatX", 0.25, -3.0, 3.0);
-        SEAT_Y = b.defineInRange("seatY", 0.45, -1.0, 3.0);
-        SEAT_Z = b.defineInRange("seatZ", 0.44, -3.0, 3.0);
+        b.comment("Where the sitter's feet origin goes, in blocks from the Soul Killer block's bottom center, for a chair",
+                "facing north (rotated with the chair). The defaults put the reclined body on the middle of the cushion.",
+                "Nudge these if the player doesn't line up: X sideways, Y up, Z toward the head end.");
+        SEAT_X = b.defineInRange("riderX", 0.25, -3.0, 3.0);
+        SEAT_Y = b.defineInRange("riderY", 0.02, -1.0, 3.0);
+        SEAT_Z = b.defineInRange("riderZ", 0.34, -3.0, 3.0);
         b.pop();
         b.push("skill_points");
         SKILL_POINT_BASE_XP = b

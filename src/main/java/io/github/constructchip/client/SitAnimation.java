@@ -18,7 +18,9 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 /**
  * Players sitting in the Soul Killer play A24-N22's ripperdoc sitting animation (Project: Edgerunner, used with
- * permission) through PlayerAnimator. Every client animates every sitter it can see.
+ * permission) through PlayerAnimator. Every client animates every sitter it can see. Our copy drops the original's
+ * whole-body offset (we place the rider on the cushion ourselves) and its fixed head angle, so the head follows the
+ * player's view while {@code ChairSeatEntity} keeps the body locked to the chair.
  */
 @EventBusSubscriber(modid = ConstructChip.MODID, value = Dist.CLIENT)
 public final class SitAnimation {

@@ -60,7 +60,7 @@ public class SoulKillerBlock extends BaseEntityBlock {
         return SHAPE;
     }
 
-    /** Where the sitter sits: the configured offset (for a north-facing chair) rotated with FACING. */
+    /** Where the sitter's feet origin goes: the configured offset (for a north-facing chair) rotated with FACING. */
     public static Vec3 seatPosition(BlockPos pos, Direction facing) {
         double x = Config.SEAT_X.get(), z = Config.SEAT_Z.get();
         double rx, rz;
@@ -88,10 +88,12 @@ public class SoulKillerBlock extends BaseEntityBlock {
             return InteractionResult.PASS;
         }
         if (!level.isClientSide) {
-            ChairSeatEntity seat = new ChairSeatEntity(level, pos, seatPosition(pos, state.getValue(FACING)));
+            float yaw = state.getValue(FACING).toYRot();
+            ChairSeatEntity seat = new ChairSeatEntity(level, pos, seatPosition(pos, state.getValue(FACING)), yaw);
             level.addFreshEntity(seat);
+            player.setYRot(yaw);
+            player.setYHeadRot(yaw);
             player.startRiding(seat);
-            player.setYRot(state.getValue(FACING).toYRot());
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

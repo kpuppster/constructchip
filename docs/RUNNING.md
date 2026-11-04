@@ -112,7 +112,7 @@ Vista is downloaded and loaded automatically in the test game. To test without V
 2. Place the Soul Killer and power it with redstone: a lever, a redstone block or a redstone torch next to it.
    It's a big ripperdoc station (about 5 x 4 blocks of lights, arm, table and stool around the chair), so give it room.
    Only the chair itself is solid.
-   If the sitter doesn't line up with the cushion, edit `seatX`, `seatY`, `seatZ` under `[soul_killer]` in
+   If the sitter doesn't line up with the cushion, edit `riderX`, `riderY`, `riderZ` under `[soul_killer]` in
    `run/saves/<world>/serverconfig/constructchip-server.toml`, then sit down again.
 3. The person to capture right-clicks the chair with an **empty hand** to sit in it.
 4. Right-click the chair with a **blank chip**. The seated player gets a consent screen. If they accept, they have to

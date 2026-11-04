@@ -4,7 +4,7 @@ import java.util.Optional;
 import net.minecraft.network.chat.Component;
 
 /** Outcome of {@link Quickhack#execute}. Only a success costs RAM and starts the cooldown. */
-public record HackResult(boolean success, Optional<Component> message) {
+public record HackResult(boolean succeeded, Optional<Component> message) {
     public static HackResult success() {
         return new HackResult(true, Optional.empty());
     }

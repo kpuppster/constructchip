@@ -161,7 +161,7 @@ public final class QuickhackService {
             HACK_IN_PROGRESS.remove(host.getUUID());
         }
 
-        if (!result.success()) {
+        if (!result.succeeded()) {
             if (chipChanged) host.setData(ModAttachments.INSTALLED_CHIP, chip);
             return new Attempt(Status.HACK_FAILED, result.message()
                     .or(() -> Optional.of(Component.translatable(Status.HACK_FAILED.translationKey()))));

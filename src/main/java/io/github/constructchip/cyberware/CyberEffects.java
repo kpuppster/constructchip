@@ -81,7 +81,7 @@ public final class CyberEffects {
         Implant imp = implant.get();
         int lvl = Math.max(0, s.level(imp));
         String key = slot.name();
-        if (action == Action.SLAM) return slam(p, s);
+        if (action == Action.SLAM) return GorillaGrab.tryThrow(p) ? null : slam(p, s);
         long cd = s.cooldown(key, now);
         if (cd > 0) return Component.translatable("message.constructchip.hack.on_cooldown", String.format("%.1f", cd / 20f));
 

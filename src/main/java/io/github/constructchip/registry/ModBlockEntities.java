@@ -15,5 +15,9 @@ public final class ModBlockEntities {
             REGISTER.register("soul_killer", () -> BlockEntityType.Builder.of(SoulKillerBlockEntity::new,
                     ModBlocks.SOUL_KILLER.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<io.github.constructchip.paint.PaintingStationBlockEntity>> PAINTING_STATION =
+            REGISTER.register("painting_station", () -> BlockEntityType.Builder.of(io.github.constructchip.paint.PaintingStationBlockEntity::new,
+                    ModBlocks.PAINTING_STATION.get()).build(null));
+
     private ModBlockEntities() {}
 }

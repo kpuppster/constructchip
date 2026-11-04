@@ -62,5 +62,13 @@ public final class ModDataComponents {
             REGISTER.register("arms_element", () -> DataComponentType.<String>builder()
                     .persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
 
+    /** Implant paint: model texture name → painted pixels (see paint.Paint). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.Map<String, String>>> CYBER_PAINT =
+            REGISTER.register("cyber_paint", () -> DataComponentType.<java.util.Map<String, String>>builder()
+                    .persistent(Codec.unboundedMap(Codec.STRING, Codec.STRING))
+                    .networkSynchronized(ByteBufCodecs.<io.netty.buffer.ByteBuf, String, String, java.util.Map<String, String>>map(
+                            java.util.HashMap::new, ByteBufCodecs.stringUtf8(64), ByteBufCodecs.stringUtf8(io.github.constructchip.paint.Paint.MAX_LENGTH)))
+                    .build());
+
     private ModDataComponents() {}
 }

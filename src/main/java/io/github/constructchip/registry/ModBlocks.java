@@ -21,5 +21,9 @@ public final class ModBlocks {
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(5f, 9f).requiresCorrectToolForDrops()
                     .sound(SoundType.NETHERITE_BLOCK).lightLevel(s -> s.getValue(SoulKillerBlock.ACTIVE) ? 10 : 2)));
 
+    public static final DeferredBlock<io.github.constructchip.paint.PaintingStationBlock> PAINTING_STATION = REGISTER.register("painting_station",
+            () -> new io.github.constructchip.paint.PaintingStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY)
+                    .strength(3f, 6f).sound(SoundType.METAL).noOcclusion().lightLevel(s -> 6)));
+
     private ModBlocks() {}
 }

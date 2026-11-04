@@ -25,5 +25,8 @@ public final class ModItems {
     public static final DeferredItem<SoulKillerItem> SOUL_KILLER = REGISTER.register("soul_killer",
             () -> new SoulKillerItem(ModBlocks.SOUL_KILLER.get(), new Item.Properties().rarity(Rarity.EPIC)));
 
+    public static final DeferredItem<io.github.constructchip.paint.PaintingStationItem> PAINTING_STATION = REGISTER.register("painting_station",
+            () -> new io.github.constructchip.paint.PaintingStationItem(ModBlocks.PAINTING_STATION.get(), new Item.Properties()));
+
     private ModItems() {}
 }

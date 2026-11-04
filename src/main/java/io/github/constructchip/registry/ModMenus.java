@@ -17,5 +17,8 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<io.github.constructchip.cyberware.SurgeryMenu>> SURGERY = REGISTER.register(
             "surgery", () -> new MenuType<>(io.github.constructchip.cyberware.SurgeryMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<io.github.constructchip.paint.PaintingMenu>> PAINTING = REGISTER.register(
+            "painting", () -> new MenuType<>(io.github.constructchip.paint.PaintingMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
     private ModMenus() {}
 }

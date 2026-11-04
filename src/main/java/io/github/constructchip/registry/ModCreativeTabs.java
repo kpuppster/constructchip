@@ -26,6 +26,7 @@ public final class ModCreativeTabs {
             .icon(() -> io.github.constructchip.cyberware.CyberItems.IMPLANTS.get(io.github.constructchip.cyberware.Implant.GORILLA_ARMS).get().getDefaultInstance())
             .withTabsBefore(MAIN.getKey())
             .displayItems((params, out) -> {
+                out.accept(ModItems.PAINTING_STATION.get());
                 out.accept(io.github.constructchip.cyberware.CyberItems.SOLDERING_IRON.get());
                 out.accept(io.github.constructchip.cyberware.CyberItems.IMMUNOSUPPRESSANTS.get());
                 io.github.constructchip.cyberware.CyberItems.IMPLANTS.values().forEach(i -> out.accept(i.get()));

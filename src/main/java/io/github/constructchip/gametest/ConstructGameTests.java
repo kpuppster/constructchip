@@ -232,4 +232,24 @@ public final class ConstructGameTests {
         h.assertTrue(!GhostState.isConstruct(victim), "still ghost after release");
         done(h, victim, host);
     }
+
+    @GameTest(template = "empty")
+    public static void soulKillerChairSeatsAndNeedsPower(GameTestHelper h) {
+        BlockPos chairPos = new BlockPos(2, 1, 2);
+        h.setBlock(chairPos, io.github.constructchip.registry.ModBlocks.SOUL_KILLER.get());
+        var machine = (io.github.constructchip.block.SoulKillerBlockEntity) h.getBlockEntity(chairPos);
+        h.assertTrue(!machine.isPowered(), "powered without redstone");
+        h.setBlock(chairPos.east(), Blocks.REDSTONE_BLOCK);
+        h.assertTrue(machine.isPowered(), "redstone block next to it doesn't power it");
+
+        ServerPlayer sitter = player(h, 2, 3);
+        BlockPos abs = h.absolutePos(chairPos);
+        var seat = new io.github.constructchip.block.ChairSeatEntity(h.getLevel(), abs.getX() + 0.5, abs.getY() + 0.45, abs.getZ() + 0.5);
+        h.getLevel().addFreshEntity(seat);
+        h.assertTrue(sitter.startRiding(seat, true), "couldn't sit");
+        h.assertTrue(machine.findSeated().map(p -> p == sitter).orElse(false), "seated player not found");
+        sitter.stopRiding();
+        seat.discard();
+        done(h, sitter);
+    }
 }

@@ -1,6 +1,16 @@
 package io.github.constructchip.hack;
 
+import io.github.constructchip.ConstructChip;
+import io.github.constructchip.api.CyberwareApi;
+import io.github.constructchip.chip.ChipStacks;
+import io.github.constructchip.network.HighlightPayload;
 import io.github.constructchip.skill.ChipStats;
+import java.util.List;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -32,9 +42,18 @@ public final class ScannerHack implements Quickhack {
         return baseRange() + stats.scanRangeBonus();
     }
 
+    public static final ResourceLocation DEEP_SCAN = ConstructChip.id("deep_scan");
+
+    private static boolean deep(HackContext ctx) {
+        return ChipStacks.skills(ctx.chip()).has(DEEP_SCAN);
+    }
+
     @Override
     public HackResult execute(HackContext ctx) {
-        if (ctx.entity().isPresent()) return HackResult.success(describeEntity(ctx, ctx.entity().get()));
+        if (ctx.entity().isPresent()) {
+            PacketDistributor.sendToPlayer(ctx.construct(), new HighlightPayload(List.of(ctx.entity().get().getId()), 60));
+            return HackResult.success(describeEntity(ctx, ctx.entity().get()));
+        }
         if (ctx.block().isPresent()) return HackResult.success(describeBlock(ctx, ctx.block().get()));
         return HackResult.fail(Component.translatable("message.constructchip.hack.no_target"));
     }
@@ -57,6 +76,10 @@ public final class ScannerHack implements Quickhack {
             return out;
         }
         out.append(line("message.constructchip.scan.hardness", String.format(Locale.ROOT, "%.1f", hardness)));
+        if (deep(ctx)) {
+            out.append(line("message.constructchip.scan.blast", String.format(Locale.ROOT, "%.1f", state.getBlock().getExplosionResistance())));
+            if (level.getBlockEntity(pos) != null) out.append(line("message.constructchip.scan.has_data"));
+        }
         out.append(line("message.constructchip.scan.tool", Component.translatable(toolKey(state))));
         if (state.requiresCorrectToolForDrops()) {
             out.append(line("message.constructchip.scan.tier", Component.translatable(tierKey(state))));
@@ -97,6 +120,17 @@ public final class ScannerHack implements Quickhack {
         float dealt = CombatRules.getDamageAfterAbsorb(living, withEnchants, source, armor, toughness);
         out.append(line("message.constructchip.scan.damage", host.getGameProfile().getName(),
                 String.format(Locale.ROOT, "%.1f", dealt)));
+        if (deep(ctx)) {
+            for (MobEffectInstance effect : living.getActiveEffects()) {
+                out.append(line("message.constructchip.scan.effect", Component.translatable(effect.getDescriptionId()),
+                        effect.getAmplifier() + 1, effect.getDuration() / 20));
+            }
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                ItemStack stack = living.getItemBySlot(slot);
+                if (!stack.isEmpty()) out.append(line("message.constructchip.scan.gear", stack.getHoverName()));
+            }
+            if (CyberwareApi.isDisabled(living)) out.append(line("message.constructchip.scan.cyberware_down"));
+        }
         return out;
     }
 }

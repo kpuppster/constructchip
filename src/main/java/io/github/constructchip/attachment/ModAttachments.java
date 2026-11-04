@@ -47,5 +47,9 @@ public final class ModAttachments {
                     .copyOnDeath()
                     .build());
 
+    /** On any living entity: cyberware disable timers from Short Circuit / System Lock. */
+    public static final Supplier<AttachmentType<CyberwareState>> CYBERWARE_STATE = REGISTER.register("cyberware_state",
+            () -> AttachmentType.builder(() -> CyberwareState.NONE).serialize(CyberwareState.CODEC).build());
+
     private ModAttachments() {}
 }

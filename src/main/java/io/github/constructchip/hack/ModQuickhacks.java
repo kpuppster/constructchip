@@ -1,6 +1,12 @@
 package io.github.constructchip.hack;
 
 import io.github.constructchip.ConstructChip;
+import io.github.constructchip.hack.builtin.AdrenalSurgeHack;
+import io.github.constructchip.hack.builtin.CyberwareHacks;
+import io.github.constructchip.hack.builtin.DeviceHacks;
+import io.github.constructchip.hack.builtin.OverclockHack;
+import io.github.constructchip.hack.builtin.PingHack;
+import io.github.constructchip.hack.builtin.WeakPointHack;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -20,6 +26,18 @@ public final class ModQuickhacks {
     public static final DeferredRegister<Quickhack> REGISTER = DeferredRegister.create(REGISTRY, ConstructChip.MODID);
 
     public static final DeferredHolder<Quickhack, ScannerHack> SCANNER = REGISTER.register("scanner", ScannerHack::new);
+    public static final DeferredHolder<Quickhack, OverclockHack> OVERCLOCK = REGISTER.register("overclock", OverclockHack::new);
+    public static final DeferredHolder<Quickhack, PingHack> PING = REGISTER.register("ping", PingHack::new);
+    public static final DeferredHolder<Quickhack, WeakPointHack> WEAK_POINT = REGISTER.register("weak_point", WeakPointHack::new);
+    public static final DeferredHolder<Quickhack, CyberwareHacks.ShortCircuit> SHORT_CIRCUIT =
+            REGISTER.register("short_circuit", CyberwareHacks.ShortCircuit::new);
+    public static final DeferredHolder<Quickhack, CyberwareHacks.SystemLock> SYSTEM_LOCK =
+            REGISTER.register("system_lock", CyberwareHacks.SystemLock::new);
+    public static final DeferredHolder<Quickhack, AdrenalSurgeHack> ADRENAL_SURGE = REGISTER.register("adrenal_surge", AdrenalSurgeHack::new);
+    public static final DeferredHolder<Quickhack, DeviceHacks.RemoteSwitch> REMOTE_SWITCH =
+            REGISTER.register("remote_switch", DeviceHacks.RemoteSwitch::new);
+    public static final DeferredHolder<Quickhack, DeviceHacks.SignalInject> SIGNAL_INJECT =
+            REGISTER.register("signal_inject", DeviceHacks.SignalInject::new);
 
     private ModQuickhacks() {}
 

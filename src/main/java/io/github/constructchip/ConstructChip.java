@@ -5,6 +5,7 @@ import io.github.constructchip.attachment.ModAttachments;
 import io.github.constructchip.hack.ModQuickhacks;
 import io.github.constructchip.network.ModNetwork;
 import io.github.constructchip.registry.ModDataComponents;
+import io.github.constructchip.registry.ModBlocks;
 import io.github.constructchip.registry.ModEntities;
 import io.github.constructchip.registry.ModMenus;
 import io.github.constructchip.skill.ModSkills;
@@ -27,6 +28,7 @@ public final class ConstructChip {
         ModGameRules.init();
         container.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
         ModDataComponents.REGISTER.register(modBus);
+        ModBlocks.REGISTER.register(modBus);
         ModItems.REGISTER.register(modBus);
         ModEntities.REGISTER.register(modBus);
         ModAttachments.REGISTER.register(modBus);

@@ -153,7 +153,9 @@ public final class CaptureService {
             Vec3 spawn = Vec3.atBottomCenterOf(level.getSharedSpawnPos());
             player.teleportTo(level, spawn.x, spawn.y, spawn.z, pos.yRot(), pos.xRot());
         } else {
-            player.teleportTo(level, pos.pos().x, pos.pos().y, pos.pos().z, pos.yRot(), pos.xRot());
+            // never back inside a Soul Killer (older snapshots were taken on the chair spot) or a wall
+            Vec3 to = io.github.constructchip.block.SafeSpot.forPlayer(level, player, pos.pos());
+            player.teleportTo(level, to.x, to.y, to.z, pos.yRot(), pos.xRot());
         }
 
         player.setExperienceLevels(snapshot.xp().level()); // also forces an XP sync to the client

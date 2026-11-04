@@ -85,7 +85,11 @@ public class ChairSeatEntity extends Entity {
 
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
-        return super.getDismountLocationForPassenger(passenger).add(0, 0.5, 0);
+        Vec3 fallback = super.getDismountLocationForPassenger(passenger).add(0, 0.5, 0);
+        net.minecraft.world.level.block.state.BlockState state = level().getBlockState(chair);
+        if (!(state.getBlock() instanceof SoulKillerBlock)) return fallback;
+        // step out beside the station, never into its collision box
+        return SafeSpot.besideChair(level(), chair, state.getValue(SoulKillerBlock.FACING), fallback);
     }
 
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) {}

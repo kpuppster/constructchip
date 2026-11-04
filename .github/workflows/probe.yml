@@ -8,9 +8,15 @@ jobs:
     steps:
       - name: Probe
         run: |
-          echo "=== create releases"; curl -sL https://maven.createmod.net/com/simibubi/create/create-1.21.1/maven-metadata.xml | grep -E "<version>6\.0\.(9|10)" | tail -8
-          echo "=== create 6.0.10 files"; curl -sL https://maven.createmod.net/com/simibubi/create/create-1.21.1/6.0.10/ | grep -o 'href="[^"]*"' | head
-          echo "=== modrinth search"
-          curl -sG https://api.modrinth.com/v2/search --data-urlencode 'query=vista' --data-urlencode 'limit=8' | jq -r '.hits[] | .slug + " | " + .title + " | " + .author'
-          echo "=== curseforge-ish search via modrinth author mehvahdjukaar"
-          curl -s https://api.modrinth.com/v2/user/MehVahdJukaar/projects | jq -r '.[] | .slug + " | " + .title' | head -40
+          echo "=== vista versions"
+          curl -sG "https://api.modrinth.com/v2/project/vista_tv/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' \
+            | jq -r '.[0:4][] | .version_number + "  " + .files[0].url + "  deps=" + ([.dependencies[] | .project_id + ":" + .dependency_type] | join(","))'
+          url=$(curl -sG "https://api.modrinth.com/v2/project/vista_tv/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0].files[0].url')
+          curl -sL -o vista.jar "$url"
+          echo "=== classes"
+          unzip -l vista.jar | awk '{print $4}' | grep '\.class$' | grep -viE "mixin|/client/renderer|/datagen" | sed 's/\.class$//' > classes.txt
+          grep -iE "tv|view_?finder|broadcast|feed|network" classes.txt | head -120
+          echo "=== mods.toml"; unzip -p vista.jar META-INF/neoforge.mods.toml | grep -E "modId|versionRange|type" | head -20
+          for c in $(grep -E "/(TVBlock|TVBlockEntity|ViewFinderBlock|ViewFinderBlockEntity|BroadcastManager|ClientBoundControlViewFinderPacket|TileOrEntityTarget|ViewFinderController|LiveFeed|FeedId|TVType)(\\\$[A-Za-z]+)?$" classes.txt); do
+            echo "=== $c"; javap -p -cp vista.jar "$c" 2>&1 | grep -v "lambda\\$" | head -90
+          done

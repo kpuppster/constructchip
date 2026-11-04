@@ -8,11 +8,7 @@ jobs:
     steps:
       - name: Probe
         run: |
-          for a in player-animation-lib-forge player-animation-lib-neoforge player-animation-lib; do
-            echo "=== kosmx $a"; curl -sL https://maven.kosmx.dev/dev/kosmx/player-anim/$a/maven-metadata.xml | grep -E "<version>" | grep -i "1.21" | tail -6
+          curl -sL -o g.jar "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/software/bernie/geckolib/geckolib-neoforge-1.21.1/4.9.3/geckolib-neoforge-1.21.1-4.9.3.jar"
+          for c in software/bernie/geckolib/renderer/GeoArmorRenderer software/bernie/geckolib/animatable/GeoItem software/bernie/geckolib/animatable/client/GeoRenderProvider software/bernie/geckolib/constant/DataTickets; do
+            echo "=== $c"; javap -cp g.jar "$c" | grep -v lambda | grep -E "public|protected" | head -60
           done
-          echo "=== modrinth"; curl -sG "https://api.modrinth.com/v2/project/playeranimator/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0:3][] | .version_number + "  " + .id + "  " + .files[0].url'
-          url=$(curl -sG "https://api.modrinth.com/v2/project/playeranimator/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0].files[0].url')
-          curl -sL -o pa.jar "$url"; unzip -l pa.jar | awk '{print $4}' | grep -E "\.class$" | grep -iE "PlayerAnimationAccess|PlayerAnimationRegistry|KeyframeAnimationPlayer|ModifierLayer|PlayerAnimationFactory|AnimationStack|IAnimation\.class" | head
-          for c in $(unzip -l pa.jar | awk '{print $4}' | grep -E "(PlayerAnimationAccess|PlayerAnimationRegistry|KeyframeAnimationPlayer|ModifierLayer|PlayerAnimationFactory|AnimationStack)\.class$"); do echo "=== $c"; javap -cp pa.jar "${c%.class}" | grep -v lambda | head -30; done
-          unzip -p pa.jar META-INF/neoforge.mods.toml | grep -E "modId|version" | head

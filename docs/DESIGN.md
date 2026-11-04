@@ -18,9 +18,10 @@ The captured player lives in a host's mind, is visible only to the host, and act
   copyOnDeath). The server re-validates everything on the consent reply (still seated, in range, not timed out). Admin override,
   `/construct release <player>`.
 - Capture machine ("Soul Killer"): **CHANGED 2026-11-04: no Create.** The Soul Killer is itself a chair (own seat entity,
-  own model), powered by redstone. The user wanted Project: Edgerunner's ripperdoc chair model, but that mod is
-  "All Rights Reserved - Modpack use permitted" (A24-N22) and a Forge 1.20.1 GeckoLib model; swap it in only with the
-  author's permission (would add GeckoLib). States: IDLE, SEATED, AWAITING_CONSENT, CAPTURING, DONE.
+  powered by redstone. **Model: A24-N22's ripperdoc station (Project: Edgerunner), used with permission (user report
+  2026-11-04; keep it on file)**, rendered with GeckoLib (now a required dependency). The block itself is the chair base
+  (low hitbox); the lights, arm, table and stool are decorative. Seat offset is server config (`soul_killer.seatX/Y/Z`).
+  States: IDLE, SEATED, AWAITING_CONSENT, CAPTURING, DONE.
 - Before capture, save inventory, XP, gamemode and position into a persistent attachment so release can always restore them.
   Implemented (step 4): `CaptureSnapshot` (all 41 inventory slots, XP level/progress/total, game mode, dimension + exact
   position + rotation, health, food, saturation, potion effects) in the `capture_snapshot` attachment (copyOnDeath).

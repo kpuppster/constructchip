@@ -2,6 +2,7 @@ package io.github.constructchip.client;
 
 import io.github.constructchip.ConstructChip;
 import io.github.constructchip.chip.ChipStacks;
+import io.github.constructchip.registry.ModBlockEntities;
 import io.github.constructchip.registry.ModEntities;
 import io.github.constructchip.registry.ModItems;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -26,6 +27,7 @@ public final class ClientSetup {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.<ItemEntity>registerEntityRenderer(ModEntities.CHIP_ITEM.get(), ItemEntityRenderer::new);
         event.registerEntityRenderer(ModEntities.CHAIR_SEAT.get(), NoopRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.SOUL_KILLER.get(), ctx -> new SoulKillerRenderer());
     }
 
     /** Captured chips show the full-color chip art; blank ones the greyed version. */

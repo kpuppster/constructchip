@@ -1,6 +1,7 @@
 package io.github.constructchip.block;
 
 import io.github.constructchip.registry.ModEntities;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
@@ -15,14 +16,21 @@ import net.minecraft.world.phys.Vec3;
  * (Seat positioning follows the approach of Create's seats, which are MIT-licensed.)
  */
 public class ChairSeatEntity extends Entity {
+    private BlockPos chair = BlockPos.ZERO;
+
     public ChairSeatEntity(EntityType<?> type, Level level) {
         super(type, level);
         noPhysics = true;
     }
 
-    public ChairSeatEntity(Level level, double x, double y, double z) {
+    public ChairSeatEntity(Level level, BlockPos chair, Vec3 at) {
         this(ModEntities.CHAIR_SEAT.get(), level);
-        setPos(x, y, z);
+        this.chair = chair.immutable();
+        setPos(at.x, at.y, at.z);
+    }
+
+    public BlockPos chair() {
+        return chair;
     }
 
     @Override
@@ -50,7 +58,7 @@ public class ChairSeatEntity extends Entity {
     @Override
     public void tick() {
         if (level().isClientSide) return;
-        boolean chairThere = level().getBlockState(blockPosition()).getBlock() instanceof SoulKillerBlock;
+        boolean chairThere = level().getBlockState(chair).getBlock() instanceof SoulKillerBlock;
         if (!isVehicle() || !chairThere) discard();
     }
 

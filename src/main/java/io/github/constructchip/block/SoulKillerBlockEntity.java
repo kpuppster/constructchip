@@ -28,6 +28,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -39,7 +45,26 @@ import org.jetbrains.annotations.Nullable;
  * chip is held inside while waiting and comes back on any abort. A machine loaded mid-capture (crash or
  * chunk unload) aborts and pops the chip out. The player is never captured without having accepted.
  */
-public class SoulKillerBlockEntity extends BlockEntity {
+public class SoulKillerBlockEntity extends BlockEntity implements GeoBlockEntity {
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.ripperdoc.idle");
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "idle", 0, state -> state.setAndContinue(IDLE)));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
+    }
+
+    /** The station model reaches about 2.5 blocks to each side and 3.7 up; keep it rendered when the block is off-screen. */
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(worldPosition).inflate(3, 0, 3).expandTowards(0, 3, 0);
+    }
+
     public static final int CAPTURE_TICKS = 100;
     public static final double OPERATOR_RANGE = 16.0;
 
@@ -65,7 +90,8 @@ public class SoulKillerBlockEntity extends BlockEntity {
     /** The player sitting in this chair, if any. */
     public Optional<ServerPlayer> findSeated() {
         if (level == null) return Optional.empty();
-        List<ChairSeatEntity> seats = level.getEntitiesOfClass(ChairSeatEntity.class, new AABB(worldPosition));
+        List<ChairSeatEntity> seats = level.getEntitiesOfClass(ChairSeatEntity.class, new AABB(worldPosition).inflate(3),
+                s -> s.chair().equals(worldPosition));
         for (ChairSeatEntity seat : seats) {
             if (seat.getFirstPassenger() instanceof ServerPlayer p) return Optional.of(p);
         }

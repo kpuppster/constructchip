@@ -6,7 +6,8 @@
   The mod logo is also their chip art.
   Red Lightning, Lightning Storm, Patch Job and Ping's side count are our own implementations of ideas from that mod.
 - **A24-N22** ([Project: Edgerunner](https://www.curseforge.com/minecraft/mc-mods/project-edgerunner)): the ripperdoc
-  station model, texture and idle animation used for the Soul Killer. Used with the author's permission.
+  station model, texture, idle and sitting animations, and the whole cyberware system's design, item art, effect icons,
+  Ripperdoc villager texture and sounds. Used with the author's permission. The cyberware code is our own re-implementation.
 - **GeckoLib** renders the station model; **PlayerAnimator** (KosmX) plays the sitting animation (also by A24-N22).
 - **Create** (MIT): the Soul Killer's seat positioning follows the approach of Create's seats.
 - **Rajdhani** font (HUD text): Copyright (c) 2014, Indian Type Foundry. SIL Open Font License 1.1, see

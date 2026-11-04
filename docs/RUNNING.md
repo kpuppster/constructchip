@@ -122,3 +122,26 @@ Vista is downloaded and loaded automatically in the test game. To test without V
 ### Upgrading
 - **Skill points:** the host presses `K` and clicks "Buy point" (paid with the host's XP; each point costs more).
 - **Mk.2 / Mk.3:** craft a blank Mk.2 or Mk.3 construct chip (cyan or gold) and use it with the construct chip in your other hand, or while the chip is installed in you. The construct moves onto the new chip.
+
+## Cyberware (ported from Project: Edgerunner)
+
+**Getting started.** Put a Soul Killer station near an unemployed villager: they become a **Ripperdoc**. Trade for the
+**Soldering Iron** (18 emeralds + 12 iron), **Immunosuppressants** and **Internal Parts T1-T5**. Every part and implant is
+crafted in a normal crafting table with the Soldering Iron in the grid (you get it back). Check the recipe book.
+
+**Surgery.** Sneak + right-click the Soul Killer station with an empty hand. Drag implants into body slots: OS, Cortex,
+Face, Arms, Circulatory, Legs, 2× Skeleton. The bar shows **Load / Capacity** (capacity is rolled 160-320 per player).
+Going over capacity speeds up cyberpsychosis. The **+** buttons upgrade an implant, and **Capacity +** raises capacity
+(both cost Internal Parts). Changes apply when you close the screen.
+
+**Keys** (if you aren't a construct): `X` Sandevistan · `B` Gorilla Arms · `J` Blood Pump · `V` optic scan · hold `C` zoom ·
+hold `G` chrome wheel · right-click with an empty hand while the arms are out = Slam · double jump (Tendons) / crouch-charge
+then jump (Ankles).
+
+**Cyberpsychosis.** Running implants builds pressure, and high pressure grows the disease (bottom-left HUD). There are 5 phases,
+from glitches to hallucinations to motor trouble, up to a 120 s **terminal** countdown in Phase V. Immunosuppressants buy capacity
+and roll it back. With any implant installed, **food stops healing you**.
+
+**Constructs and chrome.** Short Circuit / System Lock knock out a player's implants. Deep Scan lists them. New Support skills:
+**Chrome Link** (see your host's load and cyberpsychosis), **Neural Buffer** (slows your host's cyberpsychosis) and
+**Chrome Override** (quickhack: fire your host's Sandevistan or Blood Pump). A construct chip in your head counts 20 Load.

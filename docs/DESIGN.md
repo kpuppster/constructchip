@@ -129,6 +129,20 @@ From class signatures only (**VERIFY** with a decompiler):
 - Vista mixes into ChunkMap, TrackedEntity, ChunkTrackingView, Camera, LocalPlayer, Player. Avoid our own entity-tracking mixins.
 - Planned hacks: `tv_power`, `camera_view`, `camera_blind`.
 
+## Cyberware: Project: Edgerunner port (A24-N22, all assets used with permission)
+Their Forge 1.20.1 / Palladium + KubeJS mod, re-implemented in our code (`cyberware/`, `villager/`), with their item art,
+effect icons, villager texture and sounds. Slots: OS, Cortex, Face, Arms, Circulatory, Legs, 2× Skeleton (`CyberSlot`).
+27 implants (`Implant`: load, tier, active/cooldown/pressure from their guide), 44 parts (`Part`), Soldering Iron (a crafting
+tool that comes back), Immunosuppressants. State per player in the `cyber_state` attachment (copyOnDeath).
+Capacity 160-320 rolled per player × upgrade multipliers 1.08..1.50 (+ Epimorphic, + immuno). Damage reductions multiply
+toward 70% physical / 55% other. Cyberpsychosis (`Psychosis`): pressure/degradation 0..1000, phases enter 140/340/600/840/980
+and exit 90/260/500/730/930, terminal window 120 s, death in V respawns in IV. Food doesn't heal with chrome (`FoodDataMixin`).
+Surgery = Soul Killer station (sneak + right-click). The Ripperdoc villager uses the station as job site. Constructs: implants
+are suppressed while you're a construct; Short Circuit/System Lock shut chrome off; Deep Scan lists implants; skills
+chrome_link / neural_buffer / chrome_override; an installed construct chip counts 20 Load.
+Not ported (yet): 3D implant models on the player (arms, blades, spine), Gorilla Arms grab & throw, the painting station,
+the Modonomicon guide book, IFF-corruption visuals and berserk auto-chase (berserk = buffs + glow here).
+
 ## Capri mod (Ikeda): assets used with permission
 The author gave permission to use the mod's visuals (user report, 2026-11-04; keep that message on file). Used:
 chip art → chip item (captured: full color; blank: greyed derivative via a `constructchip:captured` item property) and the

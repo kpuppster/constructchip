@@ -6,28 +6,11 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Maven versions
+      - name: Probe
         run: |
-          for u in \
-            https://maven.createmod.net/com/simibubi/create/create-1.21.1/maven-metadata.xml \
-            https://maven.createmod.net/net/createmod/ponder/ponder-neoforge/maven-metadata.xml \
-            https://maven.createmod.net/dev/engine-room/flywheel/flywheel-neoforge-api-1.21.1/maven-metadata.xml \
-            https://maven.createmod.net/dev/engine-room/flywheel/flywheel-neoforge-1.21.1/maven-metadata.xml \
-            https://maven.ithundxr.dev/snapshots/com/tterrag/registrate/Registrate/maven-metadata.xml ; do
-            echo "=== $u"; curl -sL "$u" | grep -E "<version>|<latest>|<release>" | tail -12
-          done
-      - name: Modrinth versions
-        run: |
-          for p in vista moonlight; do
-            echo "=== $p"
-            curl -sG "https://api.modrinth.com/v2/project/$p/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' \
-              | jq -r '.[0:4][] | .version_number + "  " + .files[0].url'
-          done
-      - name: Inspect Vista API
-        run: |
-          url=$(curl -sG "https://api.modrinth.com/v2/project/vista/version" --data-urlencode 'loaders=["neoforge"]' --data-urlencode 'game_versions=["1.21.1"]' | jq -r '.[0].files[0].url')
-          curl -sL -o vista.jar "$url"
-          unzip -l vista.jar | grep -iE "tv/|view_finder/|broadcast|ControlViewFinder|TileOrEntityTarget|ViewFinderController|/network/" | awk '{print $4}' | grep '\.class$' | head -80
-          for c in $(unzip -l vista.jar | awk '{print $4}' | grep -E "(TVBlock|TVBlockEntity|ViewFinderBlock|ViewFinderBlockEntity|BroadcastManager|ClientBoundControlViewFinderPacket|TileOrEntityTarget|ViewFinderController|PowerState)\.class$|TVBlock\\\$PowerState\.class$"); do
-            echo "=== $c"; javap -p -cp vista.jar "${c%.class}" 2>&1 | head -120
-          done
+          echo "=== create releases"; curl -sL https://maven.createmod.net/com/simibubi/create/create-1.21.1/maven-metadata.xml | grep -E "<version>6\.0\.(9|10)" | tail -8
+          echo "=== create 6.0.10 files"; curl -sL https://maven.createmod.net/com/simibubi/create/create-1.21.1/6.0.10/ | grep -o 'href="[^"]*"' | head
+          echo "=== modrinth search"
+          curl -sG https://api.modrinth.com/v2/search --data-urlencode 'query=vista' --data-urlencode 'limit=8' | jq -r '.hits[] | .slug + " | " + .title + " | " + .author'
+          echo "=== curseforge-ish search via modrinth author mehvahdjukaar"
+          curl -s https://api.modrinth.com/v2/user/MehVahdJukaar/projects | jq -r '.[] | .slug + " | " + .title' | head -40

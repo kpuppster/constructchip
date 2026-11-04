@@ -1,0 +1,41 @@
+name: Smoke test
+on:
+  push:
+    branches: [full-mod]
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { java-version: '21', distribution: 'temurin' }
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Boot dedicated server
+        run: |
+          mkdir -p run && echo "eula=true" > run/eula.txt
+          (./gradlew runServer --no-daemon > server.log 2>&1 &)
+          for i in $(seq 1 120); do
+            if grep -q "Done (" server.log; then echo "SERVER STARTED"; break; fi
+            if grep -qE "BUILD FAILED|Crash report|Exception in server tick loop" server.log; then echo "SERVER FAILED"; break; fi
+            sleep 5
+          done
+          sleep 5; pkill -f net.neoforged || true; sleep 3
+          echo "=== constructchip lines"; grep -i "constructchip\|vista found" server.log | head -40
+          echo "=== errors"; grep -E "ERROR|WARN.*(constructchip|Mixin)|Exception|Caused by" server.log | grep -v "Unable to find registered sound" | head -60
+      - name: Boot client (virtual display)
+        run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y xvfb > /dev/null
+          (xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient --no-daemon > client.log 2>&1 &)
+          for i in $(seq 1 120); do
+            if grep -qE "Sound engine started|Created: .*minecraft:textures/atlas/blocks" client.log && grep -q "Reloading ResourceManager" client.log; then sleep 20; echo "CLIENT STARTED"; break; fi
+            if grep -qE "BUILD FAILED|Crash report|---- Minecraft Crash Report" client.log; then echo "CLIENT FAILED"; break; fi
+            sleep 5
+          done
+          pkill -f net.neoforged || true; sleep 3
+          echo "=== errors"; grep -E "ERROR|Exception|Caused by|Mixin.*(fail|error)" client.log | grep -viE "realms|telemetry|narrator|OpenAL|joystick|gamepad" | head -60
+          echo "=== crash"; ls run/crash-reports 2>/dev/null && head -80 run/crash-reports/* 2>/dev/null
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: logs, path: "*.log" }

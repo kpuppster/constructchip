@@ -130,17 +130,20 @@ From class signatures only (**VERIFY** with a decompiler):
 `sorcery_age_incarnation` (Forge 1.20.1, ARR, requires the JJK mod). Use it only as a design cross-check. Ask MrShrimpyUW before reusing anything.
 
 ## Build order
+All steps are written and compile. Steps 1-4 were tested in game; 5-11 pass the automated checks (GameTests plus server and client boot in CI) and are waiting for an in-game test.
 1. Chip components, chip item, `/construct givechip`. **(done, tested in game)**
-2. Install/eject with the chipId check, `ChipRegistry`, anchor logic. **(done, tested in game; see docs/TESTING.md)**
-3. Skill registry + central hack validator **(written; see `hack/QuickhackService`)**
-4. Save/restore of captured-player state (test heavily by command) **(written; see `capture/`)**
-5. Ghost restrictions, host link, client render hiding, sync payload
-6. Host HUD + read-only inventory menu
-7. Scanner, then Overclock and lockout
-8. `Hackable` + cyberware skills
-9. Skill tree screen
-10. Vista compat
-11. Create Soul Killer, consent screen, polish
+2. Install/eject with the chipId check, `ChipRegistry`, anchor logic. **(done, tested in game)**
+3. Skill registry + central hack validator (`hack/QuickhackService`). **(done, tested in game)**
+4. Save/restore of captured-player state (`capture/`). **(done; GameTest)**
+5. Ghost restrictions (`ghost/GhostEvents`, `LivingEntityMixin`), host link/leash (`ghost/GhostLink`, 16 blocks, follows across dimensions),
+   client render hiding (`client/ClientEvents`), sync (`sync/ChipSync`). **(written)**
+6. Host HUD (`client/HudLayer`) + read-only host inventory (`menu/HostInventoryMenu`). **(written)**
+7. Keybinds + client aim, Scanner highlight, Overclock and lockout. **(written; Overclock GameTest)**
+8. `api/Hackable` + `api/CyberwareApi`, Short Circuit / System Lock, and every other quickhack in the tree (`hack/builtin`). **(written)**
+9. Skill tree screen (`client/SkillTreeScreen`): construct and host spend points, only the host buys them. **(written)**
+10. Vista compat (`compat/vista`): TV Override, Camera Jack, Camera Blind. **(written; loads in CI)**
+11. Soul Killer (`block/SoulKiller*`), consent (`capture/ConsentManager`, `client/ConsentScreen`, also used for installing on
+    someone else), Mk.2/Mk.3 modules, recipes, creative tab. **(written)**
 
 Edge cases to design in from the start: host/construct logout, death, dimension change, a server crash mid-capture (self-heal on login),
 the chip destroyed/dropped/stored, and release always restoring inventory and position.

@@ -1,7 +1,7 @@
 name: Smoke test
 on:
   push:
-    branches: [full-mod]
+    branches: [main]
   workflow_dispatch:
 jobs:
   smoke:

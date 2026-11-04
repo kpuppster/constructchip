@@ -50,3 +50,40 @@ Results show up in **Player2's** chat (failures on Player2's action bar). Player
     still be a construct with the snapshot intact (`/construct snapshot Player2`), and releasing should still restore everything.
 25. Player2 carrying someone else's captured chip when captured: that chip should drop on the ground (still tracked) and not vanish.
 26. `/construct givechip Player2 Player2` should be refused (a construct can't carry their own chip).
+
+## Steps 5-11 (full mod)
+Automated checks in CI already cover: capture/restore, install, the Scanner checks, the dupe guard, skill rules and prices,
+Overclock and lockout, and that the server and client start with Create and Vista. Check these by hand:
+
+**Ghost (5):** capture Player2 and install the chip on Player1.
+27. A third client (or Player2 un-captured, watching) must NOT see Player2. Player1 must see them. No name tag for others.
+28. Player2 can fly, makes no footstep sounds, can't open doors or chests, break or place blocks, attack, drop or pick up items,
+    or take damage (lava, fall, mobs). Mobs ignore them. Player2 doesn't push Player1 and arrows pass through them.
+29. Fly Player2 more than 16 blocks away: they snap back to Player1. Player1 goes through a portal: Player2 follows.
+
+**HUD + inventory (6):**
+30. Player2 sees top-left: host name, Player1's health, food and armor, the RAM bar, the selected hack. Player1 sees a one-line chip summary.
+31. Player2 presses `H`: Player1's inventory shows up, updates live, and nothing can be taken, moved or shift-clicked.
+
+**Hacks (7-8):** use `/construct skill points 40` and `/construct skill tier 3` on the chip (eject, hold, set, reinstall),
+then unlock everything in the `K` screen.
+32. `V` (scan) on blocks and mobs; the scanned mob glows briefly for Player2 only. With Deep Scan: effects, gear, blast resistance.
+33. Overclock: Player1 gets Regeneration II, Strength and Resistance for 30 s, and hacks cost half (watch the HUD). Then
+    LOCKED OUT for 60 s and every hack refuses.
+34. Ping (hostiles glow for both), Weak Point (more damage from Player1), Short Circuit / System Lock (slowness, a jolt, buffs removed),
+    Adrenal Surge, Remote Switch (lever, button, wooden and iron door, iron trapdoor, fence gate), Signal Inject (aim at a
+    redstone lamp or piston face: it fires for 1 s).
+35. Threat Alert: a zombie targeting Player1 shows a direction warning plus a bell. Pain Editor: Player1 takes 10% less damage.
+36. Vitals Link: Player1's effects and nearly broken gear appear on Player2's HUD.
+
+**Skill tree (9):** 37. Click-unlock works for both players; locked nodes explain why; only Player1 sees "Buy point".
+
+**Vista (10):** 38. With a Vista TV and View Finder: TV Override toggles the TV and holds it for 60 s against redstone;
+Camera Jack puts Player2 behind the camera; Camera Blind cuts the feed for 20 s and then it comes back.
+
+**Soul Killer + consent (11):** follow "Capturing someone in survival" in RUNNING.md, then:
+39. Decline, wait out the 30 s timeout, stand up mid-capture, stop the rotation, break the machine, and walk the operator away:
+    each one aborts and returns the blank chip.
+40. Quit the game mid-capture and reload: the machine resets and returns the chip; the player isn't captured.
+41. Right-click another player with a captured chip: they get a consent screen; accept installs, decline doesn't.
+42. Mk.2 / Mk.3 modules upgrade the chip (wrong tier is refused); recipes show up in the recipe book.

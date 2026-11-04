@@ -91,3 +91,30 @@ Then start the game again as in step 2.
 - **"Name already taken" / Player2 kicked straight away**: make sure the second window was started with `runClient2`, not `runClient`.
 - **The build fails right away with download errors**: check your internet connection and run the command again. Gradle picks up where it stopped.
 - **The game is very slow with two windows open**: that's normal on smaller computers. Lower the render distance in Options → Video Settings for both.
+
+## Playing with the full mod
+
+Create and Vista are downloaded and loaded automatically in the test game. To test without Vista, add
+`-PnoVista` to the command, e.g. `.\gradlew.bat runClient -PnoVista`.
+
+### Controls (change them in Options → Controls → Personality Construct)
+| Key | What it does | Who |
+|---|---|---|
+| `R` | Use the selected quickhack on what you're looking at | construct |
+| `Z` | Next quickhack (hold sneak for previous) | construct |
+| `V` | Scan what you're looking at | construct |
+| `H` | Look at your host's inventory (read-only) | construct |
+| `K` | Skill tree | construct and host |
+
+### Capturing someone in survival (the Soul Killer)
+1. Craft a **Soul Killer** and a **Personality Construct Chip**. Both recipes use Create parts. Press `R` on them in JEI,
+   or look at them in the creative tab "Personality Construct".
+2. Place the Soul Killer. Give it rotation: a Create shaft or cogwheel touching it, turning at **32 RPM or more**.
+3. Place a **Create seat** within 2 blocks of it. The person to capture sits on the seat.
+4. Right-click the Soul Killer with a **blank chip**. The seated player gets a consent screen. If they accept, they have
+   to stay seated for 5 seconds, and then the chip with them on it goes into your inventory.
+5. Right-click with the chip to install it in yourself. Or right-click another player, who will be asked to agree.
+
+### Upgrading
+- **Skill points:** the host presses `K` and clicks "Buy point" (paid with the host's XP; each point costs more).
+- **Mk.2 / Mk.3:** craft a chip module and use it with the chip in your other hand, or while the chip is installed in you.

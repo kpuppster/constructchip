@@ -34,3 +34,17 @@ A captured player rides along on a personality construct chip in their host's he
 
 [[mixins]]
 config="${mod_id}.mixins.json"
+
+[[dependencies.${mod_id}]]
+    modId="create"
+    type="required"
+    versionRange="[6.0.10,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="vista"
+    type="optional"
+    versionRange="[1.21.1-5.6.0,)"
+    ordering="AFTER"
+    side="BOTH"

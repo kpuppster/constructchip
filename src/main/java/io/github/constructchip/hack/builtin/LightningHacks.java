@@ -51,8 +51,8 @@ public final class LightningHacks {
 
     /**
      * High Voltage: aimed like Fry. Strikes the mob at (or near) the construct's crosshair and every other mob within
-     * {@link #AREA} blocks of that spot (nearest 12), 5 damage each. Any mob counts; players, the host and constructs
-     * are never hit.
+     * {@link #AREA} blocks of that spot (nearest 12), 5 damage each. Any mob or player counts; the host and constructs
+     * are never hit, and players only take damage if the server allows PvP.
      */
     public static final class Storm extends SimpleQuickhack {
         public static final double AREA = 6;
@@ -95,10 +95,10 @@ public final class LightningHacks {
         }
     }
 
-    /** Any living mob: not a player (so not the host or a construct) and not an armor stand. */
+    /** Any living mob or player, except the host, constructs, spectators and armor stands (PvP rules still apply). */
     static boolean anyMob(LivingEntity e, ServerPlayer host, ServerPlayer construct) {
-        return e.isAlive() && e != host && e != construct
-                && !(e instanceof net.minecraft.world.entity.player.Player)
+        return e.isAlive() && e != host && e != construct && !e.isSpectator()
+                && !io.github.constructchip.ghost.GhostState.isConstruct(e)
                 && !(e instanceof net.minecraft.world.entity.decoration.ArmorStand);
     }
 

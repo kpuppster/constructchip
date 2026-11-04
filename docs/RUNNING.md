@@ -164,6 +164,6 @@ gets a grey "(to …)" line so they know it was sent.
 
 ### Lightning
 Every quickhack now fires red lightning from the host's hand to the target (the Scanner shows a thin pale strand, and
-hacks without a target make sparks crawl over the host). **Fry** (the mob nearest your crosshair) and **High Voltage** (that mob and every mob within 6 blocks of it, with bolts
+hacks without a target make sparks crawl over the host). **Fry** (the mob or player nearest your crosshair) and **High Voltage** (that target and every mob or player within 6 blocks of it, with bolts
 out of the sky) have bigger versions, and the Soul Killer pours lightning into the sitter while it
 captures them.

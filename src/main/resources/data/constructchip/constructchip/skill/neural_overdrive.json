@@ -17,6 +17,10 @@
     {
       "type": "lockout_ticks",
       "amount": 600
+    },
+    {
+      "type": "no_cooldowns_while_overclocked",
+      "amount": 1
     }
   ]
 }

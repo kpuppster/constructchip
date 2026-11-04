@@ -16,6 +16,10 @@ import io.github.constructchip.chip.ChipRam;
 import io.github.constructchip.chip.ChipSkills;
 import io.github.constructchip.chip.ChipStacks;
 import io.github.constructchip.chip.ChipTimers;
+import io.github.constructchip.hack.HackTarget;
+import io.github.constructchip.hack.ModQuickhacks;
+import io.github.constructchip.hack.QuickhackService;
+import io.github.constructchip.skill.ChipStats;
 import io.github.constructchip.skill.ModSkills;
 import io.github.constructchip.skill.Skill;
 import io.github.constructchip.skill.SkillPointCost;
@@ -32,6 +36,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.UuidArgument;
@@ -114,6 +119,20 @@ public final class ConstructCommand {
                         .then(Commands.literal("spend")
                                 .then(Commands.argument("amount", FloatArgumentType.floatArg(0f))
                                         .executes(ConstructCommand::spendRam))))
+                // debug: run a quickhack as the construct, e.g. /execute as Player2 run construct hack constructchip:scanner block ~ ~-1 ~
+                .then(Commands.literal("hack").requires(ConstructCommand::isAdmin)
+                        .then(Commands.argument("hack", ResourceLocationArgument.id())
+                                .suggests((ctx, builder) -> SharedSuggestionProvider.suggestResource(
+                                        ModQuickhacks.REGISTRY.keySet(), builder))
+                                .executes(ctx -> useHack(ctx, HackTarget.NONE))
+                                .then(Commands.literal("entity")
+                                        .then(Commands.argument("target", EntityArgument.entity())
+                                                .executes(ctx -> useHack(ctx,
+                                                        HackTarget.entity(EntityArgument.getEntity(ctx, "target").getId())))))
+                                .then(Commands.literal("block")
+                                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                                .executes(ctx -> useHack(ctx,
+                                                        HackTarget.block(BlockPosArgument.getLoadedBlockPos(ctx, "pos"))))))))
                 .then(Commands.literal("skill")
                         // player: buy points with XP for the chip in your main hand, or the one installed in you
                         .then(Commands.literal("price")
@@ -309,6 +328,19 @@ public final class ConstructCommand {
 
     // ------------------------------------------------------------ skills
 
+    private static int useHack(CommandContext<CommandSourceStack> ctx, HackTarget target) throws CommandSyntaxException {
+        ServerPlayer construct = ctx.getSource().getPlayerOrException();
+        ResourceLocation hackId = ResourceLocationArgument.getId(ctx, "hack");
+        QuickhackService.Attempt attempt = QuickhackService.use(construct, hackId, target);
+        Component msg = attempt.message().orElse(Component.translatable(attempt.status().translationKey()));
+        if (attempt.ok()) {
+            ctx.getSource().sendSuccess(() -> msg, false);
+            return 1;
+        }
+        ctx.getSource().sendFailure(msg);
+        return 0;
+    }
+
     /** The valid chip the player is buying for: main hand first, then the one installed in them. */
     private record ChipRef(ItemStack stack, boolean installed) {}
 
@@ -403,6 +435,7 @@ public final class ConstructCommand {
             return 0;
         }
         ChipStacks.setSkills(stack, SkillTree.unlock(skills, id, registry));
+        ChipStats.of(stack, registry).applyRam(stack, ctx.getSource().getLevel().getGameTime()); // e.g. RAM Expansion
         ctx.getSource().sendSuccess(() -> Component.translatable(result.translationKey(), id.toString()), false);
         return 1;
     }

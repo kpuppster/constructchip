@@ -2,6 +2,8 @@ package io.github.constructchip;
 
 import com.mojang.logging.LogUtils;
 import io.github.constructchip.attachment.ModAttachments;
+import io.github.constructchip.hack.ModQuickhacks;
+import io.github.constructchip.network.ModNetwork;
 import io.github.constructchip.registry.ModDataComponents;
 import io.github.constructchip.registry.ModEntities;
 import io.github.constructchip.skill.ModSkills;
@@ -28,6 +30,9 @@ public final class ConstructChip {
         ModEntities.REGISTER.register(modBus);
         ModAttachments.REGISTER.register(modBus);
         modBus.addListener(ModSkills::onNewDatapackRegistry);
+        ModQuickhacks.REGISTER.register(modBus);
+        modBus.addListener(ModQuickhacks::onNewRegistry);
+        modBus.addListener(ModNetwork::register);
         modBus.addListener(ConstructChip::addCreativeTabContents);
     }
 

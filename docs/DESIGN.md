@@ -51,6 +51,14 @@ The captured player lives in a host's mind, is visible only to the host, and act
 ## Quickhacks and skills
 - `Quickhack` interface (id, ramCost, cooldownTicks, range, targetType, execute) in a custom registry. A client keybind sends `UseQuickhackPayload`.
   The server checks that the sender is a construct, the hack exists and is unlocked, there is no lockout, and RAM, cooldown, range, LOS and host validity. Deduct RAM only on success.
+- Implemented (step 3): `hack/Quickhack` (baseRamCost, cooldownTicks, targetType NONE/ENTITY/BLOCK/ENTITY_OR_BLOCK,
+  baseRange / range(stats), requiresLineOfSight, execute), a synced code registry `constructchip:quickhack`, and
+  `QuickhackService.use`. Check order: construct → chip INSTALLED → host online, alive, not spectator → chip matches and is current →
+  hack exists → granted by an unlocked skill → lockout → cooldown (skipped while Overclocked with Neural Overdrive) →
+  target kind → target exists → range from the host's eyes → line of sight (outline shapes, so levers count) → RAM → execute.
+  RAM cost = base × (1 + RAM_COST modifiers, min 0.1), halved while Overclocked. `ChipStats` holds the post-skill numbers,
+  and the RAM pool's max/regen are re-synced to them before each check. Hacks may change `ChipTimers` (Overclock).
+  The service re-reads them, then adds RAM spend + cooldown.
 - A transient "hack in progress" flag lets the cancel handlers pass hack interactions through. Remote interactions use the host's identity (permissions)
   and fire the normal events so other mods can veto them.
 - Skills are a datapack registry (`DataPackRegistryEvent.NewRegistry`) with `neoforge:conditions` (`mod_loaded`). **VERIFY** conditions work on datapack registries in 21.1.
@@ -116,7 +124,7 @@ From class signatures only (**VERIFY** with a decompiler):
 ## Build order
 1. Chip components, chip item, `/construct givechip`. **(done, tested in game)**
 2. Install/eject with the chipId check, `ChipRegistry`, anchor logic. **(done, tested in game; see docs/TESTING.md)**
-3. Skill registry **(written)** + central hack validator
+3. Skill registry + central hack validator **(written; see `hack/QuickhackService`)**
 4. Save/restore of captured-player state (test heavily by command)
 5. Ghost restrictions, host link, client render hiding, sync payload
 6. Host HUD + read-only inventory menu

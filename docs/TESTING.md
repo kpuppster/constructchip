@@ -19,3 +19,17 @@ Two clients (or a client + a second account): **A** = host/admin, **B** = constr
 15. XP cost: `/xp set @s 0 levels`, hold the chip, `/construct skill buy` (should fail), `/xp add @s 10 levels` (160 XP),
     `/construct skill buy` (works, and you drop to level 0), then `/construct skill price` (should say 192 XP for the next one).
     Install the chip and buy again without holding it. Check the price keeps going up after eject and a hand-over.
+
+## Step 3: quickhack validator (Player1 types everything; `/execute as Player2 run ...` runs it as the construct)
+16. Give Player2 a chip and install it on Player1 (`/construct givechip Player1 Player2`, then right-click).
+    Stand near a stone block and a cow. Run `/execute as Player2 run construct hack constructchip:scanner block <x y z of the stone>`
+    (press Tab to fill in the coordinates of the block you're looking at). Player2's chat should show the stone's info: hardness 1.5, pickaxe, wood tier.
+17. Same with `entity @e[type=cow,limit=1,sort=nearest]`: health, armor, and how hard Player1 hits it. Then hold a sword and scan again; the damage should go up.
+18. Failures. Each should give a clear message:
+    - run it twice quickly (cooldown 0.5 s)
+    - target a block more than 16 blocks away (out of range)
+    - target a cow behind a wall (line of sight)
+    - run it with no target
+    - run it with Player2's chip ejected (not installed)
+    - `/execute as Player1 run construct hack constructchip:scanner` (not a construct)
+19. Deep Scan: hold the chip (eject it first), `/construct skill points 5`, `/construct skill unlock constructchip:deep_scan`, reinstall. Blocks 20 blocks away should now scan (range 24).

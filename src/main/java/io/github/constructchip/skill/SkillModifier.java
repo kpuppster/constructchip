@@ -26,7 +26,9 @@ public record SkillModifier(Type type, float amount) {
         /** + Scanner range in blocks. */
         SCAN_RANGE,
         /** Added to the host's damage-taken multiplier (-0.1 = 10% less) while the chip is installed. */
-        HOST_DAMAGE_TAKEN;
+        HOST_DAMAGE_TAKEN,
+        /** Any amount > 0: quickhacks ignore cooldowns while Overclocked (Neural Overdrive). */
+        NO_COOLDOWNS_WHILE_OVERCLOCKED;
 
         public static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
 

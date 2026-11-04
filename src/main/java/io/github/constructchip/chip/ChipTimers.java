@@ -56,7 +56,12 @@ public record ChipTimers(long overclockUntil, long lockoutUntil, Map<ResourceLoc
     }
 
     public ChipTimers startOverclock(long now) {
-        return new ChipTimers(now + OVERCLOCK_TICKS, now + OVERCLOCK_TICKS + LOCKOUT_TICKS, cooldowns);
+        return startOverclock(now, OVERCLOCK_TICKS, LOCKOUT_TICKS);
+    }
+
+    /** Durations after skill modifiers (see ChipStats). */
+    public ChipTimers startOverclock(long now, int overclockTicks, int lockoutTicks) {
+        return new ChipTimers(now + overclockTicks, now + overclockTicks + lockoutTicks, cooldowns);
     }
 
     /** Sets a cooldown and drops expired entries so the map doesn't grow forever. */

@@ -14,7 +14,7 @@ SKILLS = [
      "Scanner", "Look at a block or creature to read it: name, required tool, health, armor, and how hard the host would hit it. Free and always unlocked.", None),
     ("overclock", "core", 2, 2, ["scanner"], 2, "minecraft:blaze_powder", "overclock", [],
      "Overclock", "30 s of healing, more damage and slightly less damage taken for the host, and half-price quickhacks. Afterwards every chip ability locks for 60 s.", None),
-    ("neural_overdrive", "core", 3, 3, ["overclock"], 2, "minecraft:nether_star", None, [("lockout_ticks", 600)],
+    ("neural_overdrive", "core", 3, 3, ["overclock"], 2, "minecraft:nether_star", None, [("lockout_ticks", 600), ("no_cooldowns_while_overclocked", 1)],
      "Neural Overdrive", "While Overclocked, quickhacks have no cooldowns. The lockout afterwards lasts 30 s longer.", None),
 
     # INTRUSION: offence against creatures and cyberware

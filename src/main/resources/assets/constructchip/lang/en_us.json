@@ -85,6 +85,7 @@
   "gui.constructchip.skill.status.tier_too_low": "Needs a higher chip Mk.",
   "gui.constructchip.skill.status.unknown_skill": "Unknown",
   "gui.constructchip.skill_tree": "Chip skill tree",
+  "gui.constructchip.skill_tree.page": "Page %s/%s  ·  scroll to see more skills",
   "gui.constructchip.skill_tree.header": "%s · Mk.%s · %s point(s)",
   "gui.constructchip.surgery.capacity": "Capacity +",
   "gui.constructchip.surgery.capacity.tip": "Raise capacity to level %s: 3 × Internal Parts T%s",

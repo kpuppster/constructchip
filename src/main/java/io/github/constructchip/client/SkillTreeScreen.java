@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -25,23 +26,59 @@ import net.neoforged.neoforge.network.PacketDistributor;
  * The chip's skill tree: tiers are rows, columns come from each skill's {@code column}. Green = unlocked,
  * cyan = can unlock now (click), grey = locked. Both construct and host can spend points; only the host can buy
  * them (with their XP). Reads live client state, so it updates as the server syncs.
+ *
+ * <p>When the screen is too narrow for every column (large GUI scale, small window), the columns are split into
+ * pages: scroll the mouse wheel (or press left/right, A/D) to turn them.
  */
 public class SkillTreeScreen extends Screen {
     private static final int NODE = 22, STEP_X = 30, STEP_Y = 52, COLUMNS = 11;
     private Button buyButton;
     private ResourceLocation lastHovered;
+    private int page;
 
     public SkillTreeScreen() {
         super(Component.translatable("gui.constructchip.skill_tree"));
     }
 
-    private int originX() { return (width - (COLUMNS - 1) * STEP_X - NODE) / 2; }
+    /** How many columns fit side by side, leaving room for the tier labels and page arrows. */
+    private int perPage() { return Mth.clamp((width - 70 - NODE) / STEP_X + 1, 1, COLUMNS); }
+    private int pages() { return (COLUMNS + perPage() - 1) / perPage(); }
+    private int firstColumn() { return page * perPage(); }
+    private int columnsShown() { return Math.min(perPage(), COLUMNS - firstColumn()); }
+    private boolean onPage(Skill s) { return s.column() >= firstColumn() && s.column() < firstColumn() + columnsShown(); }
+
+    private int originX() { return (width - (columnsShown() - 1) * STEP_X - NODE) / 2; }
     private int originY() { return 52; }
-    private int nodeX(Skill s) { return originX() + s.column() * STEP_X; }
+    private int nodeX(Skill s) { return originX() + (s.column() - firstColumn()) * STEP_X; }
     private int nodeY(Skill s) { return originY() + (s.tier() - 1) * STEP_Y; }
+
+    private void turn(int delta) {
+        int next = Mth.clamp(page + delta, 0, pages() - 1);
+        if (next != page) {
+            page = next;
+            UiSounds.hover();
+        }
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        if (scrollY != 0) {
+            turn(scrollY < 0 ? 1 : -1);
+            return true;
+        }
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scan, int mods) {
+        if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT || key == org.lwjgl.glfw.GLFW.GLFW_KEY_D) { turn(1); return true; }
+        if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT || key == org.lwjgl.glfw.GLFW.GLFW_KEY_A) { turn(-1); return true; }
+        return super.keyPressed(key, scan, mods);
+    }
 
     @Override
     protected void init() {
+        page = Mth.clamp(page, 0, pages() - 1); // the window may have been resized
         buyButton = addRenderableWidget(Button.builder(Component.empty(),
                 b -> PacketDistributor.sendToServer(new ServerboundPayloads.BuySkillPoint(1)))
                 .bounds(width / 2 + 60, 20, 140, 20).build());
@@ -74,12 +111,23 @@ public class SkillTreeScreen extends Screen {
             g.drawString(font, "T" + tier, originX() - 22, originY() + (tier - 1) * STEP_Y + 7, 0xFF666666);
         }
 
-        // prerequisite lines first, so nodes draw over them
+        // page indicator and arrows when not every column fits
+        if (pages() > 1) {
+            int bottom = originY() + 2 * STEP_Y + NODE + 14;
+            g.drawCenteredString(font, Component.translatable("gui.constructchip.skill_tree.page", page + 1, pages()),
+                    width / 2, bottom, 0xFF8899AA);
+            int midY = originY() + STEP_Y + NODE / 2 - 4;
+            if (page > 0) g.drawString(font, "\u25C0", originX() - 40, midY, 0xFF55FFFF);
+            if (page < pages() - 1) g.drawString(font, "\u25B6", originX() + (columnsShown() - 1) * STEP_X + NODE + 14, midY, 0xFF55FFFF);
+        }
+
+        // prerequisite lines first, so nodes draw over them (only between skills on this page)
         for (Map.Entry<ResourceKey<Skill>, Skill> e : registry.entrySet()) {
             Skill s = e.getValue();
+            if (!onPage(s)) continue;
             for (ResourceLocation parentId : s.requires()) {
                 Skill parent = registry.get(parentId);
-                if (parent == null) continue;
+                if (parent == null || !onPage(parent)) continue;
                 int color = skills.has(parentId) ? 0xFF3FA060 : 0xFF404850;
                 int px = nodeX(parent) + NODE / 2, py = nodeY(parent) + NODE;
                 int cx = nodeX(s) + NODE / 2, cy = nodeY(s);
@@ -94,6 +142,7 @@ public class SkillTreeScreen extends Screen {
         ResourceLocation hoveredId = null;
         for (Map.Entry<ResourceKey<Skill>, Skill> e : registry.entrySet()) {
             Skill s = e.getValue();
+            if (!onPage(s)) continue;
             ResourceLocation id = e.getKey().location();
             int x = nodeX(s), y = nodeY(s);
             SkillTree.UnlockResult status = SkillTree.check(skills, id, registry);
@@ -141,6 +190,7 @@ public class SkillTreeScreen extends Screen {
         if (registry == null || !chip.present() || button != 0) return false;
         for (Map.Entry<ResourceKey<Skill>, Skill> e : registry.entrySet()) {
             Skill s = e.getValue();
+            if (!onPage(s)) continue;
             int x = nodeX(s), y = nodeY(s);
             if (mouseX >= x && mouseX < x + NODE && mouseY >= y && mouseY < y + NODE) {
                 if (SkillTree.check(chip.skills(), e.getKey().location(), registry) == SkillTree.UnlockResult.OK) {

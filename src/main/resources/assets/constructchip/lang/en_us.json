@@ -97,6 +97,7 @@
   "gui.constructchip.wheel": "Power wheel",
   "gui.constructchip.wheel.cost": "%s RAM  ·  %s available",
   "gui.constructchip.wheel.hint": "Point and release to select · click to fire",
+  "gui.constructchip.wheel.page": "Page %s/%s  ·  scroll for more",
   "guide.constructchip.constructs": "Constructs & Chrome",
   "guide.constructchip.constructs.overview": "Constructs and chrome",
   "guide.constructchip.constructs.overview.desc": "How a chip in your head meets your implants.",

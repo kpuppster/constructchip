@@ -17,17 +17,46 @@ import net.minecraft.resources.ResourceLocation;
 /**
  * The construct's power wheel (inspired by the Capri mod's wheel). Hold the wheel key: unlocked quickhacks fan out
  * in a ring around the cursor. Point at one and release to select it; left-click to fire it right away.
- * Same red/cyan menu style as the consent screen.
+ * Same red/cyan menu style as the consent screen. More than {@link #PER_PAGE} quickhacks are split into pages:
+ * scroll the mouse wheel to turn them.
  */
 public class PowerWheelScreen extends Screen {
     private static final int RED = 0xFFFF4A4A, CYAN = 0xFF5EF6FF, CELL = 26;
-    private final List<ResourceLocation> hacks;
+    /** Most quickhacks on the ring at once; more go on further pages so cells never overlap. */
+    static final int PER_PAGE = 8;
+    private final List<ResourceLocation> all;
+    private List<ResourceLocation> hacks;
+    private int page;
     private int hovered = -1;
     private int lastHovered = -1;
 
     public PowerWheelScreen() {
         super(Component.translatable("gui.constructchip.wheel"));
-        this.hacks = ClientChipState.unlockedHacks();
+        this.all = ClientChipState.unlockedHacks();
+        int sel = all.indexOf(ClientChipState.selectedHack());
+        this.page = sel < 0 ? 0 : sel / PER_PAGE; // open on the page with the selected hack
+        showPage();
+    }
+
+    private int pages() {
+        return Math.max(1, (all.size() + PER_PAGE - 1) / PER_PAGE);
+    }
+
+    private void showPage() {
+        int from = page * PER_PAGE;
+        hacks = all.subList(Math.min(from, all.size()), Math.min(from + PER_PAGE, all.size()));
+        hovered = -1;
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        if (scrollY != 0 && pages() > 1) {
+            page = Math.floorMod(page + (scrollY < 0 ? 1 : -1), pages());
+            showPage();
+            UiSounds.hover();
+            return true;
+        }
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
     private double radius() {
@@ -144,6 +173,10 @@ public class PowerWheelScreen extends Screen {
             }
         }
         g.drawCenteredString(font, hud(Component.translatable("gui.constructchip.wheel.hint")), cx, (int) (cy + r + CELL), 0xAAE8B4B4);
+        if (pages() > 1) {
+            g.drawCenteredString(font, hud(Component.translatable("gui.constructchip.wheel.page", page + 1, pages())),
+                    cx, (int) (cy + r + CELL + 12), CYAN);
+        }
         if (timers.isLockedOut(now)) {
             g.drawCenteredString(font, hud(Component.translatable("hud.constructchip.lockout", (timers.lockoutUntil() - now) / 20)),
                     cx, (int) (cy - r - CELL), RED);

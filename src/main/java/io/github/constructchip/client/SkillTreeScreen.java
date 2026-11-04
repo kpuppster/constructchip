@@ -29,6 +29,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class SkillTreeScreen extends Screen {
     private static final int NODE = 22, STEP_X = 32, STEP_Y = 52, COLUMNS = 10;
     private Button buyButton;
+    private ResourceLocation lastHovered;
 
     public SkillTreeScreen() {
         super(Component.translatable("gui.constructchip.skill_tree"));
@@ -63,6 +64,7 @@ public class SkillTreeScreen extends Screen {
         buyButton.visible = chip.isHost();
         buyButton.setMessage(Component.translatable("gui.constructchip.buy_point", chip.nextPointCost()));
 
+        g.blit(ChipArt.ART, 12, 8, 0, 0, 32, 32, 32, 32);
         g.drawCenteredString(font, Component.translatable("gui.constructchip.skill_tree.header", chip.constructName(),
                 skills.tier(), skills.points()), width / 2 - 70, 26, 0xFF55FFFF);
         if (!chip.isHost()) {
@@ -105,6 +107,8 @@ public class SkillTreeScreen extends Screen {
                 hoveredId = id;
             }
         }
+        if (hoveredId != null && !hoveredId.equals(lastHovered)) UiSounds.hover();
+        lastHovered = hoveredId;
         if (hovered != null) g.renderTooltip(font, tooltip(hovered, hoveredId, skills, registry), mouseX, mouseY);
     }
 
@@ -141,6 +145,7 @@ public class SkillTreeScreen extends Screen {
             if (mouseX >= x && mouseX < x + NODE && mouseY >= y && mouseY < y + NODE) {
                 if (SkillTree.check(chip.skills(), e.getKey().location(), registry) == SkillTree.UnlockResult.OK) {
                     PacketDistributor.sendToServer(new ServerboundPayloads.UnlockSkill(e.getKey().location()));
+                    UiSounds.blip();
                 }
                 return true;
             }

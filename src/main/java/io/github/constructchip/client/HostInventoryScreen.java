@@ -17,19 +17,19 @@ public class HostInventoryScreen extends AbstractContainerScreen<HostInventoryMe
 
     @Override
     protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
-        g.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xEE1A1F26);
-        g.renderOutline(leftPos, topPos, imageWidth, imageHeight, 0xFF3FD0E0);
+        g.blitSprite(ChipArt.PANEL, leftPos - 4, topPos - 4, imageWidth + 8, imageHeight + 8);
         for (Slot slot : menu.slots) {
             int sx = leftPos + slot.x - 1, sy = topPos + slot.y - 1;
-            g.fill(sx, sy, sx + 18, sy + 18, 0xFF2C3440);
-            g.fill(sx + 1, sy + 1, sx + 17, sy + 17, 0xFF12161C);
+            g.fill(sx, sy, sx + 18, sy + 18, 0xFF373737);
+            g.fill(sx + 1, sy + 1, sx + 18, sy + 18, 0xFFFFFFFF);
+            g.fill(sx + 1, sy + 1, sx + 17, sy + 17, 0xFF8B8B8B);
         }
     }
 
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
-        g.drawString(font, title, 8, 6, 0xFF55FFFF, false);
-        g.drawString(font, Component.translatable("container.constructchip.read_only"), 8, imageHeight - 12, 0xFF888888, false);
+        g.drawString(font, title, 8, 6, 0xFF404040, false);
+        g.drawString(font, Component.translatable("container.constructchip.read_only"), 8, imageHeight - 12, 0xFF7A1020, false);
     }
 
     @Override

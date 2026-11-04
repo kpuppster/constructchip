@@ -30,7 +30,7 @@ public final class ClientPayloadHandlers {
     }
 
     public static void glitch(io.github.constructchip.network.GlitchPayload payload, IPayloadContext ctx) {
-        ctx.enqueueWork(() -> ClientGlitch.flash(payload.ticks()));
+        ctx.enqueueWork(() -> ClientGlitch.flash(payload.ticks(), payload.red(), payload.flash()));
     }
 
     public static void consent(ConsentRequestPayload payload, IPayloadContext ctx) {

@@ -1,0 +1,22 @@
+Sound effects in this mod were made from the following CC0 1.0 (public domain) recordings (no reverb added).
+
+- Electricity Sound Effects by BMacZero - https://opengameart.org/content/electricity-sound-effects-0
+- Electricity Game Sound Pack by faxcorp - https://opengameart.org/content/electricity-game-sound-pack
+- Kenney Digital Audio by Kenney - https://kenney.nl/assets/digital-audio
+- Kenney Interface Sounds by Kenney - https://kenney.nl/assets/interface-sounds
+- Kenney Sci-Fi Sounds by Kenney - https://kenney.nl/assets/sci-fi-sounds
+- Kenney UI Audio by Kenney - https://kenney.nl/assets/ui-audio
+- 87 Clickety Clips by OwlishMedia - https://opengameart.org/content/87-clickety-clips
+- 202 More Sound Effects by OwlishMedia - https://opengameart.org/content/202-more-sound-effects
+- Sci-Fi RTS War Unit Sounds by qubodup - https://opengameart.org/content/sci-fi-rts-war-unit-sounds
+
+Which sound uses which recordings:
+- capri_appear - Sci-Fi RTS War Unit Sounds (radio), Digital Audio phaserUp2, Interface Sounds glitch_003
+- capri_vanish - Interface Sounds glitch_004, Digital Audio phaserDown2
+- capri_hack - Electricity Game Sound Pack crackle, Electricity Sound Effects continuousspark, Digital Audio zap1
+- capri_bolt - Electricity Game Sound Pack snaploop, crackle and groundhit, Electricity Sound Effects spark
+- capri_storm - Electricity Game Sound Pack snaploop, crackle and hit, Electricity Sound Effects spark and continuousspark
+- capri_blip_1..4 - Interface Sounds tick_001, select_001, tick_002 and select_003, Sci-Fi Sounds computerNoise_002
+- chip_in - 202 More Sound Effects Camera_03, 87 Clickety Clips click9
+- chip_out - 87 Clickety Clips click47, 202 More Sound Effects Camera_01
+- ui_hover - UI Audio rollover4

@@ -1,7 +1,11 @@
 package io.github.constructchip.client;
 
 import io.github.constructchip.ConstructChip;
+import io.github.constructchip.chip.ChipStacks;
 import io.github.constructchip.registry.ModEntities;
+import io.github.constructchip.registry.ModItems;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import io.github.constructchip.registry.ModMenus;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -20,6 +24,13 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.<ItemEntity>registerEntityRenderer(ModEntities.CHIP_ITEM.get(), ItemEntityRenderer::new);
+    }
+
+    /** Captured chips show the full-color chip art; blank ones the greyed version. */
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> ItemProperties.register(ModItems.PERSONALITY_CHIP.get(), ConstructChip.id("captured"),
+                (stack, level, entity, seed) -> ChipStacks.isCaptured(stack) ? 1f : 0f));
     }
 
     @SubscribeEvent

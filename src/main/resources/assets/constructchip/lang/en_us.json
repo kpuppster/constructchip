@@ -259,5 +259,14 @@
   "skill.constructchip.vitals_link": "Vitals Link",
   "skill.constructchip.vitals_link.desc": "The host HUD also shows the host's status effects and warns about gear that is about to break.",
   "skill.constructchip.weak_point": "Weak Point",
-  "skill.constructchip.weak_point.desc": "Quickhack: mark a creature. It takes 15% more damage from the host for 10 s."
+  "skill.constructchip.weak_point.desc": "Quickhack: mark a creature. It takes 15% more damage from the host for 10 s.",
+  "subtitles.constructchip.blip": "Chip blips",
+  "subtitles.constructchip.bolt": "Red lightning strikes",
+  "subtitles.constructchip.chip_in": "Chip slotted in",
+  "subtitles.constructchip.chip_out": "Chip pulled out",
+  "subtitles.constructchip.construct_appear": "Construct connects",
+  "subtitles.constructchip.construct_vanish": "Construct fades",
+  "subtitles.constructchip.hack": "Quickhack",
+  "subtitles.constructchip.storm": "Lightning storm",
+  "subtitles.constructchip.ui_hover": "Menu"
 }

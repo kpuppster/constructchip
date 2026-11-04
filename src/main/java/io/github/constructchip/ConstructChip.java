@@ -10,6 +10,7 @@ import io.github.constructchip.registry.ModBlocks;
 import io.github.constructchip.registry.ModCreativeTabs;
 import io.github.constructchip.registry.ModEntities;
 import io.github.constructchip.registry.ModMenus;
+import io.github.constructchip.registry.ModSounds;
 import io.github.constructchip.skill.ModSkills;
 import io.github.constructchip.registry.ModItems;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +30,7 @@ public final class ConstructChip {
         ModGameRules.init();
         container.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
         ModDataComponents.REGISTER.register(modBus);
+        ModSounds.REGISTER.register(modBus);
         ModBlocks.REGISTER.register(modBus);
         ModItems.REGISTER.register(modBus);
         ModBlockEntities.REGISTER.register(modBus);

@@ -126,14 +126,15 @@ From class signatures only (**VERIFY** with a decompiler):
 - Vista mixes into ChunkMap, TrackedEntity, ChunkTrackingView, Camera, LocalPlayer, Player. Avoid our own entity-tracking mixins.
 - Planned hacks: `tv_power`, `camera_view`, `camera_blind`.
 
-## Capri mod (Ikeda): inspiration only
-`capri-1.0.0-neoforge-1.21.1.jar` is **All Rights Reserved**: never copy its code, textures, models, shaders, sounds or text.
-Only its Rajdhani font (SIL OFL, bundled with license) is used. Ideas taken over as our own implementations:
-Hack → **Red Lightning** (Intrusion T2), Storm → **Lightning Storm** (Intrusion T3), Repair → **Patch Job** (Support T3),
-Reveal → **Ping** now also reports counts per side. Possess is covered by Overclock. Not taken: the AI-chat persona and
-voice lines (a construct is a real player), the rendered character rig, the chip slot UI.
-Our own visuals in the same spirit: red lightning arcs, a red scanline glitch on hacks and chip connect, a red shimmer
-around the construct for the host only, red RAM bar, and a red chip texture.
+## Capri mod (Ikeda): assets used with permission
+The author gave permission to use the mod's visuals (user report, 2026-11-04; keep that message on file). Used:
+chip art → chip item (captured: full color; blank: greyed derivative via a `constructchip:captured` item property) and the
+consent screen / skill-tree header / mod logo; `chip_panel` → nine-slice GUI sprite (host inventory, consent);
+`capri_glitch` post shader → `client/ClientGlitch` (Glitch/Red/Flash/Shake on hacks, constant faint Edge while you are
+an installed construct; falls back to a scanline overlay if another post effect is active); sounds → `registry/ModSounds`
+(chip in/out, construct appear/vanish, hack, bolt, storm, menu blip/hover). Credits in `CREDITS.md` and mods.toml.
+Not used: their Capri character rig/renderer (needs their code; our construct is a real player), the AI-chat persona,
+their Java code. Powers are our own implementations: Red Lightning, Lightning Storm, Patch Job, Ping side counts.
 
 ## Reference mod (do NOT copy)
 `sorcery_age_incarnation` (Forge 1.20.1, ARR, requires the JJK mod). Use it only as a design cross-check. Ask MrShrimpyUW before reusing anything.

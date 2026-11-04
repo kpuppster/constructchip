@@ -1,6 +1,7 @@
 package io.github.constructchip.hack.builtin;
 
 import io.github.constructchip.network.GlitchPayload;
+import io.github.constructchip.registry.ModSounds;
 import io.github.constructchip.network.HighlightPayload;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
@@ -24,8 +25,9 @@ final class HackFx {
         for (ServerPlayer p : viewers) Net.send(p, payload);
     }
 
+    /** The construct hears the hack go through (only them). */
     static void glitch(ServerPlayer construct) {
-        construct.playNotifySound(SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.6f, 1.6f);
+        construct.playNotifySound(ModSounds.HACK.get(), SoundSource.PLAYERS, 0.7f, 1f);
     }
 
     static void sparks(ServerLevel level, Vec3 at) {
@@ -61,8 +63,8 @@ final class HackFx {
     }
 
     /** Tell the construct's client to flash its glitch overlay. */
-    static void glitchFlash(ServerPlayer construct, int ticks) {
-        Net.send(construct, new GlitchPayload(ticks));
+    static void glitchFlash(ServerPlayer construct, int ticks, float red, float flash) {
+        Net.send(construct, new GlitchPayload(ticks, red, flash));
     }
 
     static void sparks(ServerLevel level, Entity e) {

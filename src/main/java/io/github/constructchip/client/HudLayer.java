@@ -37,8 +37,8 @@ public final class HudLayer {
 
     public static void render(GuiGraphics g, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
+        ClientGlitch.render(g, delta.getGameTimeDeltaPartialTick(false));
         if (mc.options.hideGui || mc.player == null) return;
-        ClientGlitch.render(g);
         ChipStatusPayload chip = ClientChipState.chip();
         if (!chip.present()) return;
         Font font = mc.font;

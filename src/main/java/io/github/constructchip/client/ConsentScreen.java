@@ -53,14 +53,17 @@ public class ConsentScreen extends Screen {
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
         super.render(g, mouseX, mouseY, partialTick);
-        g.drawCenteredString(font, title, width / 2, height / 2 - 50, 0xFF55FFFF);
+        int pw = Math.min(360, width - 20);
+        g.blitSprite(ChipArt.PANEL, width / 2 - pw / 2, height / 2 - 112, pw, 196);
+        g.blit(ChipArt.ART, width / 2 - 32, height / 2 - 106, 0, 0, 48, 48, 48, 48);
+        g.drawCenteredString(font, title, width / 2, height / 2 - 50, 0xFFF90759);
         int y = height / 2 - 30;
         for (FormattedCharSequence line : font.split(request.body(), Math.min(320, width - 40))) {
-            g.drawCenteredString(font, line, width / 2, y, 0xFFFFFFFF);
+            g.drawString(font, line, width / 2 - font.width(line) / 2, y, 0xFF303030, false);
             y += 10;
         }
         long left = Math.max(0, request.timeoutTicks() - (ClientChipState.now() - openedAt)) / 20;
-        g.drawCenteredString(font, Component.translatable("gui.constructchip.consent.timeout", left), width / 2, height / 2 + 56, 0xFFAAAAAA);
+        g.drawCenteredString(font, Component.translatable("gui.constructchip.consent.timeout", left), width / 2, height / 2 + 56, 0xFF7A1020);
     }
 
     @Override

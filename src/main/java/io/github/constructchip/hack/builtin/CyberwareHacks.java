@@ -5,7 +5,9 @@ import io.github.constructchip.hack.HackContext;
 import io.github.constructchip.hack.HackResult;
 import io.github.constructchip.hack.SimpleQuickhack;
 import java.util.List;
+import io.github.constructchip.registry.ModSounds;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -37,6 +39,7 @@ public final class CyberwareHacks {
             target.hurt(jolt, 2f);
             if (target instanceof Mob mob) mob.setTarget(null);
             HackFx.sparks(ctx.level(), target);
+            ctx.level().playSound(null, target.blockPosition(), ModSounds.HACK.get(), SoundSource.PLAYERS, 1f, 1f);
             HackFx.highlight(List.of(target.getId()), 40, ctx.construct(), ctx.host());
             return HackResult.success(Component.translatable("message.constructchip.short_circuit", target.getDisplayName(), hacked));
         }
@@ -58,6 +61,8 @@ public final class CyberwareHacks {
             target.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, ticks, 1));
             if (target instanceof Mob mob) mob.setTarget(null);
             HackFx.sparks(ctx.level(), target);
+            ctx.level().playSound(null, target.blockPosition(), ModSounds.HACK.get(), SoundSource.PLAYERS, 1f, 0.8f);
+            HackFx.glitchFlash(ctx.construct(), 10, 0.3f, 0f);
             HackFx.highlight(List.of(target.getId()), 60, ctx.construct(), ctx.host());
             return HackResult.success(Component.translatable("message.constructchip.system_lock", target.getDisplayName(),
                     hacked, buffs.size()));

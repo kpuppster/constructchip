@@ -9,7 +9,9 @@ import io.github.constructchip.chip.ChipIdentity;
 import io.github.constructchip.chip.ChipItemEntity;
 import io.github.constructchip.chip.ChipStacks;
 import io.github.constructchip.registry.ModDataComponents;
+import io.github.constructchip.registry.ModSounds;
 import io.github.constructchip.sync.ChipSync;
+import net.minecraft.sounds.SoundSource;
 import io.github.constructchip.tracking.ChipLocation.State;
 import java.util.Collection;
 import java.util.HashMap;
@@ -207,6 +209,10 @@ public final class ChipTracker {
         ChipRegistry.get(server).update(id.get().chipId(), e -> new ChipEntry(e.capturedUuid(), e.capturedName(), serial,
                 ChipLocation.of(State.INSTALLED, host.getUUID(), GlobalPos.of(host.level().dimension(), host.blockPosition()), now)));
         ChipSync.syncChip(server, id.get().chipId());
+        host.level().playSound(null, host.blockPosition(), ModSounds.CHIP_IN.get(), SoundSource.PLAYERS, 1f, 1f);
+        ServerPlayer constructPlayer = server.getPlayerList().getPlayer(id.get().capturedUuid());
+        if (constructPlayer != null) constructPlayer.playNotifySound(ModSounds.CONSTRUCT_APPEAR.get(), SoundSource.PLAYERS, 1f, 1f);
+        host.playNotifySound(ModSounds.CONSTRUCT_APPEAR.get(), SoundSource.PLAYERS, 0.6f, 1f);
         ConstructChip.LOGGER.info("{} installed chip {} ({}) on {}", installer.getGameProfile().getName(),
                 id.get().chipId(), id.get().capturedName(), host.getGameProfile().getName());
         return InstallResult.OK;
@@ -234,6 +240,9 @@ public final class ChipTracker {
         }
         ChipSync.sendChipStatus(host);
         ChipStacks.identity(chip).ifPresent(id -> ChipSync.syncChip(host.server, id.chipId()));
+        host.level().playSound(null, host.blockPosition(), ModSounds.CHIP_OUT.get(), SoundSource.PLAYERS, 1f, 1f);
+        ChipStacks.identity(chip).map(id -> host.server.getPlayerList().getPlayer(id.capturedUuid()))
+                .ifPresent(c -> c.playNotifySound(ModSounds.CONSTRUCT_VANISH.get(), SoundSource.PLAYERS, 1f, 1f));
         return true;
     }
 
@@ -284,6 +293,7 @@ public final class ChipTracker {
 
         ServerPlayer construct = server.getPlayerList().getPlayer(entry.capturedUuid());
         if (construct != null) {
+            construct.playNotifySound(ModSounds.CONSTRUCT_VANISH.get(), SoundSource.PLAYERS, 1f, 1f);
             ConstructAnchor.clearConstruct(construct);
             ChipSync.sendChipStatus(construct);
         }

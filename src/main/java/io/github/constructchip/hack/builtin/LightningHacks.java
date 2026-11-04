@@ -8,7 +8,7 @@ import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
+import io.github.constructchip.registry.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,8 +37,8 @@ public final class LightningHacks {
             ServerLevel level = ctx.level();
             HackFx.arc(level, ctx.host().getEyePosition().add(0, -0.3, 0), HackFx.chest(target));
             target.hurt(source(ctx), 6f);
-            level.playSound(null, target.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.PLAYERS, 0.5f, 1.8f);
-            HackFx.glitchFlash(ctx.construct(), 8);
+            level.playSound(null, target.blockPosition(), ModSounds.BOLT.get(), SoundSource.PLAYERS, 1f, 1f);
+            HackFx.glitchFlash(ctx.construct(), 10, 0.4f, 0.5f);
             return HackResult.success(Component.translatable("message.constructchip.red_lightning", target.getDisplayName()));
         }
     }
@@ -62,8 +62,8 @@ public final class LightningHacks {
                 HackFx.arc(level, host.getEyePosition().add(0, -0.3, 0), HackFx.chest(target));
                 target.hurt(src, 5f);
             }
-            level.playSound(null, host.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 0.6f, 1.6f);
-            HackFx.glitchFlash(ctx.construct(), 16);
+            level.playSound(null, host.blockPosition(), ModSounds.STORM.get(), SoundSource.PLAYERS, 1f, 1f);
+            HackFx.glitchFlash(ctx.construct(), 20, 0.8f, 0.8f);
             return HackResult.success(Component.translatable("message.constructchip.storm", targets.size()));
         }
     }

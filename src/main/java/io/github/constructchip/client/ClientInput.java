@@ -44,6 +44,7 @@ public final class ClientInput {
         while (Keybinds.NEXT_HACK.consumeClick()) {
             if (!ClientChipState.isConstruct()) continue;
             ClientChipState.cycleHack(player.isShiftKeyDown() ? -1 : 1);
+            UiSounds.blip();
             ResourceLocation hack = ClientChipState.selectedHack();
             if (hack != null) player.displayClientMessage(Component.translatable("message.constructchip.selected", HudLayer.hackName(hack)), true);
         }

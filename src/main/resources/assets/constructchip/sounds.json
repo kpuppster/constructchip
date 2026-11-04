@@ -1,0 +1,95 @@
+{
+  "chip_in": {
+    "subtitle": "subtitles.constructchip.chip_in",
+    "sounds": [
+      {
+        "name": "constructchip:chip_in",
+        "stream": false
+      }
+    ]
+  },
+  "chip_out": {
+    "subtitle": "subtitles.constructchip.chip_out",
+    "sounds": [
+      {
+        "name": "constructchip:chip_out",
+        "stream": false
+      }
+    ]
+  },
+  "construct_appear": {
+    "subtitle": "subtitles.constructchip.construct_appear",
+    "sounds": [
+      {
+        "name": "constructchip:capri_appear",
+        "stream": false
+      }
+    ]
+  },
+  "construct_vanish": {
+    "subtitle": "subtitles.constructchip.construct_vanish",
+    "sounds": [
+      {
+        "name": "constructchip:capri_vanish",
+        "stream": false
+      }
+    ]
+  },
+  "hack": {
+    "subtitle": "subtitles.constructchip.hack",
+    "sounds": [
+      {
+        "name": "constructchip:capri_hack",
+        "stream": false
+      }
+    ]
+  },
+  "bolt": {
+    "subtitle": "subtitles.constructchip.bolt",
+    "sounds": [
+      {
+        "name": "constructchip:capri_bolt",
+        "stream": false
+      }
+    ]
+  },
+  "storm": {
+    "subtitle": "subtitles.constructchip.storm",
+    "sounds": [
+      {
+        "name": "constructchip:capri_storm",
+        "stream": false
+      }
+    ]
+  },
+  "ui_hover": {
+    "subtitle": "subtitles.constructchip.ui_hover",
+    "sounds": [
+      {
+        "name": "constructchip:ui_hover",
+        "stream": false
+      }
+    ]
+  },
+  "blip": {
+    "subtitle": "subtitles.constructchip.blip",
+    "sounds": [
+      {
+        "name": "constructchip:capri_blip_1",
+        "stream": false
+      },
+      {
+        "name": "constructchip:capri_blip_2",
+        "stream": false
+      },
+      {
+        "name": "constructchip:capri_blip_3",
+        "stream": false
+      },
+      {
+        "name": "constructchip:capri_blip_4",
+        "stream": false
+      }
+    ]
+  }
+}

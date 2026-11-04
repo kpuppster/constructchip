@@ -32,7 +32,7 @@ cd ~/Documents
 git clone https://github.com/kpuppster/constructchip
 cd constructchip
 ```
-The repository is private, so Git will ask you to sign in to GitHub the first time. On Windows a browser window opens; approve it.
+The repository is public, so no sign-in is needed.
 
 ## 2. Start the game
 

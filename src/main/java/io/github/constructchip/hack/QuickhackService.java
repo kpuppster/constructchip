@@ -66,8 +66,15 @@ public final class QuickhackService {
         }
     }
 
-    /** @param message what to show the construct (a failure reason, or the hack's own output) */
-    public record Attempt(Status status, Optional<Component> message) {
+    /**
+     * @param message what to show the construct (a failure reason, or the hack's own output)
+     * @param display where to show it (failures: action bar; successes: as the hack chose)
+     */
+    public record Attempt(Status status, Optional<Component> message, HackResult.Display display) {
+        Attempt(Status status, Optional<Component> message) {
+            this(status, message, HackResult.Display.ACTION_BAR);
+        }
+
         public boolean ok() {
             return status == Status.OK;
         }
@@ -178,7 +185,7 @@ public final class QuickhackService {
         host.setData(ModAttachments.INSTALLED_CHIP, chip); // mark the attachment dirty so it saves
         ChipSync.syncHost(host); // RAM spent, cooldown started: update both HUDs now
         Net.send(construct, new io.github.constructchip.network.GlitchPayload(5, 0f, 0f)); // small flash on every successful hack
-        return new Attempt(Status.OK, result.message());
+        return new Attempt(Status.OK, result.message(), result.display());
     }
 
     /** The host the construct's chip is installed in, if online. */
@@ -230,13 +237,17 @@ public final class QuickhackService {
     }
 
     /**
-     * Shows the outcome to the construct: hack output in chat, failures on the action bar. Used by the payload and
+     * Shows the outcome to the construct: Scanner readouts in chat, Ping's count and failures on the action bar,
+     * attack hacks nothing (their effect is the feedback). Used by the payload and
      * the debug command, so the construct always sees it, whoever triggered it.
      */
     public static void deliver(ServerPlayer construct, Attempt attempt) {
         attempt.message().ifPresent(msg -> {
-            if (attempt.ok()) construct.sendSystemMessage(msg);
-            else construct.displayClientMessage(msg, true);
+            switch (attempt.display()) {
+                case CHAT -> construct.sendSystemMessage(msg);
+                case ACTION_BAR -> construct.displayClientMessage(msg, true);
+                case NONE -> { }
+            }
         });
     }
 

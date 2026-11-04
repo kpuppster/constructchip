@@ -143,7 +143,7 @@
   "message.constructchip.scan.tier.iron": "iron",
   "message.constructchip.scan.tier.stone": "stone",
   "message.constructchip.scan.tier.wood": "wood",
-  "message.constructchip.scan.tool": "Best tool: %s",
+  "message.constructchip.scan.tool": "Tool: %s",
   "message.constructchip.scan.tool.any": "anything",
   "message.constructchip.scan.tool.axe": "axe",
   "message.constructchip.scan.tool.hoe": "hoe",

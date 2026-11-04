@@ -52,9 +52,9 @@ public final class ScannerHack implements Quickhack {
     public HackResult execute(HackContext ctx) {
         if (ctx.entity().isPresent()) {
             Net.send(ctx.construct(), new HighlightPayload(List.of(ctx.entity().get().getId()), 60));
-            return HackResult.success(describeEntity(ctx, ctx.entity().get()));
+            return HackResult.report(describeEntity(ctx, ctx.entity().get()));
         }
-        if (ctx.block().isPresent()) return HackResult.success(describeBlock(ctx, ctx.block().get()));
+        if (ctx.block().isPresent()) return HackResult.report(describeBlock(ctx, ctx.block().get()));
         return HackResult.fail(Component.translatable("message.constructchip.hack.no_target"));
     }
 

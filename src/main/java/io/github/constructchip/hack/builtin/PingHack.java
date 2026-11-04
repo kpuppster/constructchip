@@ -27,7 +27,7 @@ public final class PingHack extends SimpleQuickhack {
                 e -> e instanceof Enemy && e.isAlive() && e.distanceToSqr(host) <= RADIUS * RADIUS);
         HackFx.highlight(found.stream().map(LivingEntity::getId).toList(), 200, ctx.construct(), host);
         HackFx.glitch(ctx.construct());
-        if (found.isEmpty()) return HackResult.success(Component.translatable("message.constructchip.ping.none"));
+        if (found.isEmpty()) return HackResult.status(Component.translatable("message.constructchip.ping.none"));
         // count by side, relative to where the host faces (glow already shows them through walls)
         Map<String, Integer> sides = new LinkedHashMap<>();
         for (String side : new String[]{"ahead", "behind", "left", "right"}) sides.put(side, 0);
@@ -41,6 +41,6 @@ public final class PingHack extends SimpleQuickhack {
                     Component.translatable("message.constructchip.threat." + side.getKey())));
             first = false;
         }
-        return HackResult.success(Component.translatable("message.constructchip.ping", found.size(), parts));
+        return HackResult.status(Component.translatable("message.constructchip.ping", found.size(), parts));
     }
 }

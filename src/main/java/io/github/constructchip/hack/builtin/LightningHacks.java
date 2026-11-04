@@ -14,7 +14,6 @@ import io.github.constructchip.registry.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -51,29 +50,34 @@ public final class LightningHacks {
     }
 
     /**
-     * High Voltage: every creature within 12 blocks of the host that the host or the construct can see (nearest 12,
-     * monsters and anything attacking the host first), 5 damage each. Spares players, constructs, the host's own pets,
-     * villagers, golems and allays.
+     * High Voltage: aimed like Fry. Strikes the mob at (or near) the construct's crosshair and every other mob within
+     * {@link #AREA} blocks of that spot (nearest 12), 5 damage each. Any mob counts; players, the host and constructs
+     * are never hit.
      */
     public static final class Storm extends SimpleQuickhack {
-        public static final double RADIUS = 12;
+        public static final double AREA = 6;
 
-        public Storm() { super(8f, 60 * 20, TargetType.NONE, 0); }
+        public Storm() { super(8f, 60 * 20, TargetType.ENTITY_OR_BLOCK, 24); }
 
         @Override public boolean drawsOwnFx() { return true; }
+
+        @Override public boolean aimAssist() { return true; }
 
         @Override
         public HackResult execute(HackContext ctx) {
             ServerPlayer host = ctx.host();
             ServerLevel level = ctx.level();
             ServerPlayer construct = ctx.construct();
-            List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, host.getBoundingBox().inflate(RADIUS),
-                            e -> e.isAlive() && e != host && e != construct && !spared(e, host)
-                                    && e.distanceToSqr(host) <= RADIUS * RADIUS
-                                    && (host.hasLineOfSight(e) || construct.hasLineOfSight(e)))
+            LivingEntity aimed = ctx.entity().orElse(null) instanceof LivingEntity l && anyMob(l, host, construct) ? l : null;
+            Vec3 center = aimed != null ? BoltFx.chest(aimed) : ctx.block()
+                    .map(p -> Vec3.atCenterOf(p).add(ctx.face().getStepX() * 0.5, ctx.face().getStepY() * 0.5, ctx.face().getStepZ() * 0.5))
+                    .orElse(ctx.entity().map(BoltFx::chest).orElse(host.getEyePosition()));
+            List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(center, center).inflate(AREA),
+                            e -> anyMob(e, host, construct) && e.distanceToSqr(center) <= AREA * AREA
+                                    && (e == aimed || host.hasLineOfSight(e) || construct.hasLineOfSight(e)))
                     .stream()
-                    .sorted(Comparator.<LivingEntity>comparingInt(e -> hostile(e, host) ? 0 : 1)
-                            .thenComparingDouble(e -> e.distanceToSqr(host)))
+                    .sorted(Comparator.<LivingEntity>comparingInt(e -> e == aimed ? 0 : 1)
+                            .thenComparingDouble(e -> e.distanceToSqr(center)))
                     .limit(12).toList();
             if (targets.isEmpty()) return HackResult.fail(Component.translatable("message.constructchip.storm.none"));
             DamageSource src = source(ctx);
@@ -91,18 +95,11 @@ public final class LightningHacks {
         }
     }
 
-    /** Monsters, and any mob currently going after the host. */
-    static boolean hostile(LivingEntity e, ServerPlayer host) {
-        return e instanceof Enemy || (e instanceof net.minecraft.world.entity.Mob m && m.getTarget() == host);
+    /** Any living mob: not a player (so not the host or a construct) and not an armor stand. */
+    static boolean anyMob(LivingEntity e, ServerPlayer host, ServerPlayer construct) {
+        return e.isAlive() && e != host && e != construct
+                && !(e instanceof net.minecraft.world.entity.player.Player)
+                && !(e instanceof net.minecraft.world.entity.decoration.ArmorStand);
     }
 
-    /** Never hit by High Voltage: players, constructs, the host's pets, villagers, golems, allays, armor stands. */
-    static boolean spared(LivingEntity e, ServerPlayer host) {
-        if (e instanceof net.minecraft.world.entity.player.Player || io.github.constructchip.ghost.GhostState.isConstruct(e)) return true;
-        if (e instanceof net.minecraft.world.entity.decoration.ArmorStand) return true;
-        if (e instanceof net.minecraft.world.entity.OwnableEntity o && host.getUUID().equals(o.getOwnerUUID())) return true;
-        if (hostile(e, host)) return false;
-        return e instanceof net.minecraft.world.entity.npc.AbstractVillager || e instanceof net.minecraft.world.entity.animal.AbstractGolem
-                || e instanceof net.minecraft.world.entity.animal.allay.Allay;
-    }
 }

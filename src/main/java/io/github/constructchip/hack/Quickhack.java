@@ -38,6 +38,11 @@ public interface Quickhack {
         return false;
     }
 
+    /** True if a near miss with the crosshair should still lock onto the closest creature (client side). */
+    default boolean aimAssist() {
+        return targetType() == TargetType.ENTITY;
+    }
+
     enum TargetType {
         /** Acts on the host or the construct, no target needed. */
         NONE,

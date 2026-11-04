@@ -82,7 +82,7 @@ public final class ClientInput {
     static void send(LocalPlayer player, ResourceLocation hackId) {
         Quickhack hack = ModQuickhacks.REGISTRY.get(hackId);
         HackTarget target = hack == null || hack.targetType() == Quickhack.TargetType.NONE
-                ? HackTarget.NONE : aim(player, hack.targetType(), hack.baseRange());
+                ? HackTarget.NONE : aim(player, hack.targetType(), hack.baseRange(), hack.aimAssist());
         PacketDistributor.sendToServer(new UseQuickhackPayload(hackId, target));
     }
 
@@ -90,7 +90,7 @@ public final class ClientInput {
     private static final double ASSIST_DEGREES = 6.0;
 
     static HackTarget aim(LocalPlayer player, Quickhack.TargetType type) {
-        return aim(player, type, AIM_RANGE);
+        return aim(player, type, AIM_RANGE, type == Quickhack.TargetType.ENTITY);
     }
 
     /**
@@ -98,7 +98,7 @@ public final class ClientInput {
      * still counts: the creature closest to the crosshair inside a small cone is picked, preferring ones the host can
      * actually reach (the server checks range and line of sight from the host's eyes).
      */
-    static HackTarget aim(LocalPlayer player, Quickhack.TargetType type, double hostRange) {
+    static HackTarget aim(LocalPlayer player, Quickhack.TargetType type, double hostRange, boolean assistAim) {
         Vec3 eye = player.getEyePosition();
         Vec3 dir = player.getViewVector(1f);
         Vec3 end = eye.add(dir.scale(AIM_RANGE));
@@ -113,7 +113,7 @@ public final class ClientInput {
                     e -> e != player && !e.isSpectator() && e.isPickable() && !e.getUUID().equals(host)
                             && (!livingOnly || e instanceof net.minecraft.world.entity.LivingEntity), maxSq);
             if (hit != null) return HackTarget.entity(hit.getEntity().getId());
-            if (livingOnly) {
+            if (assistAim) {
                 net.minecraft.world.entity.Entity assisted = assist(player, eye, dir, host, hostRange);
                 if (assisted != null) return HackTarget.entity(assisted.getId());
             }

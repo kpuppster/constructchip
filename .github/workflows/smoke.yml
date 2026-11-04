@@ -25,7 +25,16 @@ jobs:
           echo "=== mods"; grep -E "^\s+(Create|Vista|Moonlight|Personality Construct|Ponder|Flywheel)" server.log | head; grep -E "Vista found" server.log
           echo "=== constructchip problems"; grep -iE "constructchip" server.log | grep -iE "error|fail|warn|couldn't|unknown|missing" | grep -v DEBUG | head -40
           echo "=== errors"; grep -E "ERROR|WARN.*(constructchip|Mixin)|Exception|Caused by" server.log | grep -v "Unable to find registered sound" | head -60
+      - name: GameTests
+        run: |
+          set +e
+          ./gradlew runGameTestServer --no-daemon > gametest.log 2>&1
+          code=$?
+          echo "exit code $code"
+          grep -E "GameTest|gametest|tests? (passed|failed)|required tests|::|AssertionError|GameTestAssert|constructchip\.|Exception" gametest.log | grep -vE "DEBUG|Error loading class" | cut -c1-300 | head -80
+          exit $code
       - name: Boot client (virtual display)
+        if: always()
         run: |
           sudo apt-get -qq update && sudo apt-get -qq install -y xvfb > /dev/null
           (xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient --no-daemon > client.log 2>&1 &)

@@ -14,7 +14,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
+import io.github.constructchip.network.Net;
 
 /**
  * Pending "do you agree?" questions. A request is answered only by its target, only once, and only before it times
@@ -51,7 +51,7 @@ public final class ConsentManager {
         });
         int id = NEXT_ID.getAndIncrement();
         PENDING.put(id, new Pending(target.getUUID(), server.getTickCount() + (long) timeoutTicks, handler));
-        PacketDistributor.sendToPlayer(target, new ConsentRequestPayload(id, title, body, timeoutTicks));
+        Net.send(target, new ConsentRequestPayload(id, title, body, timeoutTicks));
         return id;
     }
 

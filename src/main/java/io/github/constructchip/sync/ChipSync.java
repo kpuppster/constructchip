@@ -32,7 +32,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
+import io.github.constructchip.network.Net;
 
 /**
  * Keeps clients informed. Every player gets the construct→host map (for render hiding) whenever it changes.
@@ -54,7 +54,7 @@ public final class ChipSync {
             Map<UUID, UUID> links = computeLinks(server);
             if (!links.equals(lastLinks)) {
                 lastLinks = links;
-                PacketDistributor.sendToAllPlayers(new ConstructLinksPayload(links));
+                Net.sendToAll(server, new ConstructLinksPayload(links));
             }
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 if (ChipTracker.isConstruct(player)) QuickhackService.hostOf(player).ifPresent(host -> sendHostStatus(player, host));
@@ -68,7 +68,7 @@ public final class ChipSync {
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        PacketDistributor.sendToPlayer(player, new ConstructLinksPayload(computeLinks(player.server)));
+        Net.send(player, new ConstructLinksPayload(computeLinks(player.server)));
         sendChipStatus(player);
     }
 
@@ -104,7 +104,7 @@ public final class ChipSync {
         if (ChipTracker.isConstruct(player)) {
             Optional<ServerPlayer> h = QuickhackService.hostOf(player);
             if (h.isEmpty()) {
-                PacketDistributor.sendToPlayer(player, ChipStatusPayload.NONE);
+                Net.send(player, ChipStatusPayload.NONE);
                 return;
             }
             host = h.get();
@@ -115,14 +115,14 @@ public final class ChipSync {
         }
         ItemStack chip = ChipTracker.installedChip(host);
         if (chip.isEmpty() || !ChipStacks.isCaptured(chip)) {
-            PacketDistributor.sendToPlayer(player, ChipStatusPayload.NONE);
+            Net.send(player, ChipStatusPayload.NONE);
             return;
         }
         String constructName = ChipStacks.identity(chip).map(id -> id.capturedName()).orElse("?");
         Registry<Skill> skills = ModSkills.get(player.server.registryAccess());
         ChipSkills chipSkills = ChipStacks.skills(chip);
         ChipStats stats = ChipStats.of(chipSkills, skills);
-        PacketDistributor.sendToPlayer(player, new ChipStatusPayload(true, isHost, constructName,
+        Net.send(player, new ChipStatusPayload(true, isHost, constructName,
                 host.getGameProfile().getName(), ChipStacks.ram(chip), ChipStacks.timers(chip), chipSkills,
                 stats.ramCostMultiplier(), SkillPointCost.costOf(chipSkills.purchased())));
     }
@@ -139,7 +139,7 @@ public final class ChipSync {
                 if (stack.isDamageableItem() && stack.getDamageValue() >= stack.getMaxDamage() * 0.9) wornOut.add(stack.copy());
             }
         }
-        PacketDistributor.sendToPlayer(construct, new HostStatusPayload(host.getHealth(), host.getMaxHealth(),
+        Net.send(construct, new HostStatusPayload(host.getHealth(), host.getMaxHealth(),
                 host.getFoodData().getFoodLevel(), host.getFoodData().getSaturationLevel(), host.getArmorValue(),
                 host.getAirSupply(), effects, wornOut));
     }

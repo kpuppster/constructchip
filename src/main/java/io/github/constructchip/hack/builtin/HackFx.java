@@ -9,7 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import io.github.constructchip.network.Net;
 
 /** Shared feedback for hacks: client-only highlights, a quiet glitch sound for the construct, sparks on the target. */
 final class HackFx {
@@ -17,7 +17,7 @@ final class HackFx {
 
     static void highlight(List<Integer> ids, int ticks, ServerPlayer... viewers) {
         HighlightPayload payload = new HighlightPayload(ids, ticks);
-        for (ServerPlayer p : viewers) PacketDistributor.sendToPlayer(p, payload);
+        for (ServerPlayer p : viewers) Net.send(p, payload);
     }
 
     static void glitch(ServerPlayer construct) {

@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import io.github.constructchip.network.Net;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -51,7 +51,7 @@ public final class ScannerHack implements Quickhack {
     @Override
     public HackResult execute(HackContext ctx) {
         if (ctx.entity().isPresent()) {
-            PacketDistributor.sendToPlayer(ctx.construct(), new HighlightPayload(List.of(ctx.entity().get().getId()), 60));
+            Net.send(ctx.construct(), new HighlightPayload(List.of(ctx.entity().get().getId()), 60));
             return HackResult.success(describeEntity(ctx, ctx.entity().get()));
         }
         if (ctx.block().isPresent()) return HackResult.success(describeBlock(ctx, ctx.block().get()));

@@ -189,7 +189,7 @@ public final class ConstructGameTests {
         h.assertTrue(SkillTree.check(s.withPoints(9), shortCircuit, reg) == SkillTree.UnlockResult.MISSING_PREREQUISITE, "prereq");
         s = SkillTree.unlock(s.withPoints(2), overclock, reg);
         h.assertTrue(s.has(overclock) && s.points() == 0, "unlock spent points");
-        h.assertTrue(SkillPointCost.costOf(0) == 160 && SkillPointCost.costOf(1) == 192, "prices " + SkillPointCost.costOf(0) + "," + SkillPointCost.costOf(1));
+        h.assertTrue(SkillPointCost.costOf(0) == 30 && SkillPointCost.costOf(1) == 32, "prices " + SkillPointCost.costOf(0) + "," + SkillPointCost.costOf(1));
         h.succeed();
     }
 

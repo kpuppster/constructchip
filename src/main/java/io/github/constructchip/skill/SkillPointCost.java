@@ -8,8 +8,8 @@ import net.minecraft.world.entity.player.Player;
  * level the buyer is at. It rises with each point the chip has ever bought:
  * {@code cost(n) = min(maxXp, round(baseXp * growth^n))}, where n is {@code ChipSkills.purchased}.
  *
- * <p>Defaults (160, x1.2, cap 20000): 1st point 160 XP, 5th 332, 10th 826, 15th 2054, 20th 5112. Ten points total
- * about 4150 XP (~level 46 from zero), and twenty about 29900 XP. The counter lives on the chip, so selling or
+ * <p>Defaults (30, x1.05, cap 500): 1st point 30 XP, 5th 36, 10th 47, 15th 59, 20th 76. Ten points total
+ * about 380 XP (~level 16 from zero), twenty about 990 XP (~level 25), and the whole tree about 7800 XP. The counter lives on the chip, so selling or
  * handing over a chip doesn't reset the price.
  */
 public final class SkillPointCost {

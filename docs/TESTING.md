@@ -16,8 +16,8 @@ Two clients (or a client + a second account): **A** = host/admin, **B** = constr
 12. `/construct release B` while installed. A gets a blank chip back and B is restored. Restart the server while B is offline, then B logs in and gets cleaned up.
 13. `/construct optout` on A, `/gamerule allowConstructCapture false`. Right-clicking another player with a chip reports the reason.
 14. Skills: hold the chip, `/construct skill list`, `/construct skill points 10`, `/construct skill unlock constructchip:overclock` (should fail: Mk.1), `/construct skill tier 2`, then unlock again. Vista skills should only be listed when Vista is installed (this checks that conditions work on datapack registries).
-15. XP cost: `/xp set @s 0 levels`, hold the chip, `/construct skill buy` (should fail), `/xp add @s 10 levels` (160 XP),
-    `/construct skill buy` (works, and you drop to level 0), then `/construct skill price` (should say 192 XP for the next one).
+15. XP cost: `/xp set @s 0 levels`, hold the chip, `/construct skill buy` (should fail), `/xp add @s 30 points`,
+    `/construct skill buy` (works, and you drop to level 0), then `/construct skill price` (should say 32 XP for the next one). Upgrading with a Mk.2 chip gives a burst of sparks, no sound.
     Install the chip and buy again without holding it. Check the price keeps going up after eject and a hand-over.
 
 ## Step 3: quickhack validator (Player1 types everything; `/execute as Player2 run ...` runs it as the construct)

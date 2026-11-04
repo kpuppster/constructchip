@@ -120,7 +120,7 @@ Vista is downloaded and loaded automatically in the test game. To test without V
 5. Right-click with the chip to install it in yourself. Or right-click another player, who will be asked to agree.
 
 ### Upgrading
-- **Skill points:** the host presses `K` and clicks "Buy point" (paid with the host's XP; each point costs more).
+- **Skill points:** the host presses `K` and clicks "Buy point" (paid with the host's XP: 30 XP for the first, about 5% more each after that).
 - **Mk.2 / Mk.3:** craft a blank Mk.2 or Mk.3 construct chip (cyan or gold) and use it with the construct chip in your other hand, or while the chip is installed in you. The construct moves onto the new chip.
 
 ## Cyberware (ported from Project: Edgerunner)

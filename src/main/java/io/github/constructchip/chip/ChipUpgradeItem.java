@@ -7,8 +7,9 @@ import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +55,7 @@ public class ChipUpgradeItem extends Item {
         ChipStacks.setSkills(chip, skills.withTier(toTier));
         if (installed) sp.setData(ModAttachments.INSTALLED_CHIP, chip);
         if (!sp.getAbilities().instabuild) module.shrink(1);
-        level.playSound(null, sp.blockPosition(), SoundEvents.SMITHING_TABLE_USE, SoundSource.PLAYERS, 1f, 1.2f);
+        upgradeSparks(sp);
         sp.displayClientMessage(Component.translatable("message.constructchip.upgrade.done", toTier), true);
         ChipSync.syncHost(sp);
         return InteractionResultHolder.consume(module);
@@ -63,5 +64,15 @@ public class ChipUpgradeItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("item.constructchip.chip_upgrade.tooltip", toTier - 1, toTier).withStyle(ChatFormatting.GRAY));
+    }
+
+    /** Electric sparks bursting from the host's head and hand as the construct moves onto the new chip. */
+    private static void upgradeSparks(ServerPlayer sp) {
+        ServerLevel level = sp.serverLevel();
+        Vec3 head = sp.getEyePosition();
+        Vec3 hand = sp.position().add(sp.getLookAngle().scale(0.5)).add(0, sp.getBbHeight() * 0.55, 0);
+        level.sendParticles(ParticleTypes.ELECTRIC_SPARK, head.x, head.y, head.z, 24, 0.25, 0.2, 0.25, 0.12);
+        level.sendParticles(ParticleTypes.ELECTRIC_SPARK, hand.x, hand.y, hand.z, 14, 0.15, 0.15, 0.15, 0.08);
+        level.sendParticles(ParticleTypes.WAX_OFF, head.x, head.y, head.z, 8, 0.3, 0.25, 0.3, 0.6);
     }
 }

@@ -95,9 +95,9 @@ that add up (`SkillTree.total`); quickhacks are granted via the `quickhack` fiel
 **Skill points cost experience (DECIDED), and each one costs more.** `SkillPointCost`:
 `cost(n) = min(maxXp, round(baseXp * growth^n))` in XP *points* (not levels, so the price doesn't depend on the
 buyer's current level), with n = points this chip has ever bought (`ChipSkills.purchased`, stored on the chip, so
-handing the chip over doesn't reset it). Server config `constructchip-server.toml`: `baseXp` 160, `growth` 1.2,
-`maxXp` 20000. That gives 1st 160 XP, 5th 332, 10th 826, 15th 2054, 20th 5112. 10 points ≈ 4150 XP (about level 46 from zero),
-20 points ≈ 29900 XP. The buyer pays from their own XP; creative mode is free.
+handing the chip over doesn't reset it). Server config `constructchip-server.toml`: `baseXp` 30, `growth` 1.05,
+`maxXp` 500 (rebalanced down from 160 / 1.2 / 20000). That gives 1st 30 XP, 5th 36, 10th 47, 15th 59, 20th 76. 10 points ≈ 380 XP
+(about level 16 from zero), 20 points ≈ 990 XP (about level 25), the whole tree ≈ 7800 XP. The buyer pays from their own XP; creative mode is free.
 Commands: `/construct skill price [count]` and `/construct skill buy [count]`, for the chip in your main hand or
 the one installed in you. When the skill tree screen exists (step 9), the construct will buy through it, charged to the host.
 

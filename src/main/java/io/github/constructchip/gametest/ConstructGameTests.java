@@ -67,7 +67,7 @@ public final class ConstructGameTests {
         Vec3 v = h.absoluteVec(new Vec3(x + 0.5, 1, z + 0.5));
         p.moveTo(v.x, v.y, v.z, 0f, 0f);
         PlayerList list = level.getServer().getPlayerList();
-        list.getPlayers().add(p);
+        list.players.add(p);
         list.playersByUUID.put(p.getUUID(), p);
         return p;
     }
@@ -75,7 +75,7 @@ public final class ConstructGameTests {
     private static void done(GameTestHelper h, ServerPlayer... players) {
         PlayerList list = h.getLevel().getServer().getPlayerList();
         for (ServerPlayer p : players) {
-            list.getPlayers().remove(p);
+            list.players.remove(p);
             list.playersByUUID.remove(p.getUUID());
         }
         h.succeed();

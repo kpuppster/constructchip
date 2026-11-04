@@ -14,6 +14,11 @@ public final class Keybinds {
     public static final KeyMapping HOST_INVENTORY = key("host_inventory", GLFW.GLFW_KEY_H);
     public static final KeyMapping SKILL_TREE = key("skill_tree", GLFW.GLFW_KEY_K);
     public static final KeyMapping WHEEL = key("wheel", GLFW.GLFW_KEY_G);
+    // cyberware (players with implants; constructs can't use these)
+    public static final KeyMapping CYBER_OS = key("cyber_os", GLFW.GLFW_KEY_X);
+    public static final KeyMapping CYBER_ARMS = key("cyber_arms", GLFW.GLFW_KEY_B);
+    public static final KeyMapping CYBER_PUMP = key("cyber_pump", GLFW.GLFW_KEY_J);
+    public static final KeyMapping ZOOM = key("zoom", GLFW.GLFW_KEY_C);
 
     private Keybinds() {}
 

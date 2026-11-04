@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:coagulation_mesh_t2"
+    },
+    {
+      "item": "constructchip:skeletal_anchor_t1"
+    }
+  ],
+  "result": {
+    "id": "constructchip:scar_coalescer",
+    "count": 1
+  }
+}

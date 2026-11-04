@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "constructchip:item/cyberware/cyberware_internal_parts_t5"
+  }
+}

@@ -91,5 +91,367 @@
         "stream": false
       }
     ]
+  },
+  "er_sandevistan_activation": {
+    "subtitle": "subtitles.constructchip.er.sandevistan_activation",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/sandevistan_activation",
+        "stream": false
+      }
+    ]
+  },
+  "er_sandevistan_exit": {
+    "subtitle": "subtitles.constructchip.er.sandevistan_exit",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/sandevistan_exit",
+        "stream": false
+      }
+    ]
+  },
+  "er_postripperdoc": {
+    "subtitle": "subtitles.constructchip.er.postripperdoc",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/postripperdoc",
+        "stream": false
+      }
+    ]
+  },
+  "er_gorilla_arms_throw": {
+    "subtitle": "subtitles.constructchip.er.gorilla_arms_throw",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/gorilla-arms-throw",
+        "stream": false
+      }
+    ]
+  },
+  "er_ground_slam_weak": {
+    "subtitle": "subtitles.constructchip.er.ground_slam_weak",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/ground-slam-weak",
+        "stream": false
+      }
+    ]
+  },
+  "er_ground_slam_strong": {
+    "subtitle": "subtitles.constructchip.er.ground_slam_strong",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/ground-slam-strong",
+        "stream": false
+      }
+    ]
+  },
+  "er_immunosupresors_inject": {
+    "subtitle": "subtitles.constructchip.er.immunosupresors_inject",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/immunosupresors-inject",
+        "stream": false
+      }
+    ]
+  },
+  "er_heal_bloodpump": {
+    "subtitle": "subtitles.constructchip.er.heal_bloodpump",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/heal-bloodpump",
+        "stream": false
+      }
+    ]
+  },
+  "er_activate_optics": {
+    "subtitle": "subtitles.constructchip.er.activate_optics",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/activate-optics",
+        "stream": false
+      }
+    ]
+  },
+  "er_deactivate_optics": {
+    "subtitle": "subtitles.constructchip.er.deactivate_optics",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/deactivate-optics",
+        "stream": false
+      }
+    ]
+  },
+  "er_extend_shrink_gorilla_arms": {
+    "subtitle": "subtitles.constructchip.er.extend_shrink_gorilla_arms",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/extend-shrink-gorilla-arms",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_stinger_phase": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_stinger_phase",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_phase/cyberpsychosis_stinger_phase_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_phase/cyberpsychosis_stinger_phase_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_phase/cyberpsychosis_stinger_phase_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_phase/cyberpsychosis_stinger_phase_04",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_stinger_critical": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_stinger_critical",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_critical/cyberpsychosis_stinger_critical_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_critical/cyberpsychosis_stinger_critical_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_critical/cyberpsychosis_stinger_critical_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_critical/cyberpsychosis_stinger_critical_04",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_stinger_watcher": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_stinger_watcher",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_watcher/cyberpsychosis_stinger_watcher_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_watcher/cyberpsychosis_stinger_watcher_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_watcher/cyberpsychosis_stinger_watcher_03",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_stinger_hallucination": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_stinger_hallucination",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_hallucination/cyberpsychosis_stinger_hallucination_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_hallucination/cyberpsychosis_stinger_hallucination_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_hallucination/cyberpsychosis_stinger_hallucination_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_hallucination/cyberpsychosis_stinger_hallucination_04",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_stinger_episode": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_stinger_episode",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_episode/cyberpsychosis_stinger_episode_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_episode/cyberpsychosis_stinger_episode_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_episode/cyberpsychosis_stinger_episode_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_episode/cyberpsychosis_stinger_episode_04",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/stinger_episode/cyberpsychosis_stinger_episode_05",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_channel_visor": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_channel_visor",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_visor/cyberpsychosis_channel_visor_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_visor/cyberpsychosis_channel_visor_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_visor/cyberpsychosis_channel_visor_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_visor/cyberpsychosis_channel_visor_04",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_channel_system": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_channel_system",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_system/cyberpsychosis_channel_system_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_system/cyberpsychosis_channel_system_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_system/cyberpsychosis_channel_system_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_system/cyberpsychosis_channel_system_04",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_channel_motor": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_channel_motor",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_motor/cyberpsychosis_channel_motor_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_motor/cyberpsychosis_channel_motor_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_motor/cyberpsychosis_channel_motor_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_motor/cyberpsychosis_channel_motor_04",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_channel_sync": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_channel_sync",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_sync/cyberpsychosis_channel_sync_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_sync/cyberpsychosis_channel_sync_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_sync/cyberpsychosis_channel_sync_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/channel_sync/cyberpsychosis_channel_sync_04",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_heartbeat": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_heartbeat",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/heartbeat/cyberpsychosis_heartbeat_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/heartbeat/cyberpsychosis_heartbeat_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/heartbeat/cyberpsychosis_heartbeat_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/heartbeat/cyberpsychosis_heartbeat_04",
+        "stream": false
+      }
+    ]
+  },
+  "er_cyberpsychosis_whisper": {
+    "subtitle": "subtitles.constructchip.er.cyberpsychosis_whisper",
+    "sounds": [
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_01",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_02",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_03",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_04",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_05",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_06",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_07",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_08",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_09",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_10",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_11",
+        "stream": false
+      },
+      {
+        "name": "constructchip:edgerunner/cyberpsychosis/whisper/cyberpsychosis_whisper_12",
+        "stream": false
+      }
+    ]
   }
 }

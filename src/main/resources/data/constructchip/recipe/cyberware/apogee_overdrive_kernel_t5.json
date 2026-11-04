@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:internal_parts_t5"
+    },
+    {
+      "item": "constructchip:falcon_overclocker_t4"
+    },
+    {
+      "item": "minecraft:nether_star"
+    }
+  ],
+  "result": {
+    "id": "constructchip:apogee_overdrive_kernel_t5",
+    "count": 1
+  }
+}

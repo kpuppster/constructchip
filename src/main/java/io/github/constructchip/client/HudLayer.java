@@ -39,6 +39,7 @@ public final class HudLayer {
         Minecraft mc = Minecraft.getInstance();
         ClientGlitch.render(g, delta.getGameTimeDeltaPartialTick(false));
         if (mc.options.hideGui || mc.player == null) return;
+        CyberHud.render(g);
         ChipStatusPayload chip = ClientChipState.chip();
         if (!chip.present()) return;
         Font font = mc.font;
@@ -93,6 +94,9 @@ public final class HudLayer {
             g.drawString(font, hud(Component.translatable("hud.constructchip.lockout", (timers.lockoutUntil() - now) / 20)), x, y, 0xFFFF5555);
         }
         y += 14;
+
+        // Chrome Link: the host's load and cyberpsychosis
+        if (chip.skills().has(io.github.constructchip.ConstructChip.id("chrome_link"))) y += 10 * CyberHud.renderHostLines(g, x, y);
 
         // Vitals Link extras
         if (host != null) {

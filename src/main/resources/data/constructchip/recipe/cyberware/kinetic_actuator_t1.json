@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:internal_parts_t1"
+    },
+    {
+      "item": "minecraft:piston"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    }
+  ],
+  "result": {
+    "id": "constructchip:kinetic_actuator_t1",
+    "count": 1
+  }
+}

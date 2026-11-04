@@ -32,7 +32,11 @@ public final class ConstructChip {
         ModDataComponents.REGISTER.register(modBus);
         ModSounds.REGISTER.register(modBus);
         ModBlocks.REGISTER.register(modBus);
+        io.github.constructchip.cyberware.CyberItems.register();
         ModItems.REGISTER.register(modBus);
+        io.github.constructchip.cyberware.CyberEffectsRegistry.REGISTER.register(modBus);
+        io.github.constructchip.villager.Ripperdoc.POI.register(modBus);
+        io.github.constructchip.villager.Ripperdoc.PROFESSIONS.register(modBus);
         ModBlockEntities.REGISTER.register(modBus);
         ModCreativeTabs.REGISTER.register(modBus);
         ModEntities.REGISTER.register(modBus);

@@ -14,5 +14,8 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<HostInventoryMenu>> HOST_INVENTORY = REGISTER.register(
             "host_inventory", () -> new MenuType<>(HostInventoryMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<io.github.constructchip.cyberware.SurgeryMenu>> SURGERY = REGISTER.register(
+            "surgery", () -> new MenuType<>(io.github.constructchip.cyberware.SurgeryMenu::new, FeatureFlags.DEFAULT_FLAGS));
+
     private ModMenus() {}
 }

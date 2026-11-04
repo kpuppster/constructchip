@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:internal_parts_t3"
+    },
+    {
+      "item": "minecraft:sticky_piston"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    }
+  ],
+  "result": {
+    "id": "constructchip:spring_recoil_array_t3",
+    "count": 1
+  }
+}

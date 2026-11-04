@@ -27,7 +27,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
  * them (with their XP). Reads live client state, so it updates as the server syncs.
  */
 public class SkillTreeScreen extends Screen {
-    private static final int NODE = 22, STEP_X = 32, STEP_Y = 52, COLUMNS = 10;
+    private static final int NODE = 22, STEP_X = 30, STEP_Y = 52, COLUMNS = 11;
     private Button buyButton;
     private ResourceLocation lastHovered;
 

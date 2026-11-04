@@ -61,6 +61,10 @@ public final class ClientInput {
             if (ClientChipState.isConstruct()) PacketDistributor.sendToServer(new ServerboundPayloads.OpenHostInventory());
         }
         // Power wheel: opens while held (it closes itself when the key is released)
+        if (Keybinds.WHEEL.isDown() && mc.screen == null && !ClientChipState.isConstruct()
+                && ClientCyber.own() != null && ClientCyber.own().any()) {
+            mc.setScreen(new CyberWheelScreen());
+        }
         if (Keybinds.WHEEL.isDown() && mc.screen == null && ClientChipState.isConstruct()) {
             if (ClientChipState.unlockedHacks().isEmpty()) {
                 if (Keybinds.WHEEL.consumeClick()) player.displayClientMessage(Component.translatable("message.constructchip.no_hacks"), true);

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:internal_parts_t2"
+    },
+    {
+      "item": "minecraft:spyglass"
+    }
+  ],
+  "result": {
+    "id": "constructchip:zoom_lens_t2",
+    "count": 1
+  }
+}

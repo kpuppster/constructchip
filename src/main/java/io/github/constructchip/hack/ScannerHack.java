@@ -130,6 +130,14 @@ public final class ScannerHack implements Quickhack {
                 if (!stack.isEmpty()) out.append(line("message.constructchip.scan.gear", stack.getHoverName()));
             }
             if (CyberwareApi.isDisabled(living)) out.append(line("message.constructchip.scan.cyberware_down"));
+            if (living instanceof net.minecraft.server.level.ServerPlayer chromed) {
+                var cs = io.github.constructchip.cyberware.Cyberware.state(chromed);
+                for (int i = 0; i < io.github.constructchip.cyberware.CyberSlot.POSITIONS; i++) {
+                    net.minecraft.world.item.ItemStack implant = cs.at(i);
+                    if (!implant.isEmpty()) out.append(line("message.constructchip.scan.implant", implant.getHoverName()));
+                }
+                if (cs.phase > 0) out.append(line("message.constructchip.scan.psychosis", cs.phase));
+            }
         }
         return out;
     }

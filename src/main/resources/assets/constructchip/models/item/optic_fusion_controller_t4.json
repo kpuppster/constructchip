@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "constructchip:item/cyberware/optic_fusion_controller_t4"
+  }
+}

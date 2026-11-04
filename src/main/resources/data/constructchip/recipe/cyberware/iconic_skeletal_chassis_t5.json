@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:internal_parts_t5"
+    },
+    {
+      "item": "minecraft:netherite_ingot"
+    },
+    {
+      "item": "constructchip:ballistic_spine_plate_t3"
+    }
+  ],
+  "result": {
+    "id": "constructchip:iconic_skeletal_chassis_t5",
+    "count": 1
+  }
+}

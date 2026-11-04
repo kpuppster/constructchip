@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:regen_nanite_scaffold_t5"
+    },
+    {
+      "item": "constructchip:skeletal_anchor_t1"
+    }
+  ],
+  "result": {
+    "id": "constructchip:epimorphic_skeleton",
+    "count": 1
+  }
+}

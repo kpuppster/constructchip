@@ -33,6 +33,10 @@ public final class ClientPayloadHandlers {
         ctx.enqueueWork(() -> ClientGlitch.flash(payload.ticks(), payload.red(), payload.flash()));
     }
 
+    public static void cyberStatus(io.github.constructchip.network.CyberStatusPayload payload, IPayloadContext ctx) {
+        ctx.enqueueWork(() -> ClientCyber.set(payload));
+    }
+
     public static void consent(ConsentRequestPayload payload, IPayloadContext ctx) {
         ctx.enqueueWork(() -> Minecraft.getInstance().setScreen(new ConsentScreen(payload)));
     }

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:falcon"
+    },
+    {
+      "item": "constructchip:os_core_t5"
+    },
+    {
+      "item": "constructchip:apogee_overdrive_kernel_t5"
+    },
+    {
+      "item": "constructchip:quantum_sync_lattice_t5"
+    }
+  ],
+  "result": {
+    "id": "constructchip:apogee",
+    "count": 1
+  }
+}

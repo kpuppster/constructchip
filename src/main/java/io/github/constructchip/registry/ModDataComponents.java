@@ -52,5 +52,15 @@ public final class ModDataComponents {
                     .networkSynchronized(ByteBufCodecs.VAR_INT)
                     .build());
 
+    /** Cyberware upgrade level (0..4), bought at the Ripperdoc with Internal Parts. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CYBER_UPGRADE =
+            REGISTER.register("cyber_upgrade", () -> DataComponentType.<Integer>builder()
+                    .persistent(Codec.intRange(0, 4)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+
+    /** Gorilla Arms element: thermal, electric, toxic or frozen. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> ARMS_ELEMENT =
+            REGISTER.register("arms_element", () -> DataComponentType.<String>builder()
+                    .persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+
     private ModDataComponents() {}
 }

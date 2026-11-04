@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:spring_recoil_array_t3"
+    },
+    {
+      "item": "constructchip:joint_servo_t1"
+    }
+  ],
+  "result": {
+    "id": "constructchip:spring_joints",
+    "count": 1
+  }
+}

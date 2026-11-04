@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "constructchip:item/cyberware/regen_nanite_scaffold_t5"
+  }
+}

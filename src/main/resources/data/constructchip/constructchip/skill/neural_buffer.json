@@ -1,0 +1,16 @@
+{
+  "name": {
+    "translate": "skill.constructchip.neural_buffer"
+  },
+  "description": {
+    "translate": "skill.constructchip.neural_buffer.desc"
+  },
+  "branch": "support",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:chrome_link"
+  ],
+  "icon": "minecraft:soul_lantern",
+  "column": 10
+}

@@ -3,6 +3,7 @@ package io.github.constructchip.block;
 import com.mojang.serialization.MapCodec;
 import io.github.constructchip.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -75,7 +76,14 @@ public class SoulKillerBlock extends BaseEntityBlock {
     /** Empty hand: sit down (if the chair is free). */
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (player.isShiftKeyDown() || player.isPassenger()) return InteractionResult.PASS;
+        if (player.isShiftKeyDown()) { // Ripperdoc surgery
+            if (player instanceof ServerPlayer sp) {
+                sp.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inv, p) -> io.github.constructchip.cyberware.SurgeryMenu.open(id, inv, sp),
+                        Component.translatable("container.constructchip.surgery")));
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        if (player.isPassenger()) return InteractionResult.PASS;
         if (!level.getEntitiesOfClass(ChairSeatEntity.class, new AABB(pos).inflate(3), s -> s.chair().equals(pos)).isEmpty()) {
             return InteractionResult.PASS;
         }

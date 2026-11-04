@@ -57,7 +57,11 @@ public final class ChipSync {
                 Net.sendToAll(server, new ConstructLinksPayload(links));
             }
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                if (ChipTracker.isConstruct(player)) QuickhackService.hostOf(player).ifPresent(host -> sendHostStatus(player, host));
+                if (ChipTracker.isConstruct(player)) QuickhackService.hostOf(player).ifPresent(host -> {
+                    sendHostStatus(player, host);
+                    Net.send(player, io.github.constructchip.cyberware.CyberSync.snapshot(host).forConstruct());
+                });
+                else if (io.github.constructchip.cyberware.Cyberware.state(player).any()) io.github.constructchip.cyberware.CyberSync.send(player);
             }
         }
         if (tick % 20 == 5) {

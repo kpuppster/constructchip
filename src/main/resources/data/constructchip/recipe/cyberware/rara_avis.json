@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:iconic_skeletal_chassis_t5"
+    },
+    {
+      "item": "constructchip:para_bellum"
+    }
+  ],
+  "result": {
+    "id": "constructchip:rara_avis",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:trauma_booster_module_t4"
+    },
+    {
+      "item": "constructchip:skeletal_anchor_t1"
+    }
+  ],
+  "result": {
+    "id": "constructchip:universal_booster",
+    "count": 1
+  }
+}

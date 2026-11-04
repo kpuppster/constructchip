@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:myofiber_bundle_t2"
+    },
+    {
+      "item": "constructchip:joint_servo_t1"
+    },
+    {
+      "item": "constructchip:skeletal_anchor_t1"
+    }
+  ],
+  "result": {
+    "id": "constructchip:reinforced_tendons",
+    "count": 1
+  }
+}

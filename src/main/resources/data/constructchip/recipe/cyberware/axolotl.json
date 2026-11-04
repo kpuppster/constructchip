@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "constructchip:soldering_iron"
+    },
+    {
+      "item": "constructchip:neural_matrix_t4"
+    },
+    {
+      "item": "constructchip:cooldown_optimizer_t4"
+    },
+    {
+      "item": "minecraft:axolotl_bucket"
+    }
+  ],
+  "result": {
+    "id": "constructchip:axolotl",
+    "count": 1
+  }
+}

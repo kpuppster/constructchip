@@ -51,5 +51,12 @@ public final class ModAttachments {
     public static final Supplier<AttachmentType<CyberwareState>> CYBERWARE_STATE = REGISTER.register("cyberware_state",
             () -> AttachmentType.builder(() -> CyberwareState.NONE).serialize(CyberwareState.CODEC).build());
 
+    /** Installed cyberware, capacity and cyberpsychosis. Implants stay in your body when you die. */
+    public static final Supplier<AttachmentType<io.github.constructchip.cyberware.CyberState>> CYBER_STATE = REGISTER.register("cyber_state",
+            () -> AttachmentType.builder(io.github.constructchip.cyberware.CyberState::new)
+                    .serialize(io.github.constructchip.cyberware.CyberState.CODEC)
+                    .copyOnDeath()
+                    .build());
+
     private ModAttachments() {}
 }

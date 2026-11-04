@@ -50,11 +50,16 @@ public final class ClientSetup {
         event.register(Keybinds.HOST_INVENTORY);
         event.register(Keybinds.SKILL_TREE);
         event.register(Keybinds.WHEEL);
+        event.register(Keybinds.CYBER_OS);
+        event.register(Keybinds.CYBER_ARMS);
+        event.register(Keybinds.CYBER_PUMP);
+        event.register(Keybinds.ZOOM);
     }
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenus.HOST_INVENTORY.get(), HostInventoryScreen::new);
+        event.register(ModMenus.SURGERY.get(), SurgeryScreen::new);
     }
 
     @SubscribeEvent

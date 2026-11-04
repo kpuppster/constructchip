@@ -1,0 +1,16 @@
+{
+  "name": {
+    "translate": "skill.constructchip.chrome_link"
+  },
+  "description": {
+    "translate": "skill.constructchip.chrome_link.desc"
+  },
+  "branch": "support",
+  "tier": 1,
+  "cost": 1,
+  "requires": [
+    "constructchip:scanner"
+  ],
+  "icon": "minecraft:chain",
+  "column": 10
+}

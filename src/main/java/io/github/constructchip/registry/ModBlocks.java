@@ -19,7 +19,8 @@ public final class ModBlocks {
 
     public static final DeferredBlock<SoulKillerBlock> SOUL_KILLER = REGISTER.register("soul_killer", () -> new SoulKillerBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(5f, 9f).requiresCorrectToolForDrops()
-                    .sound(SoundType.NETHERITE_BLOCK).lightLevel(s -> s.getValue(SoulKillerBlock.ACTIVE) ? 10 : 2)));
+                    .sound(SoundType.NETHERITE_BLOCK).noOcclusion() // the 3D model doesn't cover the block below
+                    .lightLevel(s -> s.getValue(SoulKillerBlock.ACTIVE) ? 10 : 2)));
 
     public static final DeferredBlock<io.github.constructchip.paint.PaintingStationBlock> PAINTING_STATION = REGISTER.register("painting_station",
             () -> new io.github.constructchip.paint.PaintingStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY)

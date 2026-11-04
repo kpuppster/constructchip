@@ -22,7 +22,8 @@ jobs:
             sleep 5
           done
           sleep 5; pkill -f net.neoforged || true; sleep 3
-          echo "=== constructchip lines"; grep -i "constructchip\|vista found" server.log | head -40
+          echo "=== mods"; grep -E "^\s+(Create|Vista|Moonlight|Personality Construct|Ponder|Flywheel)" server.log | head; grep -E "Vista found" server.log
+          echo "=== constructchip problems"; grep -iE "constructchip" server.log | grep -iE "error|fail|warn|couldn't|unknown|missing" | grep -v DEBUG | head -40
           echo "=== errors"; grep -E "ERROR|WARN.*(constructchip|Mixin)|Exception|Caused by" server.log | grep -v "Unable to find registered sound" | head -60
       - name: Boot client (virtual display)
         run: |
@@ -35,7 +36,8 @@ jobs:
           done
           pkill -f net.neoforged || true; sleep 3
           echo "=== errors"; grep -E "ERROR|Exception|Caused by|Mixin.*(fail|error)" client.log | grep -viE "realms|telemetry|narrator|OpenAL|joystick|gamepad" | head -60
-          echo "=== crash"; ls run/crash-reports 2>/dev/null && head -80 run/crash-reports/* 2>/dev/null
+          echo "=== constructchip problems"; grep -iE "constructchip" client.log | grep -iE "error|fail|warn|couldn't|unknown|missing" | grep -v DEBUG | head -40
+          echo "=== crash"; if [ -d run/crash-reports ]; then head -80 run/crash-reports/*; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: logs, path: "*.log" }

@@ -50,7 +50,11 @@ public final class LightningHacks {
         }
     }
 
-    /** High Voltage: every hostile within 12 blocks (nearest 12), 5 damage each. */
+    /**
+     * High Voltage: every creature within 12 blocks of the host that the host or the construct can see (nearest 12,
+     * monsters and anything attacking the host first), 5 damage each. Spares players, constructs, the host's own pets,
+     * villagers, golems and allays.
+     */
     public static final class Storm extends SimpleQuickhack {
         public static final double RADIUS = 12;
 
@@ -62,9 +66,15 @@ public final class LightningHacks {
         public HackResult execute(HackContext ctx) {
             ServerPlayer host = ctx.host();
             ServerLevel level = ctx.level();
+            ServerPlayer construct = ctx.construct();
             List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, host.getBoundingBox().inflate(RADIUS),
-                            e -> e instanceof Enemy && e.isAlive() && e.distanceToSqr(host) <= RADIUS * RADIUS && host.hasLineOfSight(e))
-                    .stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(host))).limit(12).toList();
+                            e -> e.isAlive() && e != host && e != construct && !spared(e, host)
+                                    && e.distanceToSqr(host) <= RADIUS * RADIUS
+                                    && (host.hasLineOfSight(e) || construct.hasLineOfSight(e)))
+                    .stream()
+                    .sorted(Comparator.<LivingEntity>comparingInt(e -> hostile(e, host) ? 0 : 1)
+                            .thenComparingDouble(e -> e.distanceToSqr(host)))
+                    .limit(12).toList();
             if (targets.isEmpty()) return HackResult.fail(Component.translatable("message.constructchip.storm.none"));
             DamageSource src = source(ctx);
             List<Vec3> points = new ArrayList<>();
@@ -79,5 +89,20 @@ public final class LightningHacks {
             HackFx.glitchFlash(ctx.construct(), 20, 0.8f, 0.8f);
             return HackResult.success(Component.translatable("message.constructchip.storm", targets.size()));
         }
+    }
+
+    /** Monsters, and any mob currently going after the host. */
+    static boolean hostile(LivingEntity e, ServerPlayer host) {
+        return e instanceof Enemy || (e instanceof net.minecraft.world.entity.Mob m && m.getTarget() == host);
+    }
+
+    /** Never hit by High Voltage: players, constructs, the host's pets, villagers, golems, allays, armor stands. */
+    static boolean spared(LivingEntity e, ServerPlayer host) {
+        if (e instanceof net.minecraft.world.entity.player.Player || io.github.constructchip.ghost.GhostState.isConstruct(e)) return true;
+        if (e instanceof net.minecraft.world.entity.decoration.ArmorStand) return true;
+        if (e instanceof net.minecraft.world.entity.OwnableEntity o && host.getUUID().equals(o.getOwnerUUID())) return true;
+        if (hostile(e, host)) return false;
+        return e instanceof net.minecraft.world.entity.npc.AbstractVillager || e instanceof net.minecraft.world.entity.animal.AbstractGolem
+                || e instanceof net.minecraft.world.entity.animal.allay.Allay;
     }
 }

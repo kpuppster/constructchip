@@ -82,12 +82,23 @@ public final class ClientInput {
     static void send(LocalPlayer player, ResourceLocation hackId) {
         Quickhack hack = ModQuickhacks.REGISTRY.get(hackId);
         HackTarget target = hack == null || hack.targetType() == Quickhack.TargetType.NONE
-                ? HackTarget.NONE : aim(player, hack.targetType());
+                ? HackTarget.NONE : aim(player, hack.targetType(), hack.baseRange());
         PacketDistributor.sendToServer(new UseQuickhackPayload(hackId, target));
     }
 
-    /** Nearest creature (not the host, not constructs) or block along the view. */
+    /** Aim assist cone for creature-only hacks, in degrees (on top of the creature's own size). */
+    private static final double ASSIST_DEGREES = 6.0;
+
     static HackTarget aim(LocalPlayer player, Quickhack.TargetType type) {
+        return aim(player, type, AIM_RANGE);
+    }
+
+    /**
+     * Nearest creature (not the host, not constructs) or block along the view. For creature-only hacks a near miss
+     * still counts: the creature closest to the crosshair inside a small cone is picked, preferring ones the host can
+     * actually reach (the server checks range and line of sight from the host's eyes).
+     */
+    static HackTarget aim(LocalPlayer player, Quickhack.TargetType type, double hostRange) {
         Vec3 eye = player.getEyePosition();
         Vec3 dir = player.getViewVector(1f);
         Vec3 end = eye.add(dir.scale(AIM_RANGE));
@@ -97,12 +108,51 @@ public final class ClientInput {
         UUID host = GhostState.clientHostOf(player.getUUID());
         if (type != Quickhack.TargetType.BLOCK) {
             AABB box = player.getBoundingBox().expandTowards(dir.scale(AIM_RANGE)).inflate(1.0);
+            boolean livingOnly = type == Quickhack.TargetType.ENTITY;
             EntityHitResult hit = ProjectileUtil.getEntityHitResult(player, eye, end, box,
-                    e -> e != player && !e.isSpectator() && e.isPickable() && !e.getUUID().equals(host), maxSq);
+                    e -> e != player && !e.isSpectator() && e.isPickable() && !e.getUUID().equals(host)
+                            && (!livingOnly || e instanceof net.minecraft.world.entity.LivingEntity), maxSq);
             if (hit != null) return HackTarget.entity(hit.getEntity().getId());
+            if (livingOnly) {
+                net.minecraft.world.entity.Entity assisted = assist(player, eye, dir, host, hostRange);
+                if (assisted != null) return HackTarget.entity(assisted.getId());
+            }
         }
         if (hitBlock && type != Quickhack.TargetType.ENTITY) return HackTarget.block(blockHit.getBlockPos(), blockHit.getDirection());
         return HackTarget.NONE;
     }
 
+    private static net.minecraft.world.entity.Entity assist(LocalPlayer player, Vec3 eye, Vec3 dir, UUID hostId, double hostRange) {
+        net.minecraft.world.entity.player.Player hostPlayer = hostId == null ? null : player.level().getPlayerByUUID(hostId);
+        net.minecraft.world.entity.Entity best = null;
+        double bestScore = Double.MAX_VALUE;
+        for (net.minecraft.world.entity.LivingEntity e : player.level().getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                player.getBoundingBox().inflate(AIM_RANGE))) {
+            if (e == player || !e.isAlive() || e.isSpectator() || !e.isPickable() || e.getUUID().equals(hostId)
+                    || io.github.constructchip.ghost.GhostState.isConstruct(e)) continue;
+            Vec3 center = e.getBoundingBox().getCenter();
+            Vec3 to = center.subtract(eye);
+            double dist = to.length();
+            if (dist < 0.5 || dist > AIM_RANGE) continue;
+            double angle = Math.toDegrees(Math.acos(net.minecraft.util.Mth.clamp(dir.dot(to.scale(1 / dist)), -1, 1)));
+            double size = Math.toDegrees(Math.atan2(Math.max(e.getBbWidth(), e.getBbHeight()) * 0.5, dist));
+            if (angle > ASSIST_DEGREES + size) continue;
+            if (!clear(player, eye, center)) continue; // the construct has to see it
+            double score = angle;
+            if (hostPlayer != null) {
+                Vec3 hostEye = hostPlayer.getEyePosition();
+                if (hostEye.distanceTo(center) > hostRange || !clear(player, hostEye, center)) score += 100; // host can't reach it
+            }
+            if (score < bestScore) {
+                bestScore = score;
+                best = e;
+            }
+        }
+        return best;
+    }
+
+    private static boolean clear(LocalPlayer player, Vec3 from, Vec3 to) {
+        BlockHitResult r = player.level().clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+        return r.getType() == HitResult.Type.MISS;
+    }
 }

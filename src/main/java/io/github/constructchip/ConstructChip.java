@@ -6,6 +6,7 @@ import io.github.constructchip.hack.ModQuickhacks;
 import io.github.constructchip.network.ModNetwork;
 import io.github.constructchip.registry.ModDataComponents;
 import io.github.constructchip.registry.ModEntities;
+import io.github.constructchip.registry.ModMenus;
 import io.github.constructchip.skill.ModSkills;
 import io.github.constructchip.registry.ModItems;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +30,7 @@ public final class ConstructChip {
         ModItems.REGISTER.register(modBus);
         ModEntities.REGISTER.register(modBus);
         ModAttachments.REGISTER.register(modBus);
+        ModMenus.REGISTER.register(modBus);
         modBus.addListener(ModSkills::onNewDatapackRegistry);
         ModQuickhacks.REGISTER.register(modBus);
         modBus.addListener(ModQuickhacks::onNewRegistry);

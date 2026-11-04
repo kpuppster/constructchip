@@ -9,6 +9,7 @@ import io.github.constructchip.chip.ChipIdentity;
 import io.github.constructchip.chip.ChipItemEntity;
 import io.github.constructchip.chip.ChipStacks;
 import io.github.constructchip.registry.ModDataComponents;
+import io.github.constructchip.sync.ChipSync;
 import io.github.constructchip.tracking.ChipLocation.State;
 import java.util.Collection;
 import java.util.HashMap;
@@ -205,6 +206,7 @@ public final class ChipTracker {
         long now = ChipRegistry.now(server);
         ChipRegistry.get(server).update(id.get().chipId(), e -> new ChipEntry(e.capturedUuid(), e.capturedName(), serial,
                 ChipLocation.of(State.INSTALLED, host.getUUID(), GlobalPos.of(host.level().dimension(), host.blockPosition()), now)));
+        ChipSync.syncChip(server, id.get().chipId());
         ConstructChip.LOGGER.info("{} installed chip {} ({}) on {}", installer.getGameProfile().getName(),
                 id.get().chipId(), id.get().capturedName(), host.getGameProfile().getName());
         return InstallResult.OK;
@@ -230,6 +232,8 @@ public final class ChipTracker {
         if (!host.addItem(chip) && !chip.isEmpty()) {
             host.drop(chip, false); // becomes a ChipItemEntity via createEntity, which marks it DROPPED
         }
+        ChipSync.sendChipStatus(host);
+        ChipStacks.identity(chip).ifPresent(id -> ChipSync.syncChip(host.server, id.chipId()));
         return true;
     }
 
@@ -238,6 +242,7 @@ public final class ChipTracker {
         ItemStack chip = installedChip(host);
         if (chip.isEmpty()) return;
         host.setData(ModAttachments.INSTALLED_CHIP, ItemStack.EMPTY);
+        ChipSync.sendChipStatus(host);
         ChipItemEntity entity = new ChipItemEntity(host.level(), host.getX(), host.getY(), host.getZ(), chip);
         entity.setDefaultPickUpDelay();
         drops.add(entity);
@@ -278,7 +283,11 @@ public final class ChipTracker {
         HEARTBEAT_TICK.remove(chipId);
 
         ServerPlayer construct = server.getPlayerList().getPlayer(entry.capturedUuid());
-        if (construct != null) ConstructAnchor.clearConstruct(construct);
+        if (construct != null) {
+            ConstructAnchor.clearConstruct(construct);
+            ChipSync.sendChipStatus(construct);
+        }
+        loc.holder().map(server.getPlayerList()::getPlayer).ifPresent(ChipSync::sendChipStatus);
         ConstructChip.LOGGER.info("Released construct {} from chip {}: {}", entry.capturedName(), chipId, reason);
         return true;
     }

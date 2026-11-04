@@ -11,6 +11,7 @@ import io.github.constructchip.skill.ChipStats;
 import io.github.constructchip.skill.ModSkills;
 import io.github.constructchip.skill.Skill;
 import io.github.constructchip.skill.SkillTree;
+import io.github.constructchip.sync.ChipSync;
 import io.github.constructchip.tracking.ChipEntry;
 import io.github.constructchip.tracking.ChipLocation;
 import io.github.constructchip.tracking.ChipRegistry;
@@ -149,7 +150,7 @@ public final class QuickhackService {
         }
 
         // --- execute
-        HackContext context = new HackContext(hackId, construct, host, chip, stats, entity, block, now);
+        HackContext context = new HackContext(hackId, construct, host, chip, stats, entity, block, target.face(), now);
         HackResult result;
         HACK_IN_PROGRESS.add(construct.getUUID());
         HACK_IN_PROGRESS.add(host.getUUID());
@@ -174,7 +175,7 @@ public final class QuickhackService {
             ChipStacks.setTimers(chip, ChipStacks.timers(chip).withCooldown(hackId, hack.cooldownTicks(), now));
         }
         host.setData(ModAttachments.INSTALLED_CHIP, chip); // mark the attachment dirty so it saves
-        // TODO(step 6): send the construct a RAM/cooldown sync payload here (RAM is synced on spend only).
+        ChipSync.syncHost(host); // RAM spent, cooldown started: update both HUDs now
         return new Attempt(Status.OK, result.message());
     }
 
@@ -222,7 +223,7 @@ public final class QuickhackService {
                     e -> e != exclude && !e.isSpectator() && e.isPickable(), maxEntityDistSq);
             if (entityHit != null) return HackTarget.entity(entityHit.getEntity().getId());
         }
-        if (hitBlock && type != Quickhack.TargetType.ENTITY) return HackTarget.block(blockHit.getBlockPos());
+        if (hitBlock && type != Quickhack.TargetType.ENTITY) return HackTarget.block(blockHit.getBlockPos(), blockHit.getDirection());
         return HackTarget.NONE;
     }
 

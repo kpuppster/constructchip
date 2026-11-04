@@ -4,9 +4,13 @@
   "package": "io.github.constructchip.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "SlotMixin"
+    "SlotMixin",
+    "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "MinecraftMixin"
+  ]
 }

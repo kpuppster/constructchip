@@ -3,6 +3,7 @@ package io.github.constructchip.hack;
 import io.github.constructchip.skill.ChipStats;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,10 +20,12 @@ import net.minecraft.world.item.ItemStack;
  * @param stats     the chip's numbers after skills
  * @param entity    resolved entity target, if the hack targeted one
  * @param block     resolved block target, if the hack targeted one
+ * @param face      side of the block that was aimed at (UP if unknown)
  * @param now       game time of the host's level
  */
 public record HackContext(ResourceLocation hackId, ServerPlayer construct, ServerPlayer host, ItemStack chip,
-                          ChipStats stats, Optional<Entity> entity, Optional<BlockPos> block, long now) {
+                          ChipStats stats, Optional<Entity> entity, Optional<BlockPos> block, Direction face,
+                          long now) {
     public ServerLevel level() {
         return host.serverLevel();
     }

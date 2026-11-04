@@ -2,6 +2,7 @@ package io.github.constructchip.tracking;
 
 import io.github.constructchip.attachment.ConstructState;
 import io.github.constructchip.capture.CaptureService;
+import io.github.constructchip.ghost.GhostLink;
 import io.github.constructchip.attachment.ModAttachments;
 import java.util.Optional;
 import net.minecraft.core.GlobalPos;
@@ -36,6 +37,7 @@ public final class ConstructAnchor {
         ChipLocation loc = entry.get().location();
         if (!loc.state().anchorsConstruct()) {
             if (state.isAnchored()) unanchor(player);
+            GhostLink.tickInstalled(player, loc.holder().map(server.getPlayerList()::getPlayer).orElse(null));
             return;
         }
 
@@ -97,6 +99,7 @@ public final class ConstructAnchor {
     public static void clearConstruct(ServerPlayer player) {
         unanchor(player);
         player.setData(ModAttachments.CONSTRUCT_STATE, ConstructState.NONE);
+        GhostLink.clear(player);
         CaptureService.restore(player); // inventory, XP, game mode, position, vitals (overrides the anchor's game mode)
     }
 }

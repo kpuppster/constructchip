@@ -36,7 +36,7 @@ public class SurgeryMenu extends AbstractContainerMenu {
         this.data = data;
         this.player = inv.player;
         // body slots: two columns on the left
-        int[][] pos = {{8, 20}, {8, 40}, {8, 60}, {8, 80}, {96, 20}, {96, 40}, {96, 60}, {96, 80}};
+        int[][] pos = {{8, 20}, {8, 40}, {8, 60}, {8, 80}, {114, 20}, {114, 40}, {114, 60}, {114, 80}};
         for (int i = 0; i < CyberSlot.POSITIONS; i++) {
             final int p = i;
             addSlot(new Slot(implants, i, pos[i][0], pos[i][1]) {
@@ -45,8 +45,8 @@ public class SurgeryMenu extends AbstractContainerMenu {
             });
         }
         for (int row = 0; row < 3; row++)
-            for (int col = 0; col < 9; col++) addSlot(new Slot(inv, 9 + row * 9 + col, 8 + col * 18, 142 + row * 18));
-        for (int col = 0; col < 9; col++) addSlot(new Slot(inv, col, 8 + col * 18, 200));
+            for (int col = 0; col < 9; col++) addSlot(new Slot(inv, 9 + row * 9 + col, 30 + col * 18, 148 + row * 18));
+        for (int col = 0; col < 9; col++) addSlot(new Slot(inv, col, 30 + col * 18, 206));
         addDataSlots(data);
     }
 

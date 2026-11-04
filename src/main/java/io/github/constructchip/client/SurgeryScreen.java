@@ -21,9 +21,10 @@ public class SurgeryScreen extends AbstractContainerScreen<SurgeryMenu> {
 
     public SurgeryScreen(SurgeryMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
-        imageWidth = 176;
-        imageHeight = 224;
-        inventoryLabelY = 131;
+        imageWidth = 220;
+        imageHeight = 230;
+        inventoryLabelY = 137;
+        inventoryLabelX = 30;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class SurgeryScreen extends AbstractContainerScreen<SurgeryMenu> {
         }
         capacity = addRenderableWidget(Button.builder(Component.translatable("gui.constructchip.surgery.capacity"),
                 b -> minecraft.gameMode.handleInventoryButtonClick(menu.containerId, SurgeryMenu.CAPACITY_BUTTON))
-                .bounds(leftPos + 118, topPos + 101, 52, 14).build());
+                .bounds(leftPos + 154, topPos + 98, 58, 14).build());
     }
 
     @Override
@@ -57,7 +58,7 @@ public class SurgeryScreen extends AbstractContainerScreen<SurgeryMenu> {
     @Override
     protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
         g.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xF00A0608);
-        g.fillGradient(leftPos, topPos, leftPos + imageWidth, topPos + 128, 0xC03A0C12, 0xC0240810);
+        g.fillGradient(leftPos, topPos, leftPos + imageWidth, topPos + 134, 0xC03A0C12, 0xC0240810);
         g.renderOutline(leftPos, topPos, imageWidth, imageHeight, 0xAA9B1C28);
         for (Slot slot : menu.slots) {
             int sx = leftPos + slot.x - 1, sy = topPos + slot.y - 1;
@@ -67,7 +68,7 @@ public class SurgeryScreen extends AbstractContainerScreen<SurgeryMenu> {
         }
         // load bar
         int load = menu.load(), cap = Math.max(1, menu.capacity());
-        int bx = leftPos + 8, by = topPos + 112, bw = 100;
+        int bx = leftPos + 8, by = topPos + 111, bw = 138;
         g.fill(bx, by, bx + bw, by + 6, 0xFF202830);
         g.fill(bx, by, bx + Math.min(bw, bw * load / cap), by + 6, load > cap ? 0xFFFF4A4A : 0xFF3FD0E0);
     }
@@ -75,18 +76,22 @@ public class SurgeryScreen extends AbstractContainerScreen<SurgeryMenu> {
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
         g.drawString(font, title, 8, 6, 0xFFF3E600, false);
-        g.drawString(font, playerInventoryTitle, 8, inventoryLabelY, 0xFFE8B4B4, false);
+        g.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, 0xFFE8B4B4, false);
         for (int i = 0; i < CyberSlot.POSITIONS; i++) {
             Slot slot = menu.slots.get(i);
-            g.drawString(font, Component.translatable("cyberslot.constructchip." + LABEL_KEYS[i]), slot.x + 32, slot.y + 4, 0xFFFF4A4A, false);
+            String label = Component.translatable("cyberslot.constructchip." + LABEL_KEYS[i]).getString();
+            int max = (i < 4 ? 112 : imageWidth - 4) - (slot.x + 32);
+            if (font.width(label) > max) label = font.plainSubstrByWidth(label, max - font.width("…")) + "…";
+            g.drawString(font, label, slot.x + 32, slot.y + 4, 0xFFFF4A4A, false);
         }
         int load = menu.load(), cap = menu.capacity();
-        g.drawString(font, Component.translatable("gui.constructchip.surgery.load", load, cap), 8, 102, load > cap ? 0xFFFF4A4A : 0xFF5EF6FF, false);
+        g.drawString(font, Component.translatable("gui.constructchip.surgery.load", load, cap), 8, 101, load > cap ? 0xFFFF4A4A : 0xFF5EF6FF, false);
         String[] ph = {"-", "I", "II", "III", "IV", "V"};
-        Component psyche = load > cap ? Component.translatable("gui.constructchip.surgery.overload")
-                : Component.translatable("gui.constructchip.surgery.psyche", ph[Math.min(5, menu.phase())], menu.pressure());
-        g.drawString(font, psyche, 8, 119, load > cap ? 0xFFFF4A4A : 0xFFE8B4B4, false);
-        g.drawString(font, Component.translatable("gui.constructchip.surgery.mult", menu.capacityLevel()), 118, 119, 0xFFAAAAAA, false);
+        String psyche = (load > cap ? Component.translatable("gui.constructchip.surgery.overload")
+                : Component.translatable("gui.constructchip.surgery.psyche", ph[Math.min(5, menu.phase())], menu.pressure())).getString();
+        if (font.width(psyche) > imageWidth - 16) psyche = font.plainSubstrByWidth(psyche, imageWidth - 16 - font.width("…")) + "…";
+        g.drawString(font, psyche, 8, 121, load > cap ? 0xFFFF4A4A : 0xFFE8B4B4, false);
+        g.drawString(font, Component.translatable("gui.constructchip.surgery.mult", menu.capacityLevel()), 156, 115, 0xFFAAAAAA, false);
     }
 
     @Override

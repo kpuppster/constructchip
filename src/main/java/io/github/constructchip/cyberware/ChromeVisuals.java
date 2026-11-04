@@ -14,7 +14,8 @@ import net.minecraft.world.item.ItemStack;
  * nearby; clients keep it here (common class so the item's animation code can read it without client imports).
  */
 public final class ChromeVisuals {
-    public record Visible(List<ItemStack> installed, boolean armsDeployed, boolean charging) {}
+    /** @param sandevistanEnds client game time when the Sandevistan (if running) ends; 0 = not running */
+    public record Visible(List<ItemStack> installed, boolean armsDeployed, long sandevistanEnds) {}
 
     private static final Map<Integer, Visible> CLIENT = new ConcurrentHashMap<>();
 
@@ -22,6 +23,11 @@ public final class ChromeVisuals {
 
     public static Visible get(Entity e) {
         return CLIENT.get(e.getId());
+    }
+
+    public static boolean sandevistanActive(Entity e, long clientNow) {
+        Visible v = get(e);
+        return v != null && v.sandevistanEnds() > clientNow;
     }
 
     public static void put(int entityId, Visible v) {
@@ -40,7 +46,8 @@ public final class ChromeVisuals {
         boolean hide = Cyberware.suppressed(p) && io.github.constructchip.tracking.ChipTracker.isConstruct(p);
         List<ItemStack> list = hide ? java.util.Collections.nCopies(CyberSlot.POSITIONS, ItemStack.EMPTY)
                 : s.installed.stream().map(ItemStack::copy).toList();
-        return new ChromeVisualsPayload(p.getId(), list, s.armsDeployed);
+        long left = Math.max(0, s.activeUntil.getOrDefault(CyberSlot.OS.name(), 0L) - p.level().getGameTime());
+        return new ChromeVisualsPayload(p.getId(), list, s.armsDeployed, hide ? 0 : (int) left);
     }
 
     /** To the player and every player within 128 blocks (plus anyone who starts tracking them later). */

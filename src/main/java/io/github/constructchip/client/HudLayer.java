@@ -38,6 +38,7 @@ public final class HudLayer {
     public static void render(GuiGraphics g, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
         ClientGlitch.render(g, delta.getGameTimeDeltaPartialTick(false));
+        SandevistanFx.renderOverlay(g);
         if (mc.options.hideGui || mc.player == null) return;
         CyberHud.render(g);
         ChipStatusPayload chip = ClientChipState.chip();

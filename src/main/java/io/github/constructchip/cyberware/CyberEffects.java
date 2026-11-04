@@ -91,7 +91,8 @@ public final class CyberEffects {
                 s.activeUntil.put(key, now + duration);
                 s.cooldownUntil.put(key, now + duration + Math.round(imp.cooldownTicks * (1f - 0.06f * lvl)));
                 play(p, "er_sandevistan_activation", 1f);
-                Cyberware.sendGlitch(p, 10, 0f, 0.4f);
+                Cyberware.sendGlitch(p, 14, 0f, 0.6f);
+                ChromeVisuals.broadcast(p);
             }
             case FACE -> {
                 if (!imp.hasScan()) return Component.translatable("message.constructchip.cyber.no_scan");
@@ -170,7 +171,10 @@ public final class CyberEffects {
                 p.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 5, 1, false, false));
                 if (os == Implant.WARP_DANCER) p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 5, 0, false, false));
                 if (now % 10 == 0) level.sendParticles(ParticleTypes.ELECTRIC_SPARK, p.getX(), p.getY() + 1, p.getZ(), 3, 0.3, 0.5, 0.3, 0);
-                if (s.activeUntil.get(CyberSlot.OS.name()) == now + 1) play(p, "er_sandevistan_exit", 1f);
+                if (s.activeUntil.get(CyberSlot.OS.name()) == now + 1) {
+                    play(p, "er_sandevistan_exit", 1f);
+                    Cyberware.sendGlitch(p, 8, 0f, 0.2f);
+                }
             }
         }
 
@@ -308,6 +312,7 @@ public final class CyberEffects {
                 int extend = Math.round(os.activeTicks * (s.level(os) >= 2 ? 0.2f : 0.1f));
                 s.activeUntil.computeIfPresent(CyberSlot.OS.name(), (k, v) -> v + extend);
                 s.cooldownUntil.computeIfPresent(CyberSlot.OS.name(), (k, v) -> v + extend);
+                ChromeVisuals.broadcast(p);
             }
         }
         CyberSync.send(p);

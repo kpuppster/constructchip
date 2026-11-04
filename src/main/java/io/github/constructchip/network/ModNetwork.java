@@ -5,7 +5,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public final class ModNetwork {
     /** Bump when a payload's format changes; mismatched clients are refused at login. */
-    private static final String VERSION = "7";
+    private static final String VERSION = "8";
 
     private ModNetwork() {}
 
@@ -25,7 +25,8 @@ public final class ModNetwork {
                 (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.cyberStatus(p, c));
         registrar.playToClient(ChromeVisualsPayload.TYPE, ChromeVisualsPayload.STREAM_CODEC,
                 (p, c) -> c.enqueueWork(() -> io.github.constructchip.cyberware.ChromeVisuals.put(p.entityId(),
-                        new io.github.constructchip.cyberware.ChromeVisuals.Visible(p.installed(), p.armsDeployed(), false))));
+                        new io.github.constructchip.cyberware.ChromeVisuals.Visible(p.installed(), p.armsDeployed(),
+                                p.sandevistanTicks() > 0 ? io.github.constructchip.client.ClientChipState.now() + p.sandevistanTicks() : 0L))));
         registrar.playToServer(PaintPayload.TYPE, PaintPayload.STREAM_CODEC, PaintPayload::handle);
         registrar.playToClient(BerserkPayload.TYPE, BerserkPayload.STREAM_CODEC,
                 (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.berserk(p, c));

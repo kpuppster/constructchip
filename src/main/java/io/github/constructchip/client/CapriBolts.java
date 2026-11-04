@@ -212,6 +212,13 @@ public final class CapriBolts {
                     if (source != null) crawl(source, 2, 0.05);
                     if (!to.isEmpty()) groundBurst(to.get(0), 0.45f, 3);
                 }
+                case UPGRADE -> { // from = hand, to[0] = eyes
+                    if (to.isEmpty()) return;
+                    strike(from, to.get(0), 0.012f, 0.3, Style.NET, Kind.AIR, 0.05);
+                    strike(from, to.get(0), 0.005f, 0.3, Style.PALE, Kind.AIR, 0.05);
+                    later(0.12, () -> strike(from, to.get(0), 0.010f, 0.25, Style.NET, Kind.AIR, 0.04));
+                    if (source != null) crawl(source, 6, 0.05);
+                }
                 case CAPTURE_END -> {
                     Vec3 top = from.add((R.nextDouble() - 0.5), 11, (R.nextDouble() - 0.5));
                     strike(top, from, 0.03f, 0.5, Style.BODY, Kind.AIR, 0.08);

@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -224,9 +223,6 @@ public class SoulKillerBlockEntity extends BlockEntity implements GeoBlockEntity
             return;
         }
         progress++;
-        var c = worldPosition.getCenter();
-        level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, target.getX(), target.getY() + 1, target.getZ(), 4, 0.3, 0.6, 0.3, 0.01);
-        level.sendParticles(ParticleTypes.ELECTRIC_SPARK, c.x, c.y + 0.6, c.z, 3, 0.3, 0.2, 0.3, 0.05);
         // Capri's red lightning pours into the sitter's head, faster as the capture goes on
         int every = progress < CAPTURE_TICKS / 2 ? 8 : 5;
         if (progress % every == 0) {
@@ -256,7 +252,6 @@ public class SoulKillerBlockEntity extends BlockEntity implements GeoBlockEntity
         progress = 0;
         setState(State.DONE);
         level.playSound(null, worldPosition, SoundEvents.WARDEN_SONIC_BOOM, SoundSource.BLOCKS, 0.7f, 1.4f);
-        level.sendParticles(ParticleTypes.SCULK_SOUL, target.getX(), target.getY() + 1, target.getZ(), 30, 0.4, 0.8, 0.4, 0.05);
         op.displayClientMessage(Component.translatable("message.constructchip.soul_killer.done", target.getGameProfile().getName()), true);
         ConstructChip.LOGGER.info("Soul Killer at {} captured {} for {}", worldPosition, target.getGameProfile().getName(), op.getGameProfile().getName());
     }

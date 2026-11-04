@@ -45,7 +45,9 @@ public final class BoltFx {
         /** Soul Killer, while capturing: bolts from above into the sitter's head, sparks crawling on them. */
         CAPTURE,
         /** Soul Killer, the moment the mind is taken: one huge strike. */
-        CAPTURE_END
+        CAPTURE_END,
+        /** Mk.2/Mk.3 chip upgrade: arcs from the hand into the head, sparks crawling over the body. */
+        UPGRADE
     }
 
     public static void send(ServerLevel level, Preset preset, Entity source, Vec3 from, List<Vec3> to) {

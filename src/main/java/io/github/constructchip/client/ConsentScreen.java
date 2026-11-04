@@ -23,7 +23,7 @@ import org.lwjgl.glfw.GLFW;
  */
 public class ConsentScreen extends Screen {
     private static final ResourceLocation FONT = HudLayer.HUD_FONT;
-    private static final int RED = 0xFFFF4A4A, RED_DIM = 0xFF7A1A22, RED_LINE = 0xAA9B1C28;
+    private static final int RED = 0xFFFF4A4A, RED_LINE = 0xAA9B1C28;
     private static final int CYAN = 0xFF5EF6FF, CYAN_FILL = 0x3326C6D0, YELLOW = 0xFFF3E600;
     private static final String[] OPTIONS = {"gui.constructchip.consent.accept", "gui.constructchip.consent.decline"};
 
@@ -31,18 +31,11 @@ public class ConsentScreen extends Screen {
     private final long openedAt;
     private boolean answered;
     private int selected = 1; // default to Decline: consent must be a deliberate choice
-    private final String[] noise = new String[6];
 
     public ConsentScreen(ConsentRequestPayload request) {
         super(request.title());
         this.request = request;
         this.openedAt = ClientChipState.now();
-        RandomSource r = RandomSource.create(request.requestId() * 7919L);
-        for (int i = 0; i < noise.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < 6; j++) sb.append(String.format(Locale.ROOT, "%04X", r.nextInt(0x10000))).append(j == 2 ? "  //  " : " ");
-            noise[i] = sb.toString().trim();
-        }
     }
 
     private static MutableComponent styled(Component c) {
@@ -162,17 +155,10 @@ public class ConsentScreen extends Screen {
             RenderSystem.disableBlend();
         }
 
-        // frame lines and corner data, like a terminal readout
+        // frame lines
         g.fill(pr, 0, pr + 1, height, RED_LINE);
         g.fill(10, 0, 11, height, RED_LINE);
         g.fill(width - 11, 0, width - 10, height, 0x559B1C28);
-        g.renderOutline(l - 8, 14, 150, 11, RED_LINE);
-        g.drawString(font, styled(Component.literal(noise[0])), l - 5, 16, RED_DIM, false);
-        g.drawString(font, styled(Component.literal(noise[1])), l - 5, 30, RED_DIM, false);
-        int warnW = Math.min(240, width / 3);
-        g.renderOutline(width - warnW - 20, 14, warnW, 14, RED_LINE);
-        g.drawString(font, styled(Component.literal("⚠ " + noise[2])), width - warnW - 16, 17, RED_DIM, false);
-        g.drawString(font, styled(Component.literal(noise[3])), pr + 12, 18, RED_DIM, false);
 
         // title: big yellow, with a jittering cyan ghost
         int titleY = height / 2 - 78;
@@ -219,9 +205,8 @@ public class ConsentScreen extends Screen {
         // footer: countdown like a version number, and a "Select" hint bottom-right
         int footY = height - 42;
         g.fill(l - 8, footY, pr - 10, footY + 1, RED_LINE);
-        g.drawString(font, styled(Component.literal(noise[4])), l - 5, footY + 4, RED_DIM, false);
         long left = Math.max(0, request.timeoutTicks() - (now - openedAt)) / 20;
-        g.drawString(font, styled(Component.translatable("gui.constructchip.consent.timeout", left)), l - 5, footY + 16, 0xFFD06060, false);
+        g.drawString(font, styled(Component.translatable("gui.constructchip.consent.timeout", left)), l - 5, footY + 8, 0xFFD06060, false);
         MutableComponent hint = styled(Component.translatable("gui.constructchip.consent.hint"));
         int hx = width - 24 - font.width(hint);
         g.renderOutline(hx - 14, height - 26, 9, 12, CYAN);

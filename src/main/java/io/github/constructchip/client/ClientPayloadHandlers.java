@@ -29,6 +29,10 @@ public final class ClientPayloadHandlers {
         ctx.enqueueWork(() -> ClientHighlights.add(payload.entityIds(), payload.ticks()));
     }
 
+    public static void glitch(io.github.constructchip.network.GlitchPayload payload, IPayloadContext ctx) {
+        ctx.enqueueWork(() -> ClientGlitch.flash(payload.ticks()));
+    }
+
     public static void consent(ConsentRequestPayload payload, IPayloadContext ctx) {
         ctx.enqueueWork(() -> Minecraft.getInstance().setScreen(new ConsentScreen(payload)));
     }

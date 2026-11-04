@@ -12,6 +12,6 @@
     "constructchip:deep_scan"
   ],
   "icon": "minecraft:redstone",
-  "column": 1,
+  "column": 2,
   "quickhack": "constructchip:short_circuit"
 }

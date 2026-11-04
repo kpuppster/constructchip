@@ -18,6 +18,6 @@
     "constructchip:remote_switch"
   ],
   "icon": "minecraft:observer",
-  "column": 8,
+  "column": 9,
   "quickhack": "constructchip:tv_power"
 }

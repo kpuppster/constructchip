@@ -12,6 +12,6 @@
     "constructchip:ping"
   ],
   "icon": "minecraft:target",
-  "column": 0,
+  "column": 1,
   "quickhack": "constructchip:weak_point"
 }

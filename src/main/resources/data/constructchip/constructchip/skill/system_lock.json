@@ -12,6 +12,6 @@
     "constructchip:short_circuit"
   ],
   "icon": "minecraft:iron_bars",
-  "column": 1,
+  "column": 2,
   "quickhack": "constructchip:system_lock"
 }

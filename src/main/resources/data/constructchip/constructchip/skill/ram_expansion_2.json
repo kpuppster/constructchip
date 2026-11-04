@@ -12,7 +12,7 @@
     "constructchip:ram_expansion"
   ],
   "icon": "minecraft:amethyst_cluster",
-  "column": 5,
+  "column": 6,
   "modifiers": [
     {
       "type": "max_ram",

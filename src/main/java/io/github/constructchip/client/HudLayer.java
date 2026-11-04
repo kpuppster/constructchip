@@ -28,9 +28,17 @@ public final class HudLayer {
         return Component.translatable("quickhack." + hack.getNamespace() + "." + hack.getPath());
     }
 
+    /** Rajdhani (SIL Open Font License, see assets/constructchip/font/OFL-Rajdhani.txt), with vanilla as fallback. */
+    public static final ResourceLocation HUD_FONT = ResourceLocation.fromNamespaceAndPath("constructchip", "hud");
+
+    private static Component hud(Component c) {
+        return c.copy().withStyle(s -> s.withFont(HUD_FONT));
+    }
+
     public static void render(GuiGraphics g, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.options.hideGui || mc.player == null) return;
+        ClientGlitch.render(g);
         ChipStatusPayload chip = ClientChipState.chip();
         if (!chip.present()) return;
         Font font = mc.font;
@@ -40,19 +48,20 @@ public final class HudLayer {
         int x = 6, y = 6;
 
         if (chip.isHost()) {
-            g.drawString(font, Component.translatable("hud.constructchip.host_line", chip.constructName(),
-                    String.format(Locale.ROOT, "%.1f", current), ram.max(), chip.skills().tier(), chip.skills().points()), x, y, 0xFF55FFFF);
+            g.drawString(font, hud(Component.translatable("hud.constructchip.host_line", chip.constructName(),
+                    String.format(Locale.ROOT, "%.1f", current), ram.max(), chip.skills().tier(), chip.skills().points())), x, y, 0xFF55FFFF);
             return;
         }
 
         g.fill(x - 3, y - 3, x + 150, y + 60, 0x88000000);
-        g.drawString(font, Component.translatable("hud.constructchip.host", chip.hostName()), x, y, 0xFF55FFFF);
+        g.fill(x - 3, y - 3, x - 2, y + 60, 0xFFE0283C);
+        g.drawString(font, hud(Component.translatable("hud.constructchip.host", chip.hostName())), x, y, 0xFF55FFFF);
         y += 11;
         HostStatusPayload host = ClientChipState.host();
         if (host != null) {
-            g.drawString(font, Component.translatable("hud.constructchip.vitals",
+            g.drawString(font, hud(Component.translatable("hud.constructchip.vitals",
                     String.format(Locale.ROOT, "%.0f", host.health()), String.format(Locale.ROOT, "%.0f", host.maxHealth()),
-                    host.food(), host.armor()), x, y, host.health() <= host.maxHealth() * 0.3f ? 0xFFFF5555 : 0xFFFFFFFF);
+                    host.food(), host.armor())), x, y, host.health() <= host.maxHealth() * 0.3f ? 0xFFFF5555 : 0xFFFFFFFF);
         }
         y += 11;
 
@@ -60,7 +69,7 @@ public final class HudLayer {
         int barW = 100;
         g.fill(x, y, x + barW, y + 7, 0xFF202830);
         int filled = ram.max() <= 0 ? 0 : Math.round(barW * current / ram.max());
-        g.fill(x, y, x + filled, y + 7, 0xFF3FD0E0);
+        g.fill(x, y, x + filled, y + 7, 0xFFE0283C); // red RAM bar
         g.drawString(font, String.format(Locale.ROOT, "%.1f/%d", current, ram.max()), x + barW + 4, y, 0xFFFFFFFF);
         y += 11;
 
@@ -73,27 +82,27 @@ public final class HudLayer {
             long cd = timers.cooldownRemaining(selected, now);
             Component line = Component.translatable("hud.constructchip.hack", hackName(selected), String.format(Locale.ROOT, "%.1f", cost));
             if (cd > 0) line = line.copy().append(Component.literal(String.format(Locale.ROOT, " (%.1fs)", cd / 20f)).withStyle(ChatFormatting.GRAY));
-            g.drawString(font, line, x, y, current >= cost && cd <= 0 ? 0xFFFFFFFF : 0xFFAAAAAA);
+            g.drawString(font, hud(line), x, y, current >= cost && cd <= 0 ? 0xFFFFFFFF : 0xFFAAAAAA);
         } else {
-            g.drawString(font, Component.translatable("message.constructchip.no_hacks"), x, y, 0xFFAAAAAA);
+            g.drawString(font, hud(Component.translatable("message.constructchip.no_hacks")), x, y, 0xFFAAAAAA);
         }
         y += 11;
         if (timers.isOverclocked(now)) {
-            g.drawString(font, Component.translatable("hud.constructchip.overclock", (timers.overclockUntil() - now) / 20), x, y, 0xFFFFAA00);
+            g.drawString(font, hud(Component.translatable("hud.constructchip.overclock", (timers.overclockUntil() - now) / 20)), x, y, 0xFFFFAA00);
         } else if (timers.isLockedOut(now)) {
-            g.drawString(font, Component.translatable("hud.constructchip.lockout", (timers.lockoutUntil() - now) / 20), x, y, 0xFFFF5555);
+            g.drawString(font, hud(Component.translatable("hud.constructchip.lockout", (timers.lockoutUntil() - now) / 20)), x, y, 0xFFFF5555);
         }
         y += 14;
 
         // Vitals Link extras
         if (host != null) {
             for (MobEffectInstance effect : host.effects()) {
-                g.drawString(font, Component.translatable(effect.getDescriptionId()).copy()
-                        .append(" " + effect.getDuration() / 20 + "s"), x, y, 0xFFCCCCFF);
+                g.drawString(font, hud(Component.translatable(effect.getDescriptionId()).copy()
+                        .append(" " + effect.getDuration() / 20 + "s")), x, y, 0xFFCCCCFF);
                 y += 10;
             }
             for (ItemStack worn : host.wornOut()) {
-                g.drawString(font, Component.translatable("hud.constructchip.worn", worn.getHoverName()), x, y, 0xFFFF7755);
+                g.drawString(font, hud(Component.translatable("hud.constructchip.worn", worn.getHoverName())), x, y, 0xFFFF7755);
                 y += 10;
             }
         }

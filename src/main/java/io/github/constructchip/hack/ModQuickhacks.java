@@ -4,7 +4,9 @@ import io.github.constructchip.ConstructChip;
 import io.github.constructchip.hack.builtin.AdrenalSurgeHack;
 import io.github.constructchip.hack.builtin.CyberwareHacks;
 import io.github.constructchip.hack.builtin.DeviceHacks;
+import io.github.constructchip.hack.builtin.LightningHacks;
 import io.github.constructchip.hack.builtin.OverclockHack;
+import io.github.constructchip.hack.builtin.PatchJobHack;
 import io.github.constructchip.hack.builtin.PingHack;
 import io.github.constructchip.hack.builtin.WeakPointHack;
 import net.minecraft.core.Registry;
@@ -33,6 +35,11 @@ public final class ModQuickhacks {
             REGISTER.register("short_circuit", CyberwareHacks.ShortCircuit::new);
     public static final DeferredHolder<Quickhack, CyberwareHacks.SystemLock> SYSTEM_LOCK =
             REGISTER.register("system_lock", CyberwareHacks.SystemLock::new);
+    public static final DeferredHolder<Quickhack, LightningHacks.RedLightning> RED_LIGHTNING =
+            REGISTER.register("red_lightning", LightningHacks.RedLightning::new);
+    public static final DeferredHolder<Quickhack, LightningHacks.Storm> LIGHTNING_STORM =
+            REGISTER.register("lightning_storm", LightningHacks.Storm::new);
+    public static final DeferredHolder<Quickhack, PatchJobHack> PATCH_JOB = REGISTER.register("patch_job", PatchJobHack::new);
     public static final DeferredHolder<Quickhack, AdrenalSurgeHack> ADRENAL_SURGE = REGISTER.register("adrenal_surge", AdrenalSurgeHack::new);
     public static final DeferredHolder<Quickhack, DeviceHacks.RemoteSwitch> REMOTE_SWITCH =
             REGISTER.register("remote_switch", DeviceHacks.RemoteSwitch::new);

@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.lightning_storm"
+  },
+  "description": {
+    "translate": "skill.constructchip.lightning_storm.desc"
+  },
+  "branch": "intrusion",
+  "tier": 3,
+  "cost": 3,
+  "requires": [
+    "constructchip:red_lightning"
+  ],
+  "icon": "minecraft:lightning_rod",
+  "column": 0,
+  "quickhack": "constructchip:lightning_storm"
+}

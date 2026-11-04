@@ -11,6 +11,7 @@ import io.github.constructchip.skill.ChipStats;
 import io.github.constructchip.skill.ModSkills;
 import io.github.constructchip.skill.Skill;
 import io.github.constructchip.skill.SkillTree;
+import io.github.constructchip.network.Net;
 import io.github.constructchip.sync.ChipSync;
 import io.github.constructchip.tracking.ChipEntry;
 import io.github.constructchip.tracking.ChipLocation;
@@ -176,6 +177,7 @@ public final class QuickhackService {
         }
         host.setData(ModAttachments.INSTALLED_CHIP, chip); // mark the attachment dirty so it saves
         ChipSync.syncHost(host); // RAM spent, cooldown started: update both HUDs now
+        Net.send(construct, new io.github.constructchip.network.GlitchPayload(4)); // small flash on every successful hack
         return new Attempt(Status.OK, result.message());
     }
 

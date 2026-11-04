@@ -31,6 +31,13 @@ public final class Passives {
 
     private Passives() {}
 
+    /** "ahead", "behind", "left" or "right" of where {@code viewer} faces. */
+    public static String sideOf(ServerPlayer viewer, Vec3 at) {
+        Vec3 to = at.subtract(viewer.position());
+        float angle = Mth.wrapDegrees((float) (Mth.atan2(to.z, to.x) * Mth.RAD_TO_DEG) - 90f - viewer.getYRot());
+        return Math.abs(angle) <= 45 ? "ahead" : Math.abs(angle) >= 135 ? "behind" : angle > 0 ? "right" : "left";
+    }
+
     /** The host's valid installed chip, or EMPTY. */
     private static ItemStack chipOf(ServerPlayer host) {
         ItemStack chip = ChipTracker.installedChip(host);
@@ -59,9 +66,7 @@ public final class Passives {
         if (last != null && now - last < 40) return;
         LAST_ALERT.put(host.getUUID(), now);
 
-        Vec3 to = mob.position().subtract(host.position());
-        float angle = Mth.wrapDegrees((float) (Mth.atan2(to.z, to.x) * Mth.RAD_TO_DEG) - 90f - host.getYRot());
-        String dir = Math.abs(angle) <= 45 ? "ahead" : Math.abs(angle) >= 135 ? "behind" : angle > 0 ? "right" : "left";
+        String dir = sideOf(host, mob.position());
         Component msg = Component.translatable("message.constructchip.threat", mob.getDisplayName(),
                 Component.translatable("message.constructchip.threat." + dir));
         host.displayClientMessage(msg, true);

@@ -178,7 +178,7 @@ public final class ConstructGameTests {
     public static void skillTreeRulesAndPrices(GameTestHelper h) {
         Registry<Skill> reg = ModSkills.get(h.getLevel().registryAccess());
         boolean vista = net.neoforged.fml.ModList.get().isLoaded("vista");
-        h.assertTrue(reg.size() == (vista ? 22 : 19), "skills loaded: " + reg.size() + " (vista " + vista + ")");
+        h.assertTrue(reg.size() == (vista ? 25 : 22), "skills loaded: " + reg.size() + " (vista " + vista + ")");
         h.assertTrue(vista == reg.containsKey(ConstructChip.id("camera_view")), "Vista skill condition not applied");
         ResourceLocation overclock = ConstructChip.id("overclock"), shortCircuit = ConstructChip.id("short_circuit");
         ChipSkills s = ChipSkills.DEFAULT;

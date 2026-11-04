@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.red_lightning"
+  },
+  "description": {
+    "translate": "skill.constructchip.red_lightning.desc"
+  },
+  "branch": "intrusion",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:ping"
+  ],
+  "icon": "minecraft:redstone_block",
+  "column": 0,
+  "quickhack": "constructchip:red_lightning"
+}

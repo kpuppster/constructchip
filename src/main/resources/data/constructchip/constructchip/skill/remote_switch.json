@@ -12,6 +12,6 @@
     "constructchip:scanner"
   ],
   "icon": "minecraft:lever",
-  "column": 7,
+  "column": 8,
   "quickhack": "constructchip:remote_switch"
 }

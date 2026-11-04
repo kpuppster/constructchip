@@ -10,6 +10,6 @@
   "cost": 0,
   "requires": [],
   "icon": "minecraft:spyglass",
-  "column": 2,
+  "column": 3,
   "quickhack": "constructchip:scanner"
 }

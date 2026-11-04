@@ -18,6 +18,6 @@
     "constructchip:tv_power"
   ],
   "icon": "minecraft:spyglass",
-  "column": 8,
+  "column": 9,
   "quickhack": "constructchip:camera_view"
 }

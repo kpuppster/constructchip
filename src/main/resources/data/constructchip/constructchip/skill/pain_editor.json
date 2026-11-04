@@ -12,7 +12,7 @@
     "constructchip:threat_alert"
   ],
   "icon": "minecraft:shield",
-  "column": 4,
+  "column": 5,
   "modifiers": [
     {
       "type": "host_damage_taken",

@@ -13,7 +13,7 @@
     "constructchip:overclock"
   ],
   "icon": "minecraft:magma_cream",
-  "column": 3,
+  "column": 4,
   "modifiers": [
     {
       "type": "overclock_ticks",

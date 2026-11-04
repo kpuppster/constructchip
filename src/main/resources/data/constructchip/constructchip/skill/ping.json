@@ -12,6 +12,6 @@
     "constructchip:scanner"
   ],
   "icon": "minecraft:bell",
-  "column": 0,
+  "column": 1,
   "quickhack": "constructchip:ping"
 }

@@ -12,6 +12,6 @@
     "constructchip:vitals_link"
   ],
   "icon": "minecraft:sugar",
-  "column": 3,
+  "column": 4,
   "quickhack": "constructchip:adrenal_surge"
 }

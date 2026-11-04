@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.patch_job"
+  },
+  "description": {
+    "translate": "skill.constructchip.patch_job.desc"
+  },
+  "branch": "support",
+  "tier": 3,
+  "cost": 3,
+  "requires": [
+    "constructchip:pain_editor"
+  ],
+  "icon": "minecraft:enchanted_golden_apple",
+  "column": 5,
+  "quickhack": "constructchip:patch_job"
+}

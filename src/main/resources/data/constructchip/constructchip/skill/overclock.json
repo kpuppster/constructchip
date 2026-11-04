@@ -12,6 +12,6 @@
     "constructchip:scanner"
   ],
   "icon": "minecraft:blaze_powder",
-  "column": 2,
+  "column": 3,
   "quickhack": "constructchip:overclock"
 }

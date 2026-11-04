@@ -58,6 +58,15 @@ public final class ChipStacks {
         return stack.getOrDefault(ModDataComponents.CHIP_TIMERS.get(), ChipTimers.NONE);
     }
 
+    /** Removes every chip component, leaving a blank chip. */
+    public static void clearAll(ItemStack stack) {
+        stack.remove(ModDataComponents.CHIP_IDENTITY.get());
+        stack.remove(ModDataComponents.CHIP_RAM.get());
+        stack.remove(ModDataComponents.CHIP_SKILLS.get());
+        stack.remove(ModDataComponents.CHIP_TIMERS.get());
+        stack.remove(ModDataComponents.CHIP_SERIAL.get());
+    }
+
     public static void setRam(ItemStack stack, ChipRam ram) {
         stack.set(ModDataComponents.CHIP_RAM.get(), ram);
     }

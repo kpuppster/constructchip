@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vista"
+    }
+  ],
+  "name": {
+    "translate": "skill.constructchip.camera_view"
+  },
+  "description": {
+    "translate": "skill.constructchip.camera_view.desc"
+  },
+  "branch": "systems",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:tv_power"
+  ],
+  "icon": "minecraft:spyglass",
+  "column": 8,
+  "quickhack": "constructchip:camera_view"
+}

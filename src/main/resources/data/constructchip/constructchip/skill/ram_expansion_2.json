@@ -1,0 +1,22 @@
+{
+  "name": {
+    "translate": "skill.constructchip.ram_expansion_2"
+  },
+  "description": {
+    "translate": "skill.constructchip.ram_expansion_2.desc"
+  },
+  "branch": "systems",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:ram_expansion"
+  ],
+  "icon": "minecraft:amethyst_cluster",
+  "column": 5,
+  "modifiers": [
+    {
+      "type": "max_ram",
+      "amount": 2
+    }
+  ]
+}

@@ -15,12 +15,15 @@ import net.minecraft.util.ExtraCodecs;
  * Skill progression stored on the chip. Skill ids point into the (future) datapack skill registry; ids that no
  * longer resolve (e.g. Vista removed) are kept so they come back if the mod returns, and are simply ignored.
  *
- * @param tier     unlocked tier (1 = Scanner, 2 = Overclock, ...)
+ * @param tier     chip hardware tier (Mk.1 to Mk.3). It caps which skill tiers can be unlocked
  * @param points   unspent skill points
  * @param unlocked unlocked skill ids (immutable)
  */
 public record ChipSkills(int tier, int points, Set<ResourceLocation> unlocked) {
-    public static final ChipSkills DEFAULT = new ChipSkills(1, 0, Set.of());
+    /** Scanner is the tree's root: free and always unlocked on a fresh chip. */
+    public static final ResourceLocation ROOT_SKILL = ResourceLocation.fromNamespaceAndPath("constructchip", "scanner");
+    public static final int MAX_TIER = 3;
+    public static final ChipSkills DEFAULT = new ChipSkills(1, 0, Set.of(ROOT_SKILL));
 
     public static final Codec<ChipSkills> CODEC = RecordCodecBuilder.create(i -> i.group(
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("tier", 1).forGetter(ChipSkills::tier),

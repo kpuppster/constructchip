@@ -1,0 +1,27 @@
+{
+  "name": {
+    "translate": "skill.constructchip.sustained_overclock"
+  },
+  "description": {
+    "translate": "skill.constructchip.sustained_overclock.desc"
+  },
+  "branch": "support",
+  "tier": 3,
+  "cost": 3,
+  "requires": [
+    "constructchip:adrenal_surge",
+    "constructchip:overclock"
+  ],
+  "icon": "minecraft:magma_cream",
+  "column": 3,
+  "modifiers": [
+    {
+      "type": "overclock_ticks",
+      "amount": 200
+    },
+    {
+      "type": "lockout_ticks",
+      "amount": -400
+    }
+  ]
+}

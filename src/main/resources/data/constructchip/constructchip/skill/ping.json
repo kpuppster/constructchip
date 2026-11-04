@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.ping"
+  },
+  "description": {
+    "translate": "skill.constructchip.ping.desc"
+  },
+  "branch": "intrusion",
+  "tier": 1,
+  "cost": 1,
+  "requires": [
+    "constructchip:scanner"
+  ],
+  "icon": "minecraft:bell",
+  "column": 0,
+  "quickhack": "constructchip:ping"
+}

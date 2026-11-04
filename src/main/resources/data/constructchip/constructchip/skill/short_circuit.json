@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.short_circuit"
+  },
+  "description": {
+    "translate": "skill.constructchip.short_circuit.desc"
+  },
+  "branch": "intrusion",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:deep_scan"
+  ],
+  "icon": "minecraft:redstone",
+  "column": 1,
+  "quickhack": "constructchip:short_circuit"
+}

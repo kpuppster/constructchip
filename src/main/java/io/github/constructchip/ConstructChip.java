@@ -1,7 +1,10 @@
 package io.github.constructchip;
 
 import com.mojang.logging.LogUtils;
+import io.github.constructchip.attachment.ModAttachments;
 import io.github.constructchip.registry.ModDataComponents;
+import io.github.constructchip.registry.ModEntities;
+import io.github.constructchip.skill.ModSkills;
 import io.github.constructchip.registry.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -17,8 +20,12 @@ public final class ConstructChip {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public ConstructChip(IEventBus modBus, ModContainer container) {
+        ModGameRules.init();
         ModDataComponents.REGISTER.register(modBus);
         ModItems.REGISTER.register(modBus);
+        ModEntities.REGISTER.register(modBus);
+        ModAttachments.REGISTER.register(modBus);
+        modBus.addListener(ModSkills::onNewDatapackRegistry);
         modBus.addListener(ConstructChip::addCreativeTabContents);
     }
 

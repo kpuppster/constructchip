@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vista"
+    }
+  ],
+  "name": {
+    "translate": "skill.constructchip.tv_power"
+  },
+  "description": {
+    "translate": "skill.constructchip.tv_power.desc"
+  },
+  "branch": "systems",
+  "tier": 1,
+  "cost": 1,
+  "requires": [
+    "constructchip:remote_switch"
+  ],
+  "icon": "minecraft:observer",
+  "column": 8,
+  "quickhack": "constructchip:tv_power"
+}

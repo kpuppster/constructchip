@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.overclock"
+  },
+  "description": {
+    "translate": "skill.constructchip.overclock.desc"
+  },
+  "branch": "core",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:scanner"
+  ],
+  "icon": "minecraft:blaze_powder",
+  "column": 2,
+  "quickhack": "constructchip:overclock"
+}

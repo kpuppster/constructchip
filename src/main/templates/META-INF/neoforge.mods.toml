@@ -31,3 +31,6 @@ A captured player rides along on a personality construct chip in their host's he
     ordering="NONE"
     side="BOTH"
 
+
+[[mixins]]
+config="${mod_id}.mixins.json"

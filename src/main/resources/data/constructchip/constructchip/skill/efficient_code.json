@@ -1,0 +1,26 @@
+{
+  "name": {
+    "translate": "skill.constructchip.efficient_code"
+  },
+  "description": {
+    "translate": "skill.constructchip.efficient_code.desc"
+  },
+  "branch": "systems",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:ram_expansion"
+  ],
+  "icon": "minecraft:comparator",
+  "column": 6,
+  "modifiers": [
+    {
+      "type": "ram_regen",
+      "amount": 0.25
+    },
+    {
+      "type": "ram_cost",
+      "amount": -0.1
+    }
+  ]
+}

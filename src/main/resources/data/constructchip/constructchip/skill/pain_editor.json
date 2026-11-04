@@ -1,0 +1,22 @@
+{
+  "name": {
+    "translate": "skill.constructchip.pain_editor"
+  },
+  "description": {
+    "translate": "skill.constructchip.pain_editor.desc"
+  },
+  "branch": "support",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:threat_alert"
+  ],
+  "icon": "minecraft:shield",
+  "column": 4,
+  "modifiers": [
+    {
+      "type": "host_damage_taken",
+      "amount": -0.1
+    }
+  ]
+}

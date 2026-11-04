@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.system_lock"
+  },
+  "description": {
+    "translate": "skill.constructchip.system_lock.desc"
+  },
+  "branch": "intrusion",
+  "tier": 3,
+  "cost": 3,
+  "requires": [
+    "constructchip:short_circuit"
+  ],
+  "icon": "minecraft:iron_bars",
+  "column": 1,
+  "quickhack": "constructchip:system_lock"
+}

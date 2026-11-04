@@ -5,7 +5,9 @@ import io.github.constructchip.chip.ChipIdentity;
 import io.github.constructchip.chip.ChipRam;
 import io.github.constructchip.chip.ChipSkills;
 import io.github.constructchip.chip.ChipTimers;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -38,6 +40,16 @@ public final class ModDataComponents {
             REGISTER.register("chip_timers", () -> DataComponentType.<ChipTimers>builder()
                     .persistent(ChipTimers.CODEC)
                     .networkSynchronized(ChipTimers.STREAM_CODEC)
+                    .build());
+
+    /**
+     * Bumped on every legitimate hand-over (install, eject, host death). The registry stores the current serial;
+     * a stack with an older serial is a stale copy and gets wiped to a blank chip.
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CHIP_SERIAL =
+            REGISTER.register("chip_serial", () -> DataComponentType.<Integer>builder()
+                    .persistent(Codec.INT)
+                    .networkSynchronized(ByteBufCodecs.VAR_INT)
                     .build());
 
     private ModDataComponents() {}

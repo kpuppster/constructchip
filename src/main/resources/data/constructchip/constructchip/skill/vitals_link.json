@@ -1,0 +1,16 @@
+{
+  "name": {
+    "translate": "skill.constructchip.vitals_link"
+  },
+  "description": {
+    "translate": "skill.constructchip.vitals_link.desc"
+  },
+  "branch": "support",
+  "tier": 1,
+  "cost": 1,
+  "requires": [
+    "constructchip:scanner"
+  ],
+  "icon": "minecraft:golden_apple",
+  "column": 3
+}

@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.signal_inject"
+  },
+  "description": {
+    "translate": "skill.constructchip.signal_inject.desc"
+  },
+  "branch": "systems",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:remote_switch"
+  ],
+  "icon": "minecraft:redstone_torch",
+  "column": 7,
+  "quickhack": "constructchip:signal_inject"
+}

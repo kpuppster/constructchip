@@ -1,0 +1,22 @@
+{
+  "name": {
+    "translate": "skill.constructchip.neural_overdrive"
+  },
+  "description": {
+    "translate": "skill.constructchip.neural_overdrive.desc"
+  },
+  "branch": "core",
+  "tier": 3,
+  "cost": 3,
+  "requires": [
+    "constructchip:overclock"
+  ],
+  "icon": "minecraft:nether_star",
+  "column": 2,
+  "modifiers": [
+    {
+      "type": "lockout_ticks",
+      "amount": 600
+    }
+  ]
+}

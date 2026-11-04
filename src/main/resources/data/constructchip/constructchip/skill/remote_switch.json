@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.remote_switch"
+  },
+  "description": {
+    "translate": "skill.constructchip.remote_switch.desc"
+  },
+  "branch": "systems",
+  "tier": 1,
+  "cost": 1,
+  "requires": [
+    "constructchip:scanner"
+  ],
+  "icon": "minecraft:lever",
+  "column": 7,
+  "quickhack": "constructchip:remote_switch"
+}

@@ -1,0 +1,22 @@
+{
+  "name": {
+    "translate": "skill.constructchip.deep_scan"
+  },
+  "description": {
+    "translate": "skill.constructchip.deep_scan.desc"
+  },
+  "branch": "intrusion",
+  "tier": 1,
+  "cost": 1,
+  "requires": [
+    "constructchip:scanner"
+  ],
+  "icon": "minecraft:ender_eye",
+  "column": 1,
+  "modifiers": [
+    {
+      "type": "scan_range",
+      "amount": 8
+    }
+  ]
+}

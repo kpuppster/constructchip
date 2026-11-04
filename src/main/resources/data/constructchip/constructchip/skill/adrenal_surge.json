@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.adrenal_surge"
+  },
+  "description": {
+    "translate": "skill.constructchip.adrenal_surge.desc"
+  },
+  "branch": "support",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:vitals_link"
+  ],
+  "icon": "minecraft:sugar",
+  "column": 3,
+  "quickhack": "constructchip:adrenal_surge"
+}

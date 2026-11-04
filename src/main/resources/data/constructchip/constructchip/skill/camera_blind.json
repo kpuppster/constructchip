@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vista"
+    }
+  ],
+  "name": {
+    "translate": "skill.constructchip.camera_blind"
+  },
+  "description": {
+    "translate": "skill.constructchip.camera_blind.desc"
+  },
+  "branch": "systems",
+  "tier": 3,
+  "cost": 3,
+  "requires": [
+    "constructchip:camera_view"
+  ],
+  "icon": "minecraft:ink_sac",
+  "column": 8,
+  "quickhack": "constructchip:camera_blind"
+}

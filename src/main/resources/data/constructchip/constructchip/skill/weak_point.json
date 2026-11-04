@@ -1,0 +1,17 @@
+{
+  "name": {
+    "translate": "skill.constructchip.weak_point"
+  },
+  "description": {
+    "translate": "skill.constructchip.weak_point.desc"
+  },
+  "branch": "intrusion",
+  "tier": 2,
+  "cost": 2,
+  "requires": [
+    "constructchip:ping"
+  ],
+  "icon": "minecraft:target",
+  "column": 0,
+  "quickhack": "constructchip:weak_point"
+}

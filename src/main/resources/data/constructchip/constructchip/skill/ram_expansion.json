@@ -1,0 +1,22 @@
+{
+  "name": {
+    "translate": "skill.constructchip.ram_expansion"
+  },
+  "description": {
+    "translate": "skill.constructchip.ram_expansion.desc"
+  },
+  "branch": "systems",
+  "tier": 1,
+  "cost": 1,
+  "requires": [
+    "constructchip:scanner"
+  ],
+  "icon": "minecraft:amethyst_shard",
+  "column": 5,
+  "modifiers": [
+    {
+      "type": "max_ram",
+      "amount": 2
+    }
+  ]
+}

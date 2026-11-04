@@ -112,6 +112,7 @@ public final class CyberEffects {
                 s.cooldownUntil.put(key, now + imp.cooldownTicks);
                 play(p, "er_extend_shrink_gorilla_arms", 1f);
                 Cyberware.refreshAttributes(p);
+                ChromeVisuals.broadcast(p);
             }
             default -> { }
         }

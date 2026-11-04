@@ -13,10 +13,49 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 /** An implant item. Installed at the Ripperdoc (Soul Killer station: sneak + right-click). */
-public class CyberwareItem extends Item {
+public class CyberwareItem extends Item implements GeoItem {
+    private static final RawAnimation ARMS_IDLE = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation ARMS_ACTIVE = RawAnimation.begin().thenPlay("extender").thenLoop("active");
+    private static final RawAnimation PUMP_IDLE = RawAnimation.begin().thenLoop("animation.unknown.idle");
+    private static final RawAnimation ANKLES_IDLE = RawAnimation.begin().thenLoop("animation.fortified_ankles.idle");
+    private static final RawAnimation TENDONS_IDLE = RawAnimation.begin().thenLoop("animation.reinforced_tendons.idle");
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+
+    /** Animations for the 3D implant models (art + animations by A24-N22, used with permission). */
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "main", 3, state -> {
+            switch (implant) {
+                case GORILLA_ARMS -> {
+                    Entity e = state.getData(DataTickets.ENTITY);
+                    ChromeVisuals.Visible v = e == null ? null : ChromeVisuals.get(e);
+                    return state.setAndContinue(v != null && v.armsDeployed() ? ARMS_ACTIVE : ARMS_IDLE);
+                }
+                case BLOOD_PUMP -> { return state.setAndContinue(PUMP_IDLE); }
+                case FORTIFIED_ANKLES -> { return state.setAndContinue(ANKLES_IDLE); }
+                case REINFORCED_TENDONS -> { return state.setAndContinue(TENDONS_IDLE); }
+                default -> { return PlayState.STOP; }
+            }
+        }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
+    }
+
     public final Implant implant;
 
     public CyberwareItem(Implant implant, Properties properties) {

@@ -45,5 +45,6 @@ public final class ClientEvents {
         GhostState.setClientLinks(java.util.Map.of());
         ClientChipState.setChip(io.github.constructchip.network.ChipStatusPayload.NONE);
         ClientHighlights.clear();
+        io.github.constructchip.cyberware.ChromeVisuals.clear();
     }
 }

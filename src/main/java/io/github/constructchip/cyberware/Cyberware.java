@@ -95,6 +95,7 @@ public final class Cyberware {
         s.armsDeployed = false;
         refreshAttributes(p);
         CyberSync.send(p);
+        ChromeVisuals.broadcast(p);
     }
 
     static void sendGlitch(ServerPlayer p, int ticks, float red, float flash) {

@@ -149,6 +149,7 @@ public class SurgeryMenu extends AbstractContainerMenu {
         }
         Cyberware.refreshAttributes(sp);
         CyberSync.send(sp);
+        ChromeVisuals.broadcast(sp);
     }
 
     public int load() { return data.get(0); }

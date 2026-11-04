@@ -42,6 +42,17 @@ public final class ClientSetup {
         });
     }
 
+    /** Implant models on every player skin type. */
+    @SubscribeEvent
+    @SuppressWarnings("unchecked")
+    public static void addLayers(EntityRenderersEvent.AddLayers event) {
+        for (net.minecraft.client.resources.PlayerSkin.Model skin : event.getSkins()) {
+            if (event.getSkin(skin) instanceof net.minecraft.client.renderer.entity.player.PlayerRenderer pr) {
+                pr.addLayer(new ImplantLayer(pr));
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         event.register(Keybinds.USE_HACK);

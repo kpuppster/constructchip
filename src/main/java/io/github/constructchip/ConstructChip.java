@@ -29,6 +29,7 @@ public final class ConstructChip {
     public ConstructChip(IEventBus modBus, ModContainer container) {
         ModGameRules.init();
         container.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
+        container.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModDataComponents.REGISTER.register(modBus);
         ModSounds.REGISTER.register(modBus);
         ModBlocks.REGISTER.register(modBus);

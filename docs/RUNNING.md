@@ -145,3 +145,14 @@ and roll it back. With any implant installed, **food stops healing you**.
 **Constructs and chrome.** Short Circuit / System Lock knock out a player's implants. Deep Scan lists them. New Support skills:
 **Chrome Link** (see your host's load and cyberpsychosis), **Neural Buffer** (slows your host's cyberpsychosis) and
 **Chrome Override** (quickhack: fire your host's Sandevistan or Blood Pump). A construct chip in your head counts 20 Load.
+
+**More chrome:**
+- **Implant models** show on your body (Sandevistan spine, Gorilla Arms, Blood Pump, Ankles, Tendons). Turn any of them off in
+  `config/constructchip-client.toml` (`[implant_models]`).
+- **Grab & throw** (Gorilla Arms out, empty hand): right-click a creature to lift it, right-click again to throw it. It's hurt
+  when it hits something; below 30% health the throw finishes it.
+- **Cyberware Painting Station**: right-click, put an implant in the slot, paint its texture (brush, bucket, eraser, picker,
+  undo, `<>` switches texture), **Save**. The paint shows on your body for everyone.
+- **Edgerunner's Guide** (book + redstone + iron nugget): the full manual in game.
+- **Phase V berserk**: during the terminal window the chrome sometimes takes over. Third person, it hunts the nearest
+  creature or player and you can't steer, but nothing can hurt you.

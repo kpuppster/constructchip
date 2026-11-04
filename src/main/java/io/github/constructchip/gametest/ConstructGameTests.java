@@ -316,4 +316,20 @@ public final class ConstructGameTests {
         h.assertTrue(s.cooldown("CIRCULATORY", now) >= 199, "no lockout cooldown");
         done(h, p);
     }
+
+    @GameTest(template = "empty")
+    public static void paintRoundTripsOnTheItem(GameTestHelper h) {
+        int[] diff = new int[128 * 128];
+        diff[5] = 0xFFF90759;
+        diff[128 * 64 + 7] = 0xFF5EF6FF;
+        String data = io.github.constructchip.paint.Paint.encode(diff);
+        h.assertTrue(!data.isEmpty() && data.length() < io.github.constructchip.paint.Paint.MAX_LENGTH, "encoded length " + data.length());
+        ItemStack arms = new ItemStack(io.github.constructchip.cyberware.CyberItems.IMPLANTS.get(io.github.constructchip.cyberware.Implant.GORILLA_ARMS).get());
+        io.github.constructchip.paint.Paint.set(arms, "gorilla_arm_texture", data);
+        int[] back = io.github.constructchip.paint.Paint.decode(io.github.constructchip.paint.Paint.of(arms).get("gorilla_arm_texture"), diff.length);
+        h.assertTrue(back[5] == diff[5] && back[128 * 64 + 7] == diff[128 * 64 + 7] && back[6] == 0, "pixels changed");
+        h.assertTrue(io.github.constructchip.paint.Paint.encode(new int[16]).isEmpty(), "empty paint should store nothing");
+        h.assertTrue(io.github.constructchip.paint.Paint.textures(arms).size() == 2, "gorilla arms have two paintable textures");
+        h.succeed();
+    }
 }

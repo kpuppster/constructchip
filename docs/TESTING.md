@@ -102,3 +102,9 @@ By hand (creative tab "Cyberware" has everything):
 48. Villager next to the station becomes a Ripperdoc with the trades listed in RUNNING.md.
 49. As a construct with Chrome Link: host chrome line on the HUD. Chrome Override fires the host's Sandevistan. Short Circuit
     a chromed player: their Sandevistan/arms stop and go on cooldown.
+50. Implant models visible on yourself (F5) and on the other player; toggles in constructchip-client.toml hide each one. Normal arms
+    vanish under the Gorilla Arms in third person, first-person hands stay normal. Electric arms use the electric texture.
+51. Grab & throw a zombie with the arms out; it takes damage on impact. Bosses can't be grabbed.
+52. Painting station: paint the Gorilla Arms, Save, install: the paint shows on your arms (also for the other player).
+53. Guide opens and pages flip. Phase V: berserk episode takes control near a mob, you can't be hurt, arrows bounce off.
+    Phase II+: red eyes in the dark. Phase III+: other players' name tags read HOSTILE.

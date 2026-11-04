@@ -110,7 +110,7 @@ Vista is downloaded and loaded automatically in the test game. To test without V
 1. Craft a **Soul Killer** and a **Personality Construct Chip** (vanilla items; see the recipe book), or take them
    from the creative tab "Personality Construct".
 2. Place the Soul Killer and power it with redstone: a lever, a redstone block or a redstone torch next to it.
-   It's a big ripperdoc station (about 5 x 4 blocks of lights, arm, table and stool around the chair), so give it room.
+   It's a big station (about 5 x 4 blocks of lights, arm, table and stool around the chair), so give it room.
    Only the chair itself is solid.
    If the sitter doesn't line up with the cushion, edit `riderX`, `riderY`, `riderZ` under `[soul_killer]` in
    `run/saves/<world>/serverconfig/constructchip-server.toml`, then sit down again.
@@ -122,40 +122,6 @@ Vista is downloaded and loaded automatically in the test game. To test without V
 ### Upgrading
 - **Skill points:** the host presses `K` and clicks "Buy point" (paid with the host's XP: 30 XP for the first, about 5% more each after that).
 - **Mk.2 / Mk.3:** craft a blank Mk.2 or Mk.3 construct chip (cyan or gold) and use it with the construct chip in your other hand, or while the chip is installed in you. The construct moves onto the new chip.
-
-## Cyberware (ported from Project: Edgerunner)
-
-**Getting started.** Put a Soul Killer station near an unemployed villager: they become a **Ripperdoc**. Trade for the
-**Soldering Iron** (18 emeralds + 12 iron), **Immunosuppressants** and **Internal Parts T1-T5**. Every part and implant is
-crafted in a normal crafting table with the Soldering Iron in the grid (you get it back). Check the recipe book.
-
-**Surgery.** Sneak + right-click the Soul Killer station with an empty hand. Drag implants into body slots: OS, Cortex,
-Face, Arms, Circulatory, Legs, 2× Skeleton. The bar shows **Load / Capacity** (capacity is rolled 160-320 per player).
-Going over capacity speeds up cyberpsychosis. The **+** buttons upgrade an implant, and **Capacity +** raises capacity
-(both cost Internal Parts). Changes apply when you close the screen.
-
-**Keys** (if you aren't a construct): `X` Sandevistan · `B` Gorilla Arms · `J` Blood Pump · `V` optic scan · hold `C` zoom ·
-hold `G` chrome wheel · right-click with an empty hand while the arms are out = Slam · double jump (Tendons) / crouch-charge
-then jump (Ankles).
-
-**Cyberpsychosis.** Running implants builds pressure, and high pressure grows the disease (bottom-left HUD). There are 5 phases,
-from glitches to hallucinations to motor trouble, up to a 120 s **terminal** countdown in Phase V. Immunosuppressants buy capacity
-and roll it back. With any implant installed, **food stops healing you**.
-
-**Constructs and chrome.** Short Circuit / System Lock knock out a player's implants. Deep Scan lists them. New Support skills:
-**Chrome Link** (see your host's load and cyberpsychosis), **Neural Buffer** (slows your host's cyberpsychosis) and
-**Chrome Override** (quickhack: fire your host's Sandevistan or Blood Pump). A construct chip in your head counts 20 Load.
-
-**More chrome:**
-- **Implant models** show on your body (Sandevistan spine, Gorilla Arms, Blood Pump, Ankles, Tendons). Turn any of them off in
-  `config/constructchip-client.toml` (`[implant_models]`).
-- **Grab & throw** (Gorilla Arms out, empty hand): right-click a creature to lift it, right-click again to throw it. It's hurt
-  when it hits something; below 30% health the throw finishes it.
-- **Cyberware Painting Station**: right-click, put an implant in the slot, paint its texture (brush, bucket, eraser, picker,
-  undo, `<>` switches texture), **Save**. The paint shows on your body for everyone.
-- **Edgerunner's Guide** (book + redstone + iron nugget): the full manual in game.
-- **Phase V berserk**: during the terminal window the chrome sometimes takes over. Third person, it hunts the nearest
-  creature or player and you can't steer, but nothing can hurt you.
 
 ### The construct talking to its host
 While the construct's chip is installed in someone, anything the construct types in chat goes **only to that host**. It

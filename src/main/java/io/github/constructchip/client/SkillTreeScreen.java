@@ -31,7 +31,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
  * pages: scroll the mouse wheel (or press left/right, A/D) to turn them.
  */
 public class SkillTreeScreen extends Screen {
-    private static final int NODE = 22, STEP_X = 30, STEP_Y = 52, COLUMNS = 11;
+    private static final int NODE = 22, STEP_X = 30, STEP_Y = 52, COLUMNS = 10;
     private Button buyButton;
     private ResourceLocation lastHovered;
     private int page;

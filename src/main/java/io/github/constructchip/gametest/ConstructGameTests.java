@@ -178,7 +178,7 @@ public final class ConstructGameTests {
     public static void skillTreeRulesAndPrices(GameTestHelper h) {
         Registry<Skill> reg = ModSkills.get(h.getLevel().registryAccess());
         boolean vista = net.neoforged.fml.ModList.get().isLoaded("vista");
-        h.assertTrue(reg.size() == (vista ? 28 : 25), "skills loaded: " + reg.size() + " (vista " + vista + ")");
+        h.assertTrue(reg.size() == (vista ? 25 : 22), "skills loaded: " + reg.size() + " (vista " + vista + ")");
         h.assertTrue(vista == reg.containsKey(ConstructChip.id("camera_view")), "Vista skill condition not applied");
         ResourceLocation overclock = ConstructChip.id("overclock"), shortCircuit = ConstructChip.id("short_circuit");
         ChipSkills s = ChipSkills.DEFAULT;
@@ -248,88 +248,4 @@ public final class ConstructGameTests {
         h.succeed();
     }
 
-    // ---------------------------------------------------------------- cyberware
-
-    private static void implant(ServerPlayer p, io.github.constructchip.cyberware.Implant implant, int pos) {
-        var s = io.github.constructchip.cyberware.Cyberware.state(p);
-        s.rollIfNeeded(p.getRandom());
-        s.installed.set(pos, new ItemStack(io.github.constructchip.cyberware.CyberItems.IMPLANTS.get(implant).get()));
-        io.github.constructchip.cyberware.Cyberware.refreshAttributes(p);
-    }
-
-    @GameTest(template = "empty")
-    public static void cyberwareLoadCapacityAndFoodRule(GameTestHelper h) {
-        ServerPlayer p = player(h, 1, 1);
-        var s = io.github.constructchip.cyberware.Cyberware.state(p);
-        implant(p, io.github.constructchip.cyberware.Implant.WARP_DANCER, 0);
-        implant(p, io.github.constructchip.cyberware.Implant.BLOOD_PUMP, 4);
-        h.assertTrue(io.github.constructchip.cyberware.Cyberware.load(p) == 44, "load " + io.github.constructchip.cyberware.Cyberware.load(p));
-        int cap = io.github.constructchip.cyberware.Cyberware.capacity(p);
-        h.assertTrue(cap >= 160 && cap <= 320, "capacity " + cap);
-        s.capacityLevel = 5;
-        h.assertTrue(io.github.constructchip.cyberware.Cyberware.capacity(p) == Math.round(s.baseCapacity * 1.5f), "capacity x1.5");
-        implant(p, io.github.constructchip.cyberware.Implant.HOLLOW_BONES, 6);
-        h.assertTrue(io.github.constructchip.cyberware.Implant.HOLLOW_BONES.conflictsWith(io.github.constructchip.cyberware.Implant.TITANIUM_BONES), "hollow/titanium conflict");
-        h.assertTrue(p.getMaxHealth() == 16f, "hollow bones max health " + p.getMaxHealth());
-        done(h, p);
-    }
-
-    @GameTest(template = "empty")
-    public static void bloodPumpHealsThenCoolsDown(GameTestHelper h) {
-        ServerPlayer p = player(h, 1, 1);
-        implant(p, io.github.constructchip.cyberware.Implant.BLOOD_PUMP, 4);
-        p.setHealth(4f);
-        var first = io.github.constructchip.cyberware.CyberEffects.activate(p, io.github.constructchip.cyberware.CyberEffects.Action.CIRCULATORY);
-        h.assertTrue(first == null, "activation failed: " + (first == null ? "" : first.getString()));
-        h.assertTrue(p.getHealth() >= 10f, "not healed: " + p.getHealth());
-        h.assertTrue(io.github.constructchip.cyberware.CyberEffects.activate(p, io.github.constructchip.cyberware.CyberEffects.Action.CIRCULATORY) != null, "no cooldown");
-        h.assertTrue(io.github.constructchip.cyberware.CyberEffects.activate(p, io.github.constructchip.cyberware.CyberEffects.Action.OS) != null, "empty OS slot activated");
-        done(h, p);
-    }
-
-    @GameTest(template = "empty")
-    public static void cyberpsychosisClimbsAndImmunoRollsBack(GameTestHelper h) {
-        ServerPlayer p = player(h, 1, 1);
-        var s = io.github.constructchip.cyberware.Cyberware.state(p);
-        implant(p, io.github.constructchip.cyberware.Implant.WARP_DANCER, 0);
-        s.pressure = 800;
-        s.degradation = 338;
-        io.github.constructchip.cyberware.Psychosis.update(p);
-        h.assertTrue(s.phase == 2, "phase " + s.phase + " at degradation " + s.degradation);
-        io.github.constructchip.cyberware.Psychosis.dose(p);
-        h.assertTrue(s.degradation < 260 && s.pressure < 800, "dose didn't help: " + s.degradation + " / " + s.pressure);
-        io.github.constructchip.cyberware.Psychosis.update(p);
-        h.assertTrue(s.phase == 1, "no rollback, phase " + s.phase);
-        done(h, p);
-    }
-
-    @GameTest(template = "empty")
-    public static void shortCircuitShutsOffChrome(GameTestHelper h) {
-        ServerPlayer p = player(h, 1, 1);
-        var s = io.github.constructchip.cyberware.Cyberware.state(p);
-        implant(p, io.github.constructchip.cyberware.Implant.WARP_DANCER, 0);
-        h.assertTrue(io.github.constructchip.cyberware.CyberEffects.activate(p, io.github.constructchip.cyberware.CyberEffects.Action.OS) == null, "sandevistan");
-        long now = p.level().getGameTime();
-        h.assertTrue(s.isActive("OS", now), "not active");
-        io.github.constructchip.cyberware.Cyberware.shortCircuit(p, 200);
-        h.assertTrue(!s.isActive("OS", p.level().getGameTime() + 1), "still active after short circuit");
-        h.assertTrue(s.cooldown("CIRCULATORY", now) >= 199, "no lockout cooldown");
-        done(h, p);
-    }
-
-    @GameTest(template = "empty")
-    public static void paintRoundTripsOnTheItem(GameTestHelper h) {
-        int[] diff = new int[128 * 128];
-        diff[5] = 0xFFF90759;
-        diff[128 * 64 + 7] = 0xFF5EF6FF;
-        String data = io.github.constructchip.paint.Paint.encode(diff);
-        h.assertTrue(!data.isEmpty() && data.length() < io.github.constructchip.paint.Paint.MAX_LENGTH, "encoded length " + data.length());
-        ItemStack arms = new ItemStack(io.github.constructchip.cyberware.CyberItems.IMPLANTS.get(io.github.constructchip.cyberware.Implant.GORILLA_ARMS).get());
-        io.github.constructchip.paint.Paint.set(arms, "gorilla_arm_texture", data);
-        int[] back = io.github.constructchip.paint.Paint.decode(io.github.constructchip.paint.Paint.of(arms).get("gorilla_arm_texture"), diff.length);
-        h.assertTrue(back[5] == diff[5] && back[128 * 64 + 7] == diff[128 * 64 + 7] && back[6] == 0, "pixels changed");
-        h.assertTrue(io.github.constructchip.paint.Paint.encode(new int[16]).isEmpty(), "empty paint should store nothing");
-        h.assertTrue(io.github.constructchip.paint.Paint.textures(arms).size() == 2, "gorilla arms have two paintable textures");
-        h.succeed();
-    }
 }

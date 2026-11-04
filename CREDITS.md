@@ -4,10 +4,10 @@
   chip panel GUI texture, glitch post shader (`capri_glitch.fsh`, `capri_screen.vsh`) and sound effects. Used with the author's
   permission. Their sounds are made from CC0 recordings listed in `src/main/resources/licenses/SOUNDS_CC0.txt`.
   The mod logo is also their chip art.
-  Red Lightning, Lightning Storm, Patch Job and Ping's side count are our own implementations of ideas from that mod.
-- **A24-N22** ([Project: Edgerunner](https://www.curseforge.com/minecraft/mc-mods/project-edgerunner)): the ripperdoc
-  station model, texture, idle and sitting animations, and the whole cyberware system's design, item art, implant 3D models and animations,
-  painting station model, guide text, effect icons, Ripperdoc villager texture and sounds. Used with the author's permission. The cyberware code is our own re-implementation.
+  Fry, High Voltage, Patch Job and Ping's side count are our own implementations of ideas from that mod.
+- **A24-N22** ([Project: Edgerunner](https://www.curseforge.com/minecraft/mc-mods/project-edgerunner)): the Soul Killer
+  station model, texture, idle animation and sitting animation. Used with the author's permission. Nothing else from that
+  mod is included.
 - **GeckoLib** renders the station model; **PlayerAnimator** (KosmX) plays the sitting animation (also by A24-N22).
 - **Create** (MIT): the Soul Killer's seat positioning follows the approach of Create's seats.
 - **Rajdhani** font (HUD text): Copyright (c) 2014, Indian Type Foundry. SIL Open Font License 1.1, see

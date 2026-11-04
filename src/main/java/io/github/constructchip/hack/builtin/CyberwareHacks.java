@@ -33,7 +33,6 @@ public final class CyberwareHacks {
             }
             int ticks = 200;
             int hacked = CyberwareApi.disable(target, ticks, false);
-            if (target instanceof net.minecraft.server.level.ServerPlayer chromed) io.github.constructchip.cyberware.Cyberware.shortCircuit(chromed, ticks);
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 1));
             target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, ticks, 0));
             DamageSource jolt = ctx.host().damageSources().indirectMagic(ctx.construct(), ctx.host());
@@ -55,7 +54,6 @@ public final class CyberwareHacks {
             if (!(e instanceof LivingEntity target)) return HackResult.fail(Component.translatable("message.constructchip.hack.wrong_target"));
             int ticks = 600;
             int hacked = CyberwareApi.disable(target, ticks, true);
-            if (target instanceof net.minecraft.server.level.ServerPlayer chromed) io.github.constructchip.cyberware.Cyberware.shortCircuit(chromed, ticks);
             List<MobEffectInstance> buffs = target.getActiveEffects().stream().filter(x -> x.getEffect().value().isBeneficial()).toList();
             for (MobEffectInstance buff : buffs) target.removeEffect(buff.getEffect());
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 2));

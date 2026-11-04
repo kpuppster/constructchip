@@ -28,7 +28,6 @@ public final class ClientSetup {
         event.<ItemEntity>registerEntityRenderer(ModEntities.CHIP_ITEM.get(), ItemEntityRenderer::new);
         event.registerEntityRenderer(ModEntities.CHAIR_SEAT.get(), NoopRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.SOUL_KILLER.get(), ctx -> new SoulKillerRenderer());
-        event.registerBlockEntityRenderer(ModBlockEntities.PAINTING_STATION.get(), ctx -> new PaintingStationRenderers.BlockRenderer());
     }
 
     /** Captured chips show the full-color chip art (red Mk.1, cyan Mk.2, gold Mk.3); blank ones the greyed version. */
@@ -43,17 +42,6 @@ public final class ClientSetup {
         });
     }
 
-    /** Implant models on every player skin type. */
-    @SubscribeEvent
-    @SuppressWarnings("unchecked")
-    public static void addLayers(EntityRenderersEvent.AddLayers event) {
-        for (net.minecraft.client.resources.PlayerSkin.Model skin : event.getSkins()) {
-            if (event.getSkin(skin) instanceof net.minecraft.client.renderer.entity.player.PlayerRenderer pr) {
-                pr.addLayer(new ImplantLayer(pr));
-            }
-        }
-    }
-
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
         event.register(Keybinds.USE_HACK);
@@ -62,17 +50,11 @@ public final class ClientSetup {
         event.register(Keybinds.HOST_INVENTORY);
         event.register(Keybinds.SKILL_TREE);
         event.register(Keybinds.WHEEL);
-        event.register(Keybinds.CYBER_OS);
-        event.register(Keybinds.CYBER_ARMS);
-        event.register(Keybinds.CYBER_PUMP);
-        event.register(Keybinds.ZOOM);
     }
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenus.HOST_INVENTORY.get(), HostInventoryScreen::new);
-        event.register(ModMenus.SURGERY.get(), SurgeryScreen::new);
-        event.register(ModMenus.PAINTING.get(), PaintingScreen::new);
     }
 
     @SubscribeEvent

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "constructchip:item/cyberware/iconic_skeletal_chassis_t5"
-  }
-}

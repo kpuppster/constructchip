@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "constructchip:item/cyberware/trail_tracker_array_t3"
-  }
-}

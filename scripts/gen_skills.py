@@ -19,7 +19,7 @@ SKILLS = [
 
     # INTRUSION: offence against creatures and cyberware
     ("deep_scan", "intrusion", 1, 1, ["scanner"], 2, "minecraft:ender_eye", None, [("scan_range", 8)],
-     "Deep Scan", "The Scanner also shows status effects, equipment and installed cyberware, and reaches 8 blocks further.", None),
+     "Deep Scan", "The Scanner also shows status effects and equipment, and reaches 8 blocks further.", None),
     ("ping", "intrusion", 1, 1, ["scanner"], 1, "minecraft:bell", "ping", [],
      "Ping", "Quickhack: hostile creatures within 24 blocks glow through walls for you and your host for 10 s, and you hear how many are on each side.", None),
     ("short_circuit", "intrusion", 2, 2, ["deep_scan"], 2, "minecraft:redstone", "short_circuit", [],
@@ -51,12 +51,6 @@ SKILLS = [
      "Patch Job", "Quickhack: heals your host for 10, gives 4 extra hearts for 30 s, and cures poison, wither and fire.", None),
 
     # SUPPORT / chrome: working with the host's cyberware
-    ("chrome_link", "support", 1, 1, ["scanner"], 10, "minecraft:chain", None, [],
-     "Chrome Link", "Your HUD shows your host's cyberware load and cyberpsychosis.", None),
-    ("neural_buffer", "support", 2, 2, ["chrome_link"], 10, "minecraft:soul_lantern", None, [],
-     "Neural Buffer", "You steady your host's mind: their cyberware pressure fades faster and cyberpsychosis grows 25% slower.", None),
-    ("chrome_override", "support", 3, 3, ["neural_buffer"], 10, "minecraft:echo_shard", "chrome_override", [],
-     "Chrome Override", "Quickhack: fire your host's Sandevistan for them, or their Blood Pump if the Sandevistan isn't ready.", None),
 
     # SYSTEMS: RAM and devices
     ("ram_expansion", "systems", 1, 1, ["scanner"], 6, "minecraft:amethyst_shard", None, [("max_ram", 2)],

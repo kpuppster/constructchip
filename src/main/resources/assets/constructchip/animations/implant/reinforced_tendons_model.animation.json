@@ -1,9 +1,0 @@
-{
-	"format_version": "1.8.0",
-	"animations": {
-		"animation.reinforced_tendons.idle": {
-			"loop": true,
-			"bones": {}
-		}
-	}
-}

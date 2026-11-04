@@ -29,15 +29,10 @@ public final class ConstructChip {
     public ConstructChip(IEventBus modBus, ModContainer container) {
         ModGameRules.init();
         container.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
-        container.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModDataComponents.REGISTER.register(modBus);
         ModSounds.REGISTER.register(modBus);
         ModBlocks.REGISTER.register(modBus);
-        io.github.constructchip.cyberware.CyberItems.register();
         ModItems.REGISTER.register(modBus);
-        io.github.constructchip.cyberware.CyberEffectsRegistry.REGISTER.register(modBus);
-        io.github.constructchip.villager.Ripperdoc.POI.register(modBus);
-        io.github.constructchip.villager.Ripperdoc.PROFESSIONS.register(modBus);
         ModBlockEntities.REGISTER.register(modBus);
         ModCreativeTabs.REGISTER.register(modBus);
         ModEntities.REGISTER.register(modBus);

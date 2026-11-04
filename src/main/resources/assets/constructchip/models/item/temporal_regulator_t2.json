@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "constructchip:item/cyberware/temporal_regulator_t2"
-  }
-}

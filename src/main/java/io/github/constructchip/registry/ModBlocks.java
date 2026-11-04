@@ -22,9 +22,5 @@ public final class ModBlocks {
                     .sound(SoundType.NETHERITE_BLOCK).noOcclusion() // the 3D model doesn't cover the block below
                     .lightLevel(s -> s.getValue(SoulKillerBlock.ACTIVE) ? 10 : 2)));
 
-    public static final DeferredBlock<io.github.constructchip.paint.PaintingStationBlock> PAINTING_STATION = REGISTER.register("painting_station",
-            () -> new io.github.constructchip.paint.PaintingStationBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY)
-                    .strength(3f, 6f).sound(SoundType.METAL).noOcclusion().lightLevel(s -> 6)));
-
     private ModBlocks() {}
 }

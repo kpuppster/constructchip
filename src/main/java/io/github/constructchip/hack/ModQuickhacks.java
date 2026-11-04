@@ -39,8 +39,6 @@ public final class ModQuickhacks {
             REGISTER.register("red_lightning", LightningHacks.RedLightning::new);
     public static final DeferredHolder<Quickhack, LightningHacks.Storm> LIGHTNING_STORM =
             REGISTER.register("lightning_storm", LightningHacks.Storm::new);
-    public static final DeferredHolder<Quickhack, io.github.constructchip.hack.builtin.ChromeOverrideHack> CHROME_OVERRIDE =
-            REGISTER.register("chrome_override", io.github.constructchip.hack.builtin.ChromeOverrideHack::new);
     public static final DeferredHolder<Quickhack, PatchJobHack> PATCH_JOB = REGISTER.register("patch_job", PatchJobHack::new);
     public static final DeferredHolder<Quickhack, AdrenalSurgeHack> ADRENAL_SURGE = REGISTER.register("adrenal_surge", AdrenalSurgeHack::new);
     public static final DeferredHolder<Quickhack, DeviceHacks.RemoteSwitch> REMOTE_SWITCH =

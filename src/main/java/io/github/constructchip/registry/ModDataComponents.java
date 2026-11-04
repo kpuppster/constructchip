@@ -52,23 +52,5 @@ public final class ModDataComponents {
                     .networkSynchronized(ByteBufCodecs.VAR_INT)
                     .build());
 
-    /** Cyberware upgrade level (0..4), bought at the Ripperdoc with Internal Parts. */
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CYBER_UPGRADE =
-            REGISTER.register("cyber_upgrade", () -> DataComponentType.<Integer>builder()
-                    .persistent(Codec.intRange(0, 4)).networkSynchronized(ByteBufCodecs.VAR_INT).build());
-
-    /** Gorilla Arms element: thermal, electric, toxic or frozen. */
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> ARMS_ELEMENT =
-            REGISTER.register("arms_element", () -> DataComponentType.<String>builder()
-                    .persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
-
-    /** Implant paint: model texture name → painted pixels (see paint.Paint). */
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.Map<String, String>>> CYBER_PAINT =
-            REGISTER.register("cyber_paint", () -> DataComponentType.<java.util.Map<String, String>>builder()
-                    .persistent(Codec.unboundedMap(Codec.STRING, Codec.STRING))
-                    .networkSynchronized(ByteBufCodecs.<io.netty.buffer.ByteBuf, String, String, java.util.Map<String, String>>map(
-                            java.util.HashMap::new, ByteBufCodecs.stringUtf8(64), ByteBufCodecs.stringUtf8(io.github.constructchip.paint.Paint.MAX_LENGTH)))
-                    .build());
-
     private ModDataComponents() {}
 }

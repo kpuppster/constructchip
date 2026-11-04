@@ -76,13 +76,6 @@ public class SoulKillerBlock extends BaseEntityBlock {
     /** Empty hand: sit down (if the chair is free). */
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (player.isShiftKeyDown()) { // Ripperdoc surgery
-            if (player instanceof ServerPlayer sp) {
-                sp.openMenu(new net.minecraft.world.SimpleMenuProvider((id, inv, p) -> io.github.constructchip.cyberware.SurgeryMenu.open(id, inv, sp),
-                        Component.translatable("container.constructchip.surgery")));
-            }
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        }
         if (player.isPassenger()) return InteractionResult.PASS;
         if (!level.getEntitiesOfClass(ChairSeatEntity.class, new AABB(pos).inflate(3), s -> s.chair().equals(pos)).isEmpty()) {
             return InteractionResult.PASS;

@@ -87,24 +87,3 @@ Camera Jack puts Player2 behind the camera; Camera Blind cuts the feed for 20 s 
 40. Quit the game mid-capture and reload: the machine resets and returns the chip; the player isn't captured.
 41. Right-click another player with a captured chip: they get a consent screen; accept installs, decline doesn't.
 42. Mk.2 / Mk.3 chips (cyan / gold) move the construct up a tier and recolor it (wrong tier is refused); recipes show up in the recipe book.
-
-## Cyberware
-Automated in CI: load/capacity/conflicts, Blood Pump heal + cooldown, cyberpsychosis climb + immuno rollback, Short Circuit.
-By hand (creative tab "Cyberware" has everything):
-43. Sneak + right-click the Soul Killer: surgery screen; install Warp Dancer, Gorilla Arms, Kiroshi, Blood Pump, Tendons and two skeleton
-    pieces; Hollow Bones refuses Titanium Bones next to it. The load bar turns red over capacity. Close: glitch + Ripperdoc sound.
-44. X: Sandevistan slows nearby mobs, you speed up; HUD shows the timer and then the cooldown. B: arms out, punch a zombie (bleeds,
-    Fury rises); at 50 Fury right-click air = Slam. Bare-handed iron ore mining works with arms out.
-45. V with Clairvoyant/Stalker/Doomsayer/Oracle: hostiles glow / trails / hazard markers. Hold C to zoom. Aiming shows enemy HP.
-46. J heals. Double jump with Tendons; crouch-charge + jump with Ankles; no fall damage from either.
-47. With chrome installed, food doesn't heal. Overload yourself: pressure and cyberpsychosis climb, phases show symptoms;
-    immunosuppressants pull you back. In Phase V the terminal countdown kills you, and you respawn in Phase IV.
-48. Villager next to the station becomes a Ripperdoc with the trades listed in RUNNING.md.
-49. As a construct with Chrome Link: host chrome line on the HUD. Chrome Override fires the host's Sandevistan. Short Circuit
-    a chromed player: their Sandevistan/arms stop and go on cooldown.
-50. Implant models visible on yourself (F5) and on the other player; toggles in constructchip-client.toml hide each one. Normal arms
-    vanish under the Gorilla Arms in third person, first-person hands stay normal. Electric arms use the electric texture.
-51. Grab & throw a zombie with the arms out; it takes damage on impact. Bosses can't be grabbed.
-52. Painting station: paint the Gorilla Arms, Save, install: the paint shows on your arms (also for the other player).
-53. Guide opens and pages flip. Phase V: berserk episode takes control near a mob, you can't be hurt, arrows bounce off.
-    Phase II+: red eyes in the dark. Phase III+: other players' name tags read HOSTILE.

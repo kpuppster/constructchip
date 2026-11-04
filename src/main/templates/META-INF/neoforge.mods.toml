@@ -15,7 +15,7 @@ displayName="${mod_name}" #mandatory
 
 logoFile="constructchip_logo.png"
 
-credits="Chip art, GUI panel, glitch shader and sounds by Ikeda (Capri mod), used with permission. Soul Killer station model and texture by A24-N22 (Project: Edgerunner), used with permission. Rajdhani font: Indian Type Foundry (SIL OFL 1.1)."
+credits="Chip art, GUI panel, glitch shader and sounds by Ikeda (Capri mod), used with permission. Soul Killer station model, texture and sitting animation by A24-N22 (Project: Edgerunner), used with permission. Rajdhani font: Indian Type Foundry (SIL OFL 1.1)."
 
 description='''
 A captured player rides along on a personality construct chip in their host's head, acting only through RAM-costing quickhacks.

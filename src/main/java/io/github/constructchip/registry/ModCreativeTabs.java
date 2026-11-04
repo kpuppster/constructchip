@@ -21,19 +21,5 @@ public final class ModCreativeTabs {
             })
             .build());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CYBERWARE = REGISTER.register("cyberware", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.constructchip.cyberware"))
-            .icon(() -> io.github.constructchip.cyberware.CyberItems.IMPLANTS.get(io.github.constructchip.cyberware.Implant.GORILLA_ARMS).get().getDefaultInstance())
-            .withTabsBefore(MAIN.getKey())
-            .displayItems((params, out) -> {
-                out.accept(io.github.constructchip.cyberware.CyberItems.GUIDE.get());
-                out.accept(ModItems.PAINTING_STATION.get());
-                out.accept(io.github.constructchip.cyberware.CyberItems.SOLDERING_IRON.get());
-                out.accept(io.github.constructchip.cyberware.CyberItems.IMMUNOSUPPRESSANTS.get());
-                io.github.constructchip.cyberware.CyberItems.IMPLANTS.values().forEach(i -> out.accept(i.get()));
-                io.github.constructchip.cyberware.CyberItems.PARTS.values().forEach(i -> out.accept(i.get()));
-            })
-            .build());
-
     private ModCreativeTabs() {}
 }

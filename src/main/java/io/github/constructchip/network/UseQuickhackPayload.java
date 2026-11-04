@@ -27,12 +27,7 @@ public record UseQuickhackPayload(ResourceLocation hack, HackTarget target) impl
     static void handle(UseQuickhackPayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
             if (!(context.player() instanceof ServerPlayer construct)) return;
-            QuickhackService.Attempt attempt = QuickhackService.use(construct, payload.hack(), payload.target());
-            // Failures go to the action bar; hack output (e.g. scan results) goes to chat.
-            attempt.message().ifPresent(msg -> {
-                if (attempt.ok()) construct.sendSystemMessage(msg);
-                else construct.displayClientMessage(msg, true);
-            });
+            QuickhackService.deliver(construct, QuickhackService.use(construct, payload.hack(), payload.target()));
         });
     }
 }

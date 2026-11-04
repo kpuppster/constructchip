@@ -97,9 +97,8 @@ public final class ScannerHack implements Quickhack {
         float base = (float) host.getAttributeValue(Attributes.ATTACK_DAMAGE);
         float withEnchants = EnchantmentHelper.modifyDamage(ctx.level(), host.getMainHandItem(), living, source, base);
         float dealt = CombatRules.getDamageAfterAbsorb(living, withEnchants, source, armor, toughness);
-        int hits = dealt > 0 ? (int) Math.ceil(living.getHealth() / dealt) : -1;
-        out.append(line("message.constructchip.scan.damage", String.format(Locale.ROOT, "%.1f", dealt),
-                hits > 0 ? String.valueOf(hits) : "∞"));
+        out.append(line("message.constructchip.scan.damage", host.getGameProfile().getName(),
+                String.format(Locale.ROOT, "%.1f", dealt)));
         return out;
     }
 }

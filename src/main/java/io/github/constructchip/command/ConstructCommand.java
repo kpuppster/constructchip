@@ -138,6 +138,8 @@ public final class ConstructCommand {
                                 .suggests((ctx, builder) -> SharedSuggestionProvider.suggestResource(
                                         ModQuickhacks.REGISTRY.keySet(), builder))
                                 .executes(ctx -> useHack(ctx, HackTarget.NONE))
+                                // whatever the host is looking at, within the hack's range
+                                .then(Commands.literal("look").executes(ctx -> useHack(ctx, null)))
                                 .then(Commands.literal("entity")
                                         .then(Commands.argument("target", EntityArgument.entity())
                                                 .executes(ctx -> useHack(ctx,
@@ -369,16 +371,26 @@ public final class ConstructCommand {
 
     // ------------------------------------------------------------ skills
 
+    /**
+     * Runs a hack as the executing player (normally via {@code /execute as <construct> run ...}). The construct sees the
+     * result, like they would with the keybind. The command sender only gets a one-line confirmation.
+     *
+     * @param target explicit target, or null for "whatever the host is looking at"
+     */
     private static int useHack(CommandContext<CommandSourceStack> ctx, HackTarget target) throws CommandSyntaxException {
         ServerPlayer construct = ctx.getSource().getPlayerOrException();
         ResourceLocation hackId = ResourceLocationArgument.getId(ctx, "hack");
-        QuickhackService.Attempt attempt = QuickhackService.use(construct, hackId, target);
-        Component msg = attempt.message().orElse(Component.translatable(attempt.status().translationKey()));
+        QuickhackService.Attempt attempt = target == null
+                ? QuickhackService.useLooking(construct, hackId)
+                : QuickhackService.use(construct, hackId, target);
+        QuickhackService.deliver(construct, attempt);
+        String name = construct.getGameProfile().getName();
         if (attempt.ok()) {
-            ctx.getSource().sendSuccess(() -> msg, false);
+            ctx.getSource().sendSuccess(() -> Component.translatable("commands.constructchip.hack.ran", hackId.toString(), name), false);
             return 1;
         }
-        ctx.getSource().sendFailure(msg);
+        ctx.getSource().sendFailure(Component.translatable("commands.constructchip.hack.failed", hackId.toString(), name,
+                attempt.message().orElse(Component.translatable(attempt.status().translationKey()))));
         return 0;
     }
 

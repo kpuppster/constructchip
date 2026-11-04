@@ -21,18 +21,21 @@ Two clients (or a client + a second account): **A** = host/admin, **B** = constr
     Install the chip and buy again without holding it. Check the price keeps going up after eject and a hand-over.
 
 ## Step 3: quickhack validator (Player1 types everything; `/execute as Player2 run ...` runs it as the construct)
+Results show up in **Player2's** chat (failures on Player2's action bar). Player1 only gets a one-line confirmation.
 16. Give Player2 a chip and install it on Player1 (`/construct givechip Player1 Player2`, then right-click).
-    Stand near a stone block and a cow. Run `/execute as Player2 run construct hack constructchip:scanner block <x y z of the stone>`
-    (press Tab to fill in the coordinates of the block you're looking at). Player2's chat should show the stone's info: hardness 1.5, pickaxe, wood tier.
-17. Same with `entity @e[type=cow,limit=1,sort=nearest]`: health, armor, and how hard Player1 hits it. Then hold a sword and scan again; the damage should go up.
-18. Failures. Each should give a clear message:
+    As Player1, look at a stone block and run `/execute as Player2 run construct hack constructchip:scanner look`.
+    Player2's chat should show the stone's info: hardness 1.5, pickaxe, wood tier.
+17. Look at a cow and run the same command: health, armor, and `Player1 damage: 1.0`. Hold a sword and scan again; the damage should go up.
+18. Failures. Each should give a clear message on Player2's action bar:
     - run it twice quickly (cooldown 0.5 s)
-    - target a block more than 16 blocks away (out of range)
-    - target a cow behind a wall (line of sight)
-    - run it with no target
+    - look at the sky, or at something more than 16 blocks away: "Nothing within 16 blocks"
+    - `... scanner block <x y z of an air block>`: "Nothing there to target" (air is never scanned)
+    - `... scanner block <x y z of a block 30 blocks away>`: out of range
+    - `... scanner entity @e[type=cow,limit=1,sort=nearest]` with a wall in between: line of sight
     - run it with Player2's chip ejected (not installed)
-    - `/execute as Player1 run construct hack constructchip:scanner` (not a construct)
-19. Deep Scan: hold the chip (eject it first), `/construct skill points 5`, `/construct skill unlock constructchip:deep_scan`, reinstall. Blocks 20 blocks away should now scan (range 24).
+    - `/execute as Player1 run construct hack constructchip:scanner look` (not a construct)
+19. Deep Scan: hold the chip (eject it first), `/construct skill points 5`, `/construct skill unlock constructchip:deep_scan`, reinstall.
+    Blocks 20 blocks away should now scan with `look` (range 24).
 
 ## Step 4: capture snapshot and restore
 20. Give Player2 a mixed inventory first: armor on, something in the offhand, a full hotbar, enchanted items, a filled shulker box,

@@ -33,7 +33,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -55,7 +57,7 @@ public final class QuickhackService {
     public enum Status {
         OK, NOT_A_CONSTRUCT, CHIP_NOT_INSTALLED, HOST_OFFLINE, HOST_UNAVAILABLE, CHIP_INVALID, UNKNOWN_HACK,
         NOT_UNLOCKED, LOCKED_OUT, ON_COOLDOWN, NO_TARGET, WRONG_TARGET, TARGET_NOT_FOUND, OUT_OF_RANGE,
-        NO_LINE_OF_SIGHT, NOT_ENOUGH_RAM, HACK_FAILED;
+        NO_LINE_OF_SIGHT, NOTHING_IN_RANGE, NOT_ENOUGH_RAM, HACK_FAILED;
 
         public String translationKey() {
             return "message.constructchip.hack." + name().toLowerCase(Locale.ROOT);
@@ -128,7 +130,7 @@ public final class QuickhackService {
                 entity = Optional.of(e);
             } else {
                 BlockPos pos = target.pos();
-                if (!level.isLoaded(pos)) return fail(Status.TARGET_NOT_FOUND);
+                if (!level.isLoaded(pos) || level.getBlockState(pos).isAir()) return fail(Status.TARGET_NOT_FOUND);
                 Vec3 center = Vec3.atCenterOf(pos);
                 if (eye.distanceToSqr(center) > range * range) return fail(Status.OUT_OF_RANGE, Math.round(range));
                 if (hack.requiresLineOfSight() && !canSee(level, host, eye, center, pos)) return fail(Status.NO_LINE_OF_SIGHT);
@@ -174,6 +176,65 @@ public final class QuickhackService {
         host.setData(ModAttachments.INSTALLED_CHIP, chip); // mark the attachment dirty so it saves
         // TODO(step 6): send the construct a RAM/cooldown sync payload here (RAM is synced on spend only).
         return new Attempt(Status.OK, result.message());
+    }
+
+    /** The host the construct's chip is installed in, if online. */
+    public static Optional<ServerPlayer> hostOf(ServerPlayer construct) {
+        Optional<UUID> chipId = construct.getData(ModAttachments.CONSTRUCT_STATE).chipId();
+        if (chipId.isEmpty()) return Optional.empty();
+        return ChipRegistry.get(construct.server).get(chipId.get())
+                .map(ChipEntry::location)
+                .filter(loc -> loc.state() == ChipLocation.State.INSTALLED)
+                .flatMap(ChipLocation::holder)
+                .map(construct.server.getPlayerList()::getPlayer);
+    }
+
+    /**
+     * Uses a hack on whatever the host is looking at: the nearest creature or non-air block along the host's view,
+     * up to the hack's range. Nothing there → NOTHING_IN_RANGE. (The keybind will send a client-side raycast instead;
+     * {@link #use} re-checks range either way.)
+     */
+    public static Attempt useLooking(ServerPlayer construct, ResourceLocation hackId) {
+        Optional<ServerPlayer> host = hostOf(construct);
+        Quickhack hack = ModQuickhacks.REGISTRY.get(hackId);
+        if (host.isEmpty() || hack == null || hack.targetType() == Quickhack.TargetType.NONE) {
+            return use(construct, hackId, HackTarget.NONE); // reports the right failure, or runs a no-target hack
+        }
+        ItemStack chip = ChipTracker.installedChip(host.get());
+        double range = hack.range(ChipStats.of(chip, ModSkills.get(construct.server.registryAccess())));
+        HackTarget target = lookTarget(host.get(), range, construct, hack.targetType());
+        if (target.kind() == HackTarget.Kind.NONE) return fail(Status.NOTHING_IN_RANGE, Math.round(range));
+        return use(construct, hackId, target);
+    }
+
+    /** Nearest creature or block the viewer is looking at within {@code range}, filtered by what the hack accepts. */
+    public static HackTarget lookTarget(ServerPlayer viewer, double range, Entity exclude, Quickhack.TargetType type) {
+        Vec3 eye = viewer.getEyePosition();
+        Vec3 dir = viewer.getViewVector(1f);
+        Vec3 end = eye.add(dir.scale(range));
+        BlockHitResult blockHit = viewer.level().clip(
+                new ClipContext(eye, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, viewer));
+        boolean hitBlock = blockHit.getType() == HitResult.Type.BLOCK;
+        double maxEntityDistSq = hitBlock ? eye.distanceToSqr(blockHit.getLocation()) : range * range;
+        if (type != Quickhack.TargetType.BLOCK) {
+            AABB box = viewer.getBoundingBox().expandTowards(dir.scale(range)).inflate(1.0);
+            EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(viewer, eye, end, box,
+                    e -> e != exclude && !e.isSpectator() && e.isPickable(), maxEntityDistSq);
+            if (entityHit != null) return HackTarget.entity(entityHit.getEntity().getId());
+        }
+        if (hitBlock && type != Quickhack.TargetType.ENTITY) return HackTarget.block(blockHit.getBlockPos());
+        return HackTarget.NONE;
+    }
+
+    /**
+     * Shows the outcome to the construct: hack output in chat, failures on the action bar. Used by the payload and
+     * the debug command, so the construct always sees it, whoever triggered it.
+     */
+    public static void deliver(ServerPlayer construct, Attempt attempt) {
+        attempt.message().ifPresent(msg -> {
+            if (attempt.ok()) construct.sendSystemMessage(msg);
+            else construct.displayClientMessage(msg, true);
+        });
     }
 
     private static String seconds(long ticks) {

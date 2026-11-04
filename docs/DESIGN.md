@@ -114,8 +114,8 @@ From class signatures only (**VERIFY** with a decompiler):
 `sorcery_age_incarnation` (Forge 1.20.1, ARR, requires the JJK mod). Use it only as a design cross-check. Ask MrShrimpyUW before reusing anything.
 
 ## Build order
-1. Chip components, chip item, `/construct givechip`. **(written, not yet compiled)**
-2. Install/eject with the chipId check, `ChipRegistry`, anchor logic. **(written, not yet compiled; see docs/TESTING.md)**
+1. Chip components, chip item, `/construct givechip`. **(done, tested in game)**
+2. Install/eject with the chipId check, `ChipRegistry`, anchor logic. **(done, tested in game; see docs/TESTING.md)**
 3. Skill registry **(written)** + central hack validator
 4. Save/restore of captured-player state (test heavily by command)
 5. Ghost restrictions, host link, client render hiding, sync payload

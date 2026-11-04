@@ -6,4 +6,4 @@ Design decisions and the build order live in `docs/DESIGN.md`. Read it before yo
 - `chip/`: data component records (immutable; replace them, never mutate) and `ChipStacks` helpers. `registry/`: DeferredRegisters. `command/`: `/construct`.
 - All Vista code goes in one compat package behind `ModList.get().isLoaded("vista")`.
 - Never commit or ship third-party jars (`libs/`, `reference/` are gitignored).
-- Build: `./gradlew build`. Dev client: `./gradlew runClient`. This needs `maven.neoforged.net` to be reachable.
+- Build: `./gradlew build`. Dev clients: `./gradlew runClient` (Player1) and `runClient2` (Player2). Beginner guide: `docs/RUNNING.md`. This needs `maven.neoforged.net` to be reachable.

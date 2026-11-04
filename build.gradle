@@ -54,7 +54,17 @@ neoForge {
     runs {
         client {
             client()
+            // Fixed name so two test clients don't collide (both would be "Dev" otherwise).
+            programArguments.addAll '--username', 'Player1'
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        // Second test player: ./gradlew runClient2 (own game folder, so settings and worlds don't clash).
+        client2 {
+            client()
+            gameDirectory = project.file('run-client2')
+            programArguments.addAll '--username', 'Player2'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 

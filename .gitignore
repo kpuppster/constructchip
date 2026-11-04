@@ -42,3 +42,6 @@ repo/
 ### Reference / third-party jars (never commit or ship) ###
 libs/
 reference/
+
+### Second test client ###
+run-client2/

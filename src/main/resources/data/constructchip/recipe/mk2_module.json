@@ -2,22 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "BAB",
-    "ATA",
-    "BPB"
+    "GAG",
+    "ACA",
+    "GRG"
   ],
   "key": {
-    "B": {
-      "item": "create:brass_ingot"
+    "G": {
+      "item": "minecraft:gold_ingot"
     },
     "A": {
       "item": "minecraft:amethyst_shard"
     },
-    "T": {
-      "item": "create:electron_tube"
+    "C": {
+      "item": "minecraft:comparator"
     },
-    "P": {
-      "item": "create:precision_mechanism"
+    "R": {
+      "item": "minecraft:redstone_block"
     }
   },
   "result": {

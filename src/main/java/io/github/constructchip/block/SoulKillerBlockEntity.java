@@ -1,7 +1,5 @@
 package io.github.constructchip.block;
 
-import com.simibubi.create.content.contraptions.actors.seat.SeatEntity;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import io.github.constructchip.ConstructChip;
 import io.github.constructchip.ModGameRules;
 import io.github.constructchip.attachment.ModAttachments;
@@ -14,7 +12,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -34,18 +31,17 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Capture state machine: IDLE → SEATED (a player sits on a Create seat within 2 blocks) → AWAITING_CONSENT (an
- * operator used a blank chip on the machine; the seated player gets a consent screen) → CAPTURING (5 s; seat,
- * rotation and operator re-checked every tick) → DONE (player captured, chip handed to the operator) → IDLE.
+ * Capture state machine: IDLE → SEATED (a player sits in the chair) → AWAITING_CONSENT (an operator used a blank
+ * chip on the chair; the seated player gets a consent screen) → CAPTURING (5 s; seat, power and operator re-checked
+ * every tick) → DONE (player captured, chip handed to the operator) → IDLE.
  *
- * <p>Needs Create rotation: any kinetic block touching the machine spinning at {@link #MIN_RPM} or more. The blank
+ * <p>Needs redstone power (lever, button held, redstone block, etc. next to the chair). The blank
  * chip is held inside while waiting and comes back on any abort. A machine loaded mid-capture (crash or
  * chunk unload) aborts and pops the chip out. The player is never captured without having accepted.
  */
 public class SoulKillerBlockEntity extends BlockEntity {
-    public static final float MIN_RPM = 32f;
     public static final int CAPTURE_TICKS = 100;
-    public static final double SEAT_RANGE = 2.0, OPERATOR_RANGE = 16.0;
+    public static final double OPERATOR_RANGE = 16.0;
 
     public enum State { IDLE, SEATED, AWAITING_CONSENT, CAPTURING, DONE }
 
@@ -63,20 +59,14 @@ public class SoulKillerBlockEntity extends BlockEntity {
     // ------------------------------------------------------------ checks
 
     public boolean isPowered() {
-        if (level == null) return false;
-        for (Direction d : Direction.values()) {
-            if (level.getBlockEntity(worldPosition.relative(d)) instanceof KineticBlockEntity k && Math.abs(k.getSpeed()) >= MIN_RPM) {
-                return true;
-            }
-        }
-        return false;
+        return level != null && level.hasNeighborSignal(worldPosition);
     }
 
-    /** The player sitting on a Create seat near the machine, if any. */
+    /** The player sitting in this chair, if any. */
     public Optional<ServerPlayer> findSeated() {
         if (level == null) return Optional.empty();
-        List<SeatEntity> seats = level.getEntitiesOfClass(SeatEntity.class, new AABB(worldPosition).inflate(SEAT_RANGE));
-        for (SeatEntity seat : seats) {
+        List<ChairSeatEntity> seats = level.getEntitiesOfClass(ChairSeatEntity.class, new AABB(worldPosition));
+        for (ChairSeatEntity seat : seats) {
             if (seat.getFirstPassenger() instanceof ServerPlayer p) return Optional.of(p);
         }
         return Optional.empty();
@@ -89,7 +79,7 @@ public class SoulKillerBlockEntity extends BlockEntity {
     @Nullable
     private Component problemFor(ServerPlayer target, @Nullable ServerPlayer op) {
         MinecraftServer server = target.server;
-        if (!isPowered()) return Component.translatable("message.constructchip.soul_killer.no_power", (int) MIN_RPM);
+        if (!isPowered()) return Component.translatable("message.constructchip.soul_killer.no_power");
         if (!stillSeated(target)) return Component.translatable("message.constructchip.soul_killer.not_seated");
         if (op == null || op.level() != level || op.distanceToSqr(worldPosition.getCenter()) > OPERATOR_RANGE * OPERATOR_RANGE) {
             return Component.translatable("message.constructchip.soul_killer.operator_left");

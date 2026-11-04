@@ -53,7 +53,7 @@ Results show up in **Player2's** chat (failures on Player2's action bar). Player
 
 ## Steps 5-11 (full mod)
 Automated checks in CI already cover: capture/restore, install, the Scanner checks, the dupe guard, skill rules and prices,
-Overclock and lockout, and that the server and client start with Create and Vista. Check these by hand:
+Overclock and lockout, and that the server and client start with Vista. Check these by hand:
 
 **Ghost (5):** capture Player2 and install the chip on Player1.
 27. A third client (or Player2 un-captured, watching) must NOT see Player2. Player1 must see them. No name tag for others.
@@ -82,7 +82,7 @@ then unlock everything in the `K` screen.
 Camera Jack puts Player2 behind the camera; Camera Blind cuts the feed for 20 s and then it comes back.
 
 **Soul Killer + consent (11):** follow "Capturing someone in survival" in RUNNING.md, then:
-39. Decline, wait out the 30 s timeout, stand up mid-capture, stop the rotation, break the machine, and walk the operator away:
+39. Decline, wait out the 30 s timeout, stand up mid-capture, turn the redstone off, break the chair, and walk the operator away:
     each one aborts and returns the blank chip.
 40. Quit the game mid-capture and reload: the machine resets and returns the chip; the player isn't captured.
 41. Right-click another player with a captured chip: they get a consent screen; accept installs, decline doesn't.

@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import io.github.constructchip.registry.ModMenus;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -24,6 +25,7 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.<ItemEntity>registerEntityRenderer(ModEntities.CHIP_ITEM.get(), ItemEntityRenderer::new);
+        event.registerEntityRenderer(ModEntities.CHAIR_SEAT.get(), NoopRenderer::new);
     }
 
     /** Captured chips show the full-color chip art; blank ones the greyed version. */

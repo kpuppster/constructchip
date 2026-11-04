@@ -94,7 +94,7 @@ Then start the game again as in step 2.
 
 ## Playing with the full mod
 
-Create and Vista are downloaded and loaded automatically in the test game. To test without Vista, add
+Vista is downloaded and loaded automatically in the test game. To test without Vista, add
 `-PnoVista` to the command, e.g. `.\gradlew.bat runClient -PnoVista`.
 
 ### Controls (change them in Options → Controls → Personality Construct)
@@ -106,13 +106,13 @@ Create and Vista are downloaded and loaded automatically in the test game. To te
 | `H` | Look at your host's inventory (read-only) | construct |
 | `K` | Skill tree | construct and host |
 
-### Capturing someone in survival (the Soul Killer)
-1. Craft a **Soul Killer** and a **Personality Construct Chip**. Both recipes use Create parts. Find them in the recipe book,
-   or look at them in the creative tab "Personality Construct".
-2. Place the Soul Killer. Give it rotation: a Create shaft or cogwheel touching it, turning at **32 RPM or more**.
-3. Place a **Create seat** within 2 blocks of it. The person to capture sits on the seat.
-4. Right-click the Soul Killer with a **blank chip**. The seated player gets a consent screen. If they accept, they have
-   to stay seated for 5 seconds, and then the chip with them on it goes into your inventory.
+### Capturing someone in survival (the Soul Killer chair)
+1. Craft a **Soul Killer** and a **Personality Construct Chip** (vanilla items; see the recipe book), or take them
+   from the creative tab "Personality Construct".
+2. Place the Soul Killer and power it with redstone: a lever, a redstone block or a redstone torch next to it.
+3. The person to capture right-clicks the chair with an **empty hand** to sit in it.
+4. Right-click the chair with a **blank chip**. The seated player gets a consent screen. If they accept, they have to
+   stay in the chair for 5 seconds, and then the chip with them on it goes into your inventory.
 5. Right-click with the chip to install it in yourself. Or right-click another player, who will be asked to agree.
 
 ### Upgrading

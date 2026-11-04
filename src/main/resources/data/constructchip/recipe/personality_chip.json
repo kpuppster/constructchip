@@ -3,7 +3,7 @@
   "category": "misc",
   "pattern": [
     "NQN",
-    "RTR",
+    "RAR",
     "NGN"
   ],
   "key": {
@@ -11,13 +11,13 @@
       "item": "minecraft:iron_nugget"
     },
     "Q": {
-      "item": "create:polished_rose_quartz"
+      "item": "minecraft:quartz"
     },
     "R": {
       "item": "minecraft:redstone"
     },
-    "T": {
-      "item": "create:electron_tube"
+    "A": {
+      "item": "minecraft:amethyst_shard"
     },
     "G": {
       "item": "minecraft:gold_ingot"

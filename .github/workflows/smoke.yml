@@ -22,7 +22,7 @@ jobs:
             sleep 5
           done
           sleep 5; pkill -f net.neoforged || true; sleep 3
-          echo "=== mods"; grep -E "^\s+(Create|Vista|Moonlight|Personality Construct|Ponder|Flywheel)" server.log | head; grep -E "Vista found" server.log
+          echo "=== mods"; grep -E "^\s+(Vista|Moonlight|Personality Construct)" server.log | head; grep -E "Vista found" server.log
           echo "=== constructchip problems"; grep -iE "constructchip" server.log | grep -iE "error|fail|warn|couldn't|unknown|missing" | grep -v DEBUG | head -40
           echo "=== errors"; grep -E "ERROR|WARN.*(constructchip|Mixin)|Exception|Caused by" server.log | grep -v "Unable to find registered sound" | head -60
       - name: GameTests

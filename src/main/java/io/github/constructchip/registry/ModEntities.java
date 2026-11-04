@@ -1,6 +1,7 @@
 package io.github.constructchip.registry;
 
 import io.github.constructchip.ConstructChip;
+import io.github.constructchip.block.ChairSeatEntity;
 import io.github.constructchip.chip.ChipItemEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +20,13 @@ public final class ModEntities {
                     .clientTrackingRange(6)
                     .updateInterval(20)
                     .build("chip_item"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ChairSeatEntity>> CHAIR_SEAT = REGISTER.register("chair_seat",
+            () -> EntityType.Builder.<ChairSeatEntity>of(ChairSeatEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.35f)
+                    .noSummon()
+                    .clientTrackingRange(10)
+                    .build("chair_seat"));
 
     private ModEntities() {}
 }

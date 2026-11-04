@@ -27,8 +27,6 @@ sourceSets.main.resources {
 }
 
 repositories {
-    maven { url = "https://maven.createmod.net" }            // Create, Ponder, Flywheel
-    maven { url = "https://maven.ithundxr.dev/snapshots" }   // Registrate (Create dependency)
     // Vista + Moonlight (optional compat), straight from Modrinth's CDN so we get the NeoForge files
     // (their Modrinth Maven entries resolve to the Fabric jars). group = project id, version = file id.
     exclusiveContent {
@@ -139,13 +137,6 @@ configurations {
 }
 
 dependencies {
-    // Create: hard dependency (the Soul Killer). Versions match Create 6.0.10's own build.
-    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
-    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
-    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
-    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
-
     // Vista: optional. Compiled against, never shipped. Loaded in dev runs unless -PnoVista is passed.
     def vista = "zuARv1N7:vista-${vista_version}-neoforge:${vista_file_id}@jar"
     def moonlight = "twkfQtEc:moonlight-${moonlight_version}-neoforge:${moonlight_file_id}@jar"

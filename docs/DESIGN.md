@@ -17,8 +17,10 @@ The captured player lives in a host's mind, is visible only to the host, and act
 - Consent: a game rule `allowConstructCapture` (global kill switch) plus a per-player opt-out attachment (`/construct optout`,
   copyOnDeath). The server re-validates everything on the consent reply (still seated, in range, not timed out). Admin override,
   `/construct release <player>`.
-- Capture machine ("Soul Killer") is a Create addon (Create is a hard dependency). **Build it LAST.** Reuse Create's SeatBlock/SeatEntity
-  if possible. States: IDLE, SEATED, AWAITING_CONSENT, CAPTURING, DONE.
+- Capture machine ("Soul Killer"): **CHANGED 2026-11-04: no Create.** The Soul Killer is itself a chair (own seat entity,
+  own model), powered by redstone. The user wanted Project: Edgerunner's ripperdoc chair model, but that mod is
+  "All Rights Reserved - Modpack use permitted" (A24-N22) and a Forge 1.20.1 GeckoLib model; swap it in only with the
+  author's permission (would add GeckoLib). States: IDLE, SEATED, AWAITING_CONSENT, CAPTURING, DONE.
 - Before capture, save inventory, XP, gamemode and position into a persistent attachment so release can always restore them.
   Implemented (step 4): `CaptureSnapshot` (all 41 inventory slots, XP level/progress/total, game mode, dimension + exact
   position + rotation, health, food, saturation, potion effects) in the `capture_snapshot` attachment (copyOnDeath).
@@ -152,7 +154,7 @@ All steps are written and compile. Steps 1-4 were tested in game; 5-11 pass the 
 8. `api/Hackable` + `api/CyberwareApi`, Short Circuit / System Lock, and every other quickhack in the tree (`hack/builtin`). **(written)**
 9. Skill tree screen (`client/SkillTreeScreen`): construct and host spend points, only the host buys them. **(written)**
 10. Vista compat (`compat/vista`): TV Override, Camera Jack, Camera Blind. **(written; loads in CI)**
-11. Soul Killer (`block/SoulKiller*`), consent (`capture/ConsentManager`, `client/ConsentScreen`, also used for installing on
+11. Soul Killer chair (`block/SoulKiller*`, `block/ChairSeatEntity`, redstone-powered), consent (`capture/ConsentManager`, `client/ConsentScreen`, also used for installing on
     someone else), Mk.2/Mk.3 modules, recipes, creative tab. **(written)**
 
 Edge cases to design in from the start: host/construct logout, death, dimension change, a server crash mid-capture (self-heal on login),

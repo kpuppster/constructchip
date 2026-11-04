@@ -107,7 +107,7 @@ Create and Vista are downloaded and loaded automatically in the test game. To te
 | `K` | Skill tree | construct and host |
 
 ### Capturing someone in survival (the Soul Killer)
-1. Craft a **Soul Killer** and a **Personality Construct Chip**. Both recipes use Create parts. Press `R` on them in JEI,
+1. Craft a **Soul Killer** and a **Personality Construct Chip**. Both recipes use Create parts. Find them in the recipe book,
    or look at them in the creative tab "Personality Construct".
 2. Place the Soul Killer. Give it rotation: a Create shaft or cogwheel touching it, turning at **32 RPM or more**.
 3. Place a **Create seat** within 2 blocks of it. The person to capture sits on the seat.

@@ -774,7 +774,6 @@
   "subtitles.constructchip.blip": "Chip blips",
   "subtitles.constructchip.bolt": "Red lightning strikes",
   "chat.constructchip.from_construct": "[%s] %s",
-  "chat.constructchip.to_host": "(to %s, in their head) %s",
   "subtitles.constructchip.crackle": "Electricity crackles",
   "subtitles.constructchip.zap": "Electric discharge",
   "subtitles.constructchip.chip_in": "Chip slotted in",

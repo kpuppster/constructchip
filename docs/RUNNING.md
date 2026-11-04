@@ -159,8 +159,7 @@ and roll it back. With any implant installed, **food stops healing you**.
 
 ### The construct talking to its host
 While the construct's chip is installed in someone, anything the construct types in chat goes **only to that host**. It
-doesn't appear in chat. The host sees it in a speech box next to the chat area, under the construct's name. The construct
-gets a grey "(to …)" line so they know it was sent.
+doesn't appear in chat. The host sees it in a speech box next to the chat area, under the construct's name.
 
 ### Lightning
 Every quickhack now fires red lightning from the host's hand to the target (the Scanner shows a thin pale strand, and

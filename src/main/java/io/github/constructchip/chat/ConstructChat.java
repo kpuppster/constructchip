@@ -15,8 +15,7 @@ import net.neoforged.neoforge.event.ServerChatEvent;
 
 /**
  * A construct installed in someone's head talks only to that host. Their chat message isn't broadcast: the host
- * gets it in the speech box (styled after Capri's), and the construct sees a private echo so they know it went
- * through. Constructs whose chip isn't installed in a host chat normally.
+ * gets it in the speech box (styled after Capri's). Nothing is echoed back to the construct. Constructs whose chip isn't installed in a host chat normally.
  */
 @EventBusSubscriber(modid = ConstructChip.MODID)
 public final class ConstructChat {
@@ -36,7 +35,5 @@ public final class ConstructChat {
         } else {
             h.sendSystemMessage(Component.translatable("chat.constructchip.from_construct", name, text).withStyle(ChatFormatting.RED));
         }
-        construct.sendSystemMessage(Component.translatable("chat.constructchip.to_host", h.getGameProfile().getName(), text)
-                .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 }

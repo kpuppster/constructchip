@@ -6,7 +6,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.TriState;
@@ -32,24 +31,33 @@ public final class GhostEvents {
         return GhostState.isConstruct(entity) && !QuickhackService.isHackInProgress(entity);
     }
 
-    private static <E extends PlayerInteractEvent & ICancellableEvent> void cancel(E event) {
-        if (blocked(event.getEntity())) {
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.FAIL);
-        }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (!blocked(event.getEntity())) return;
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.FAIL);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) { cancel(event); }
+    public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        if (!blocked(event.getEntity())) return;
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.FAIL);
+    }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) { cancel(event); }
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+        if (!blocked(event.getEntity())) return;
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.FAIL);
+    }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) { cancel(event); }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) { cancel(event); }
+    public static void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
+        if (!blocked(event.getEntity())) return;
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.FAIL);
+    }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {

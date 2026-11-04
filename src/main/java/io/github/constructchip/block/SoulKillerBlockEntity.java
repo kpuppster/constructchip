@@ -59,11 +59,6 @@ public class SoulKillerBlockEntity extends BlockEntity implements GeoBlockEntity
         return geoCache;
     }
 
-    /** The station model reaches about 2.5 blocks to each side and 3.7 up; keep it rendered when the block is off-screen. */
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition).inflate(3, 0, 3).expandTowards(0, 3, 0);
-    }
 
     public static final int CAPTURE_TICKS = 100;
     public static final double OPERATOR_RANGE = 16.0;

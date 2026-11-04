@@ -3,6 +3,7 @@ package io.github.constructchip.client;
 import io.github.constructchip.ConstructChip;
 import io.github.constructchip.block.SoulKillerBlockEntity;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -10,6 +11,12 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 public class SoulKillerRenderer extends GeoBlockRenderer<SoulKillerBlockEntity> {
     public SoulKillerRenderer() {
         super(new Model());
+    }
+
+    /** The station reaches about 2.5 blocks to each side and 3.7 up; keep it drawn when the block itself is off-screen. */
+    @Override
+    public AABB getRenderBoundingBox(SoulKillerBlockEntity be) {
+        return new AABB(be.getBlockPos()).inflate(3, 0, 3).expandTowards(0, 3, 0);
     }
 
     static final class Model extends GeoModel<SoulKillerBlockEntity> {

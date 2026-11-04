@@ -1,0 +1,13 @@
+{
+  "item.constructchip.personality_chip": "Personality Construct Chip",
+  "item.constructchip.personality_chip.blank": "Blank",
+  "item.constructchip.personality_chip.construct": "Construct: %s",
+  "item.constructchip.personality_chip.ram": "RAM: %s (+%s/s)",
+  "item.constructchip.personality_chip.tier": "Tier %s",
+  "commands.constructchip.not_holding_chip": "You must hold a personality construct chip in your main hand",
+  "commands.constructchip.chip_blank": "That chip is blank",
+  "commands.constructchip.givechip.blank": "Gave a blank chip to %s player(s)",
+  "commands.constructchip.givechip.captured": "Gave a chip holding %s to %s player(s)",
+  "commands.constructchip.ram.insufficient": "Not enough RAM (%s available)",
+  "commands.constructchip.ram.spent": "Spent %s RAM, %s left"
+}

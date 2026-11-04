@@ -1,0 +1,36 @@
+package io.github.constructchip;
+
+import com.mojang.logging.LogUtils;
+import io.github.constructchip.registry.ModDataComponents;
+import io.github.constructchip.registry.ModItems;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import org.slf4j.Logger;
+
+@Mod(ConstructChip.MODID)
+public final class ConstructChip {
+    public static final String MODID = "constructchip";
+    public static final Logger LOGGER = LogUtils.getLogger();
+
+    public ConstructChip(IEventBus modBus, ModContainer container) {
+        ModDataComponents.REGISTER.register(modBus);
+        ModItems.REGISTER.register(modBus);
+        modBus.addListener(ConstructChip::addCreativeTabContents);
+    }
+
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    }
+
+    private static void addCreativeTabContents(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            // Blank chip only. Captured chips must come from /construct givechip (or, later, the Soul Killer)
+            // so every captured chip gets a fresh chipId.
+            event.accept(ModItems.PERSONALITY_CHIP.get());
+        }
+    }
+}

@@ -60,13 +60,22 @@ public final class ClientInput {
         while (Keybinds.HOST_INVENTORY.consumeClick()) {
             if (ClientChipState.isConstruct()) PacketDistributor.sendToServer(new ServerboundPayloads.OpenHostInventory());
         }
+        // Power wheel: opens while held (it closes itself when the key is released)
+        if (Keybinds.WHEEL.isDown() && mc.screen == null && ClientChipState.isConstruct()) {
+            if (ClientChipState.unlockedHacks().isEmpty()) {
+                if (Keybinds.WHEEL.consumeClick()) player.displayClientMessage(Component.translatable("message.constructchip.no_hacks"), true);
+            } else {
+                mc.setScreen(new PowerWheelScreen());
+            }
+        }
+        while (Keybinds.WHEEL.consumeClick()) { /* handled above */ }
         while (Keybinds.SKILL_TREE.consumeClick()) {
             if (ClientChipState.chip().present()) mc.setScreen(new SkillTreeScreen());
             else player.displayClientMessage(Component.translatable("message.constructchip.no_chip"), true);
         }
     }
 
-    private static void send(LocalPlayer player, ResourceLocation hackId) {
+    static void send(LocalPlayer player, ResourceLocation hackId) {
         Quickhack hack = ModQuickhacks.REGISTRY.get(hackId);
         HackTarget target = hack == null || hack.targetType() == Quickhack.TargetType.NONE
                 ? HackTarget.NONE : aim(player, hack.targetType());

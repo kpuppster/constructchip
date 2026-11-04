@@ -49,6 +49,7 @@ public final class ClientSetup {
         event.register(Keybinds.SCAN);
         event.register(Keybinds.HOST_INVENTORY);
         event.register(Keybinds.SKILL_TREE);
+        event.register(Keybinds.WHEEL);
     }
 
     @SubscribeEvent

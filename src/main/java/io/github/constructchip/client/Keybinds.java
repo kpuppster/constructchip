@@ -13,6 +13,7 @@ public final class Keybinds {
     public static final KeyMapping SCAN = key("scan", GLFW.GLFW_KEY_V);
     public static final KeyMapping HOST_INVENTORY = key("host_inventory", GLFW.GLFW_KEY_H);
     public static final KeyMapping SKILL_TREE = key("skill_tree", GLFW.GLFW_KEY_K);
+    public static final KeyMapping WHEEL = key("wheel", GLFW.GLFW_KEY_G);
 
     private Keybinds() {}
 

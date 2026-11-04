@@ -57,6 +57,22 @@ public final class ClientChipState {
         return hacks.get(Math.floorMod(selectedHack, hacks.size()));
     }
 
+    /** Make {@code hack} the selected quickhack (from the power wheel). */
+    public static void selectHack(ResourceLocation hack) {
+        int i = unlockedHacks().indexOf(hack);
+        if (i >= 0) selectedHack = i;
+    }
+
+    /** Icon of the skill that grants {@code hack}, for the wheel. */
+    public static net.minecraft.world.item.ItemStack iconFor(ResourceLocation hack) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return net.minecraft.world.item.ItemStack.EMPTY;
+        for (Skill s : ModSkills.get(mc.level.registryAccess())) {
+            if (s.quickhack().map(hack::equals).orElse(false)) return new net.minecraft.world.item.ItemStack(s.icon());
+        }
+        return new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.PAPER);
+    }
+
     public static void cycleHack(int delta) {
         selectedHack += delta;
     }

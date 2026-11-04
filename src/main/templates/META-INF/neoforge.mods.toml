@@ -52,3 +52,10 @@ config="${mod_id}.mixins.json"
     versionRange="[4.9,)"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="playeranimator"
+    type="required"
+    versionRange="[2.0,)"
+    ordering="AFTER"
+    side="CLIENT"

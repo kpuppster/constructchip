@@ -27,6 +27,10 @@ sourceSets.main.resources {
 }
 
 repositories {
+    exclusiveContent {                                       // PlayerAnimator (sitting pose in the Soul Killer)
+        forRepository { maven { url = "https://maven.kosmx.dev/" } }
+        filter { includeGroup "dev.kosmx.player-anim" }
+    }
     exclusiveContent {                                       // GeckoLib (renders the Soul Killer station)
         forRepository { maven { url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" } }
         filter { includeGroup "software.bernie.geckolib" }
@@ -141,6 +145,9 @@ configurations {
 }
 
 dependencies {
+    // PlayerAnimator: required on the client, plays the ripperdoc sitting animation (its NeoForge build is named "forge").
+    implementation("dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}")
+
     // GeckoLib: required, renders the Soul Killer station model.
     implementation("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
 

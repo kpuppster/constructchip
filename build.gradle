@@ -29,9 +29,17 @@ sourceSets.main.resources {
 repositories {
     maven { url = "https://maven.createmod.net" }            // Create, Ponder, Flywheel
     maven { url = "https://maven.ithundxr.dev/snapshots" }   // Registrate (Create dependency)
-    exclusiveContent {                                       // Vista + Moonlight (optional compat)
-        forRepository { maven { url = "https://api.modrinth.com/maven" } }
-        filter { includeGroup "maven.modrinth" }
+    // Vista + Moonlight (optional compat), straight from Modrinth's CDN so we get the NeoForge files
+    // (their Modrinth Maven entries resolve to the Fabric jars). group = project id, version = file id.
+    exclusiveContent {
+        forRepository {
+            ivy {
+                url = "https://cdn.modrinth.com/data/"
+                patternLayout { artifact "[organisation]/versions/[revision]/[module].[ext]" }
+                metadataSources { artifact() }
+            }
+        }
+        filter { includeGroup "zuARv1N7"; includeGroup "twkfQtEc" }
     }
 }
 
@@ -139,11 +147,13 @@ dependencies {
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
     // Vista: optional. Compiled against, never shipped. Loaded in dev runs unless -PnoVista is passed.
-    compileOnly("maven.modrinth:vista_tv:${vista_version}")
-    compileOnly("maven.modrinth:moonlight:${moonlight_version}")
+    def vista = "zuARv1N7:vista-${vista_version}-neoforge:${vista_file_id}@jar"
+    def moonlight = "twkfQtEc:moonlight-${moonlight_version}-neoforge:${moonlight_file_id}@jar"
+    compileOnly(vista)
+    compileOnly(moonlight)
     if (!project.hasProperty("noVista")) {
-        localRuntime("maven.modrinth:vista_tv:${vista_version}")
-        localRuntime("maven.modrinth:moonlight:${moonlight_version}")
+        localRuntime(vista)
+        localRuntime(moonlight)
     }
 
     // Example optional mod dependency with JEI

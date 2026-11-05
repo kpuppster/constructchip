@@ -248,4 +248,25 @@ public final class ConstructGameTests {
         h.succeed();
     }
 
+
+    /**
+     * With Cybernetics installed (dev runs and CI load it), Short Circuit's compat path must link and run against the
+     * real mod: a creature without their implants is left alone, and nothing throws.
+     */
+    @GameTest(template = "empty")
+    public static void cyberneticsCompatRuns(GameTestHelper h) {
+        if (!net.neoforged.fml.ModList.get().isLoaded("createcybernetics")) {
+            h.succeed();
+            return;
+        }
+        var zombie = h.spawn(net.minecraft.world.entity.EntityType.ZOMBIE, new BlockPos(1, 2, 1));
+        int hacked = io.github.constructchip.compat.cybernetics.CyberneticsCompat.disable(zombie, 200, true);
+        h.assertTrue(hacked == 0, "plain zombie reported " + hacked + " Cybernetics implants");
+        var emp = net.minecraft.core.registries.BuiltInRegistries.MOB_EFFECT
+                .getHolder(ResourceLocation.fromNamespaceAndPath("createcybernetics", "emp_effect"));
+        h.assertTrue(emp.isPresent(), "Cybernetics EMP effect id changed");
+        h.assertTrue(io.github.constructchip.api.CyberwareApi.disable(zombie, 200, false) == 0, "api path");
+        zombie.discard();
+        h.succeed();
+    }
 }

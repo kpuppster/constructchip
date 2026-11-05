@@ -47,6 +47,10 @@ repositories {
         }
         filter { includeGroup "zuARv1N7"; includeGroup "twkfQtEc" }
     }
+    exclusiveContent {                                       // Cybernetics (optional compat), via CurseMaven
+        forRepository { maven { url = "https://www.cursemaven.com" } }
+        filter { includeGroup "curse.maven" }
+    }
 }
 
 base {
@@ -159,6 +163,13 @@ dependencies {
     if (!project.hasProperty("noVista")) {
         localRuntime(vista)
         localRuntime(moonlight)
+    }
+
+    // Cybernetics (Perigrine3, MIT): optional. Compiled against, never shipped. Loaded in dev runs unless -PnoCybernetics.
+    def cybernetics = "curse.maven:cybernetics-${cybernetics_project_id}:${cybernetics_file_id}"
+    compileOnly(cybernetics)
+    if (!project.hasProperty("noCybernetics")) {
+        localRuntime(cybernetics)
     }
 
     // Example optional mod dependency with JEI

@@ -15,3 +15,6 @@
 
 - Electric crackle and zap sounds (`crackle_1-4.ogg`, `zap.ogg`) are our own, synthesized by `scripts/gen_crackle.py`. CC0.
 - The quickhack lightning renderer follows Ikeda's Capri bolt look (path shape, widths, branching, flicker), re-implemented in our code with permission.
+- **Perigrine3** ([Cybernetics](https://www.curseforge.com/minecraft/mc-mods/cybernetics), MIT): optional compatibility only.
+  Short Circuit and System Lock use its own EMP effect and implant toggles when it is installed. Nothing from it is
+  included in this mod; it is fetched at build time to compile against (CurseMaven) and never shipped.

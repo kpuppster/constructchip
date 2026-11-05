@@ -132,3 +132,9 @@ Every quickhack now fires red lightning from the host's hand to the target (the 
 hacks without a target make sparks crawl over the host). **Fry** (the mob or player nearest your crosshair) and **High Voltage** (that target and every mob or player within 6 blocks of it, with bolts
 out of the sky) have bigger versions, and the Soul Killer pours lightning into the sitter while it
 captures them.
+
+### Cybernetics (optional)
+If [Cybernetics](https://www.curseforge.com/minecraft/mc-mods/cybernetics) is installed (server and players), **Short Circuit**
+hits the target with Cybernetics' EMP for 10 s: their implants lose power and cyber-mobs freeze. **System Lock** does the
+same for 30 s and also switches off every implant on their toggle wheel. A Capacitor Frame resists the EMP, as in
+Cybernetics. Without Cybernetics nothing changes. Dev runs load it automatically; add `-PnoCybernetics` to leave it out.

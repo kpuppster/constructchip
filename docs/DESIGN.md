@@ -135,6 +135,12 @@ cyberware port (implants, surgery, cyberpsychosis, Ripperdoc villager, painting 
 2026-11-04 at the user's request; the station no longer has a surgery mode. Short Circuit / System Lock still act on
 other mods' cyberware through `api/Hackable`.
 
+## Cybernetics (Perigrine3, MIT): optional compat
+`compat/cybernetics/CyberneticsCompat`, only called when `createcybernetics` is loaded (from `api/CyberwareApi.disable`).
+Short Circuit / System Lock apply their `createcybernetics:emp_effect` for the hack duration (drains implant energy,
+freezes cyber-mobs); System Lock also switches off their toggle-wheel implants (`CyberwareToggleController`).
+Compiled against `curse.maven:cybernetics-1430192:<file id>` (compileOnly; dev runtime unless `-PnoCybernetics`), never shipped.
+
 ## Capri mod (Ikeda): assets used with permission
 The author gave permission to use the mod's visuals (user report, 2026-11-04; keep that message on file). Used:
 chip art → chip item (captured: full color; blank: greyed derivative via a `constructchip:captured` item property) and the

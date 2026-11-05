@@ -45,6 +45,12 @@ config="${mod_id}.mixins.json"
     versionRange="[1.21.1-5.6.0,)"
     ordering="AFTER"
     side="BOTH"
+[[dependencies.${mod_id}]]
+    modId="createcybernetics"
+    type="optional"
+    versionRange="[0.5,)"
+    ordering="NONE"
+    side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="geckolib"

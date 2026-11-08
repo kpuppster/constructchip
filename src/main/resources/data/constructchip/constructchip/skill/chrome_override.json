@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "chromeware"
+    }
+  ],
+  "name": {
+    "translate": "skill.constructchip.chrome_override"
+  },
+  "description": {
+    "translate": "skill.constructchip.chrome_override.desc"
+  },
+  "branch": "support",
+  "tier": 2,
+  "cost": 3,
+  "requires": [
+    "constructchip:vitals_link"
+  ],
+  "icon": "minecraft:echo_shard",
+  "column": 10,
+  "quickhack": "constructchip:chrome_override"
+}

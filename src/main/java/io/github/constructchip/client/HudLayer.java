@@ -40,6 +40,7 @@ public final class HudLayer {
         ClientGlitch.render(g, delta.getGameTimeDeltaPartialTick(false));
         if (mc.options.hideGui || mc.player == null) return;
         ConstructTalk.render(g);
+        ClientPossession.renderHud(g);
         ChipStatusPayload chip = ClientChipState.chip();
         if (!chip.present()) return;
         Font font = mc.font;

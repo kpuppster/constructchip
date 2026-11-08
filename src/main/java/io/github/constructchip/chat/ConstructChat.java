@@ -24,6 +24,7 @@ public final class ConstructChat {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onChat(ServerChatEvent event) {
         ServerPlayer construct = event.getPlayer();
+        if (io.github.constructchip.possession.Possession.isPossessing(construct)) return; // speaks out loud, as the host
         Optional<ServerPlayer> host = QuickhackService.hostOf(construct);
         if (host.isEmpty() || host.get() == construct) return;
         event.setCanceled(true);

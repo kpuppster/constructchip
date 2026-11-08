@@ -240,6 +240,7 @@ public final class CapriBolts {
         BOLTS.clear();
         PENDING.clear();
         ConstructTalk.reset();
+        ClientPossession.clear();
     }
 
     @SubscribeEvent

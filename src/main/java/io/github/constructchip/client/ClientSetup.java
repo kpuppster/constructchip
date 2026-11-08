@@ -33,6 +33,7 @@ public final class ClientSetup {
     /** Captured chips show the full-color chip art (red Mk.1, cyan Mk.2, gold Mk.3); blank ones the greyed version. */
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
+        io.github.constructchip.possession.Possession.clientBodyName = ClientPossession::bodyName;
         event.enqueueWork(() -> {
             ItemProperties.register(ModItems.PERSONALITY_CHIP.get(), ConstructChip.id("captured"),
                     (stack, level, entity, seed) -> ChipStacks.isCaptured(stack) ? 1f : 0f);

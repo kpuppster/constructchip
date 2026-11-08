@@ -90,6 +90,15 @@ public final class QuickhackService {
         // --- who and where
         ConstructState state = construct.getData(ModAttachments.CONSTRUCT_STATE);
         if (!state.isConstruct()) return fail(Status.NOT_A_CONSTRUCT);
+        // In the host's body (Takeover): the same hack lets go; nothing else works until then.
+        if (io.github.constructchip.possession.Possession.isPossessing(construct)) {
+            if (io.github.constructchip.possession.Possession.HACK_ID.equals(hackId)) {
+                io.github.constructchip.possession.Possession.end(server, construct.getUUID(),
+                        io.github.constructchip.possession.Possession.Reason.RELINQUISHED);
+                return new Attempt(Status.OK, Optional.empty());
+            }
+            return new Attempt(Status.HACK_FAILED, Optional.of(Component.translatable("message.constructchip.takeover.in_body")));
+        }
         UUID chipId = state.chipId().get();
         Optional<ChipEntry> entry = ChipRegistry.get(server).get(chipId);
         if (entry.isEmpty() || entry.get().location().state() != ChipLocation.State.INSTALLED

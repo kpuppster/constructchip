@@ -5,12 +5,14 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "SlotMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "PlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "MinecraftMixin"
+    "MinecraftMixin",
+    "AbstractClientPlayerMixin"
   ]
 }

@@ -51,5 +51,12 @@ public final class ModAttachments {
     public static final Supplier<AttachmentType<CyberwareState>> CYBERWARE_STATE = REGISTER.register("cyberware_state",
             () -> AttachmentType.builder(() -> CyberwareState.NONE).serialize(CyberwareState.CODEC).build());
 
+    /** Takeover bookkeeping on the host and the construct (see possession.Possession). Kept on death. */
+    public static final Supplier<AttachmentType<io.github.constructchip.possession.PossessionRecord>> POSSESSION =
+            REGISTER.register("possession", () -> AttachmentType.builder(() -> io.github.constructchip.possession.PossessionRecord.NONE)
+                    .serialize(io.github.constructchip.possession.PossessionRecord.CODEC)
+                    .copyOnDeath()
+                    .build());
+
     private ModAttachments() {}
 }

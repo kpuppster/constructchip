@@ -32,6 +32,8 @@ public final class GhostState {
     public static boolean isConstruct(Entity entity) {
         if (!(entity instanceof Player player)) return false;
         if (player.level().isClientSide) return clientLinks.containsKey(player.getUUID());
-        return player.getData(ModAttachments.CONSTRUCT_STATE).isConstruct();
+        // a construct in its host's body (Takeover) is a normal player until it lets go
+        return player.getData(ModAttachments.CONSTRUCT_STATE).isConstruct()
+                && !io.github.constructchip.possession.Possession.isPossessing(player);
     }
 }

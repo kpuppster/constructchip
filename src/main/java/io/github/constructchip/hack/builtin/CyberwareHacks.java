@@ -33,6 +33,9 @@ public final class CyberwareHacks {
             }
             int ticks = 200;
             int hacked = CyberwareApi.disable(target, ticks, false);
+            // Chromeware (optional): its own Short Circuit on anyone with chrome
+            if (io.github.constructchip.compat.chromeware.ChromewareCompat.LOADED
+                    && io.github.constructchip.compat.chromeware.ChromewareCompat.hack(ctx.host(), target, false)) hacked++;
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 1));
             target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, ticks, 0));
             DamageSource jolt = ctx.host().damageSources().indirectMagic(ctx.construct(), ctx.host());
@@ -54,6 +57,9 @@ public final class CyberwareHacks {
             if (!(e instanceof LivingEntity target)) return HackResult.fail(Component.translatable("message.constructchip.hack.wrong_target"));
             int ticks = 600;
             int hacked = CyberwareApi.disable(target, ticks, true);
+            // Chromeware (optional): Cyberware Malfunction switches their chrome off
+            if (io.github.constructchip.compat.chromeware.ChromewareCompat.LOADED
+                    && io.github.constructchip.compat.chromeware.ChromewareCompat.hack(ctx.host(), target, true)) hacked++;
             List<MobEffectInstance> buffs = target.getActiveEffects().stream().filter(x -> x.getEffect().value().isBeneficial()).toList();
             for (MobEffectInstance buff : buffs) target.removeEffect(buff.getEffect());
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 2));

@@ -37,6 +37,10 @@ public final class ClientPayloadHandlers {
         ctx.enqueueWork(() -> ConstructTalk.say(payload.name(), payload.text()));
     }
 
+    public static void possession(io.github.constructchip.network.PossessionPayload payload, IPayloadContext ctx) {
+        ctx.enqueueWork(() -> ClientPossession.set(payload));
+    }
+
     public static void bolt(io.github.constructchip.network.BoltFxPayload payload, IPayloadContext ctx) {
         ctx.enqueueWork(() -> CapriBolts.handle(payload));
     }

@@ -46,10 +46,10 @@ config="${mod_id}.mixins.json"
     ordering="AFTER"
     side="BOTH"
 [[dependencies.${mod_id}]]
-    modId="createcybernetics"
+    modId="chromeware"
     type="optional"
-    versionRange="[0.5,)"
-    ordering="NONE"
+    versionRange="[1.2,)"
+    ordering="AFTER"
     side="BOTH"
 
 [[dependencies.${mod_id}]]

@@ -5,7 +5,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public final class ModNetwork {
     /** Bump when a payload's format changes; mismatched clients are refused at login. */
-    private static final String VERSION = "10";
+    private static final String VERSION = "11";
 
     private ModNetwork() {}
 
@@ -35,6 +35,8 @@ public final class ModNetwork {
                 (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.glitch(p, c));
         registrar.playToClient(ConstructSayPayload.TYPE, ConstructSayPayload.STREAM_CODEC,
                 (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.say(p, c));
+        registrar.playToClient(PossessionPayload.TYPE, PossessionPayload.STREAM_CODEC,
+                (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.possession(p, c));
         registrar.playToClient(BoltFxPayload.TYPE, BoltFxPayload.STREAM_CODEC,
                 (p, c) -> io.github.constructchip.client.ClientPayloadHandlers.bolt(p, c));
         registrar.playToClient(ConsentRequestPayload.TYPE, ConsentRequestPayload.STREAM_CODEC,

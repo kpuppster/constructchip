@@ -6,6 +6,7 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "src", "main", "resources")
 OUT = os.path.join(ROOT, "data", "constructchip", "constructchip", "skill")
 LANG = os.path.join(ROOT, "assets", "constructchip", "lang", "en_us.json")
 VISTA = [{"type": "neoforge:mod_loaded", "modid": "vista"}]
+CHROMEWARE = [{"type": "neoforge:mod_loaded", "modid": "chromeware"}]
 
 # id, branch, tier, cost, requires, column, icon, quickhack, modifiers, name, description, conditions
 SKILLS = [
@@ -50,7 +51,11 @@ SKILLS = [
     ("patch_job", "support", 3, 3, ["pain_editor"], 5, "minecraft:enchanted_golden_apple", "patch_job", [],
      "Patch Job", "Quickhack: heals your host for 10, gives 4 extra hearts for 30 s, and cures poison, wither and fire.", None),
 
-    # SUPPORT / chrome: working with the host's cyberware
+    # SUPPORT / control: steering the host itself
+    ("chrome_override", "support", 2, 3, ["vitals_link"], 10, "minecraft:echo_shard", "chrome_override", [],
+     "Chrome Override", "Quickhack (Create: Chromeware): fire one of your host's implant abilities: Sandevistan, Berserk, Blood Pump, Optical Camo, Overclock or the arm implant.", CHROMEWARE),
+    ("takeover", "core", 3, 5, ["neural_overdrive"], 10, "minecraft:wither_skeleton_skull", "takeover", [],
+     "Takeover", "Quickhack: take over your host's body for up to 5 minutes. You play as them (their inventory, health and look) while they watch through your eyes. Use it again to let go. 30 minute cooldown afterwards.", None),
 
     # SYSTEMS: RAM and devices
     ("ram_expansion", "systems", 1, 1, ["scanner"], 6, "minecraft:amethyst_shard", None, [("max_ram", 2)],

@@ -133,8 +133,20 @@ hacks without a target make sparks crawl over the host). **Fry** (the mob or pla
 out of the sky) have bigger versions, and the Soul Killer pours lightning into the sitter while it
 captures them.
 
-### Cybernetics (optional)
-If [Cybernetics](https://www.curseforge.com/minecraft/mc-mods/cybernetics) is installed (server and players), **Short Circuit**
-hits the target with Cybernetics' EMP for 10 s: their implants lose power and cyber-mobs freeze. **System Lock** does the
-same for 30 s and also switches off every implant on their toggle wheel. A Capacitor Frame resists the EMP, as in
-Cybernetics. Without Cybernetics nothing changes. Dev runs load it automatically; add `-PnoCybernetics` to leave it out.
+### Takeover (top-tier skill)
+Core branch, tier 3 (Mk.3), after Neural Overdrive. The construct takes over the host's body for up to **5 minutes**:
+it appears where the host stands, with the host's inventory, armor, health, hunger, XP and effects, and everyone sees
+the host's skin and name. The construct's chat now comes out of the host's mouth. The host turns spectator and watches
+through the construct's eyes. Use **Takeover** again to let go early. Other quickhacks don't work during it.
+When it ends (let go, time up, someone logs out, the chip is removed, server stop), everything goes back to the host where
+the body is standing, and Takeover goes on a **30 minute** cooldown. If the body dies, the host dies there.
+
+### Create: Chromeware (optional)
+With [Chromeware](https://www.curseforge.com/minecraft/mc-mods/cyberpunk2077-mod) installed (it needs Create):
+- **Short Circuit** on anyone with chrome also runs Chromeware's Short Circuit (true damage that grows with their chrome,
+  implants off for 3 s).
+- **System Lock** also runs Chromeware's Cyberware Malfunction (chrome off for 10 s, +15% damage taken; a second one
+  before it wears off disables their chrome until they die).
+- **Chrome Override** (Support, tier 2, only shown with Chromeware): fires one of the host's implant abilities,
+  Sandevistan first, then Berserk, Blood Pump, Optical Camo, Overclock or the arm implant.
+

@@ -28,6 +28,7 @@ public final class ConstructAnchor {
     public static void tick(ServerPlayer player) {
         ConstructState state = player.getData(ModAttachments.CONSTRUCT_STATE);
         if (!state.isConstruct()) return;
+        if (io.github.constructchip.possession.Possession.isPossessing(player)) return; // in the host's body
         MinecraftServer server = player.server;
         Optional<ChipEntry> entry = ChipRegistry.get(server).get(state.chipId().get());
         if (entry.isEmpty()) {
@@ -97,6 +98,7 @@ public final class ConstructAnchor {
 
     /** The player is no longer a construct at all (released, or their chip is gone). */
     public static void clearConstruct(ServerPlayer player) {
+        io.github.constructchip.possession.Possession.endFor(player, io.github.constructchip.possession.Possession.Reason.RELEASED);
         unanchor(player);
         player.setData(ModAttachments.CONSTRUCT_STATE, ConstructState.NONE);
         GhostLink.clear(player);

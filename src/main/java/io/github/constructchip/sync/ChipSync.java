@@ -76,11 +76,18 @@ public final class ChipSync {
         Map<UUID, UUID> links = new HashMap<>();
         for (ChipEntry entry : ChipRegistry.get(server).all().values()) {
             ChipLocation loc = entry.location();
-            if (loc.state() == ChipLocation.State.INSTALLED && loc.holder().isPresent()) {
+            if (loc.state() == ChipLocation.State.INSTALLED && loc.holder().isPresent()
+                    && !io.github.constructchip.possession.Possession.isPossessingId(entry.capturedUuid())) { // in the body: not a ghost
                 links.put(entry.capturedUuid(), loc.holder().get());
             }
         }
         return links;
+    }
+
+    /** Send the construct links now instead of on the next half-second sync (Takeover start/end). */
+    public static void pushLinks(MinecraftServer server) {
+        lastLinks = computeLinks(server);
+        Net.sendToAll(server, new ConstructLinksPayload(lastLinks));
     }
 
     /** Push fresh chip status to the construct and host of {@code chipId} right now. */

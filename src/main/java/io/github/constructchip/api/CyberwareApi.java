@@ -10,8 +10,6 @@ import net.minecraft.world.item.ItemStack;
 public final class CyberwareApi {
     private CyberwareApi() {}
 
-    private static final boolean CYBERNETICS = net.neoforged.fml.ModList.get().isLoaded("createcybernetics");
-
     public static boolean isDisabled(LivingEntity entity) {
         return entity.getData(ModAttachments.CYBERWARE_STATE).disabledUntil() > entity.level().getGameTime();
     }
@@ -34,10 +32,6 @@ public final class CyberwareApi {
                 h.shortCircuit(stack, entity, ticks);
                 hacked++;
             }
-        }
-        // Cybernetics (optional): its own EMP knocks its implants out. Only touched when that mod is installed.
-        if (CYBERNETICS && !entity.level().isClientSide) {
-            hacked += io.github.constructchip.compat.cybernetics.CyberneticsCompat.disable(entity, ticks, lock);
         }
         return hacked;
     }

@@ -178,7 +178,7 @@ public final class ConstructGameTests {
     public static void skillTreeRulesAndPrices(GameTestHelper h) {
         Registry<Skill> reg = ModSkills.get(h.getLevel().registryAccess());
         boolean vista = net.neoforged.fml.ModList.get().isLoaded("vista");
-        h.assertTrue(reg.size() == (vista ? 25 : 22), "skills loaded: " + reg.size() + " (vista " + vista + ")");
+        h.assertTrue(reg.size() == 23 + (vista ? 3 : 0) + (net.neoforged.fml.ModList.get().isLoaded("chromeware") ? 1 : 0), "skills loaded: " + reg.size() + " (vista " + vista + ")");
         h.assertTrue(vista == reg.containsKey(ConstructChip.id("camera_view")), "Vista skill condition not applied");
         ResourceLocation overclock = ConstructChip.id("overclock"), shortCircuit = ConstructChip.id("short_circuit");
         ChipSkills s = ChipSkills.DEFAULT;
@@ -248,25 +248,34 @@ public final class ConstructGameTests {
         h.succeed();
     }
 
-
-    /**
-     * With Cybernetics installed (dev runs and CI load it), Short Circuit's compat path must link and run against the
-     * real mod: a creature without their implants is left alone, and nothing throws.
-     */
     @GameTest(template = "empty")
-    public static void cyberneticsCompatRuns(GameTestHelper h) {
-        if (!net.neoforged.fml.ModList.get().isLoaded("createcybernetics")) {
-            h.succeed();
-            return;
-        }
-        var zombie = h.spawn(net.minecraft.world.entity.EntityType.ZOMBIE, new BlockPos(1, 2, 1));
-        int hacked = io.github.constructchip.compat.cybernetics.CyberneticsCompat.disable(zombie, 200, true);
-        h.assertTrue(hacked == 0, "plain zombie reported " + hacked + " Cybernetics implants");
-        var emp = net.minecraft.core.registries.BuiltInRegistries.MOB_EFFECT
-                .getHolder(ResourceLocation.fromNamespaceAndPath("createcybernetics", "emp_effect"));
-        h.assertTrue(emp.isPresent(), "Cybernetics EMP effect id changed");
-        h.assertTrue(io.github.constructchip.api.CyberwareApi.disable(zombie, 200, false) == 0, "api path");
-        zombie.discard();
-        h.succeed();
+    public static void takeoverSwapsTheBodyAndGivesItBack(GameTestHelper h) {
+        ServerPlayer victim = player(h, 1, 1), host = player(h, 3, 1);
+        captureToHand(h, victim, host);
+        installOn(h, host);
+        host.getInventory().setItem(5, new ItemStack(Items.DIAMOND, 3));
+        host.setExperienceLevels(7);
+        var before = host.gameMode.getGameModeForPlayer();
+
+        h.assertTrue(io.github.constructchip.possession.Possession.start(victim, host).succeeded(), "start");
+        h.assertTrue(host.isSpectator(), "host isn't watching");
+        h.assertTrue(victim.getInventory().getItem(5).is(Items.DIAMOND), "the body's items didn't move");
+        h.assertTrue(host.getInventory().getItem(5).isEmpty(), "host kept the body's items");
+        h.assertTrue(victim.experienceLevel == 7, "XP didn't move: " + victim.experienceLevel);
+        h.assertTrue(!GhostState.isConstruct(victim), "still a ghost while in the body");
+        h.assertTrue(!io.github.constructchip.possession.Possession.start(victim, host).succeeded(), "second takeover allowed");
+
+        io.github.constructchip.possession.Possession.end(h.getLevel().getServer(), victim.getUUID(),
+                io.github.constructchip.possession.Possession.Reason.RELINQUISHED);
+        h.assertTrue(host.gameMode.getGameModeForPlayer() == before, "host's game mode not restored: " + host.gameMode.getGameModeForPlayer());
+        ItemStack back = host.getInventory().getItem(5);
+        h.assertTrue(back.is(Items.DIAMOND) && back.getCount() == 3, "items not back: " + back);
+        h.assertTrue(host.experienceLevel == 7, "XP not back: " + host.experienceLevel);
+        h.assertTrue(victim.getInventory().isEmpty(), "construct kept items");
+        h.assertTrue(GhostState.isConstruct(victim), "not a ghost again");
+        long now = h.getLevel().getGameTime();
+        long cd = ChipStacks.timers(ChipTracker.installedChip(host)).cooldownRemaining(io.github.constructchip.possession.Possession.HACK_ID, now);
+        h.assertTrue(cd > 30 * 60 * 20 - 40, "30 minute cooldown not started: " + cd);
+        done(h, victim, host);
     }
 }

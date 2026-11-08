@@ -135,11 +135,18 @@ cyberware port (implants, surgery, cyberpsychosis, Ripperdoc villager, painting 
 2026-11-04 at the user's request; the station no longer has a surgery mode. Short Circuit / System Lock still act on
 other mods' cyberware through `api/Hackable`.
 
-## Cybernetics (Perigrine3, MIT): optional compat
-`compat/cybernetics/CyberneticsCompat`, only called when `createcybernetics` is loaded (from `api/CyberwareApi.disable`).
-Short Circuit / System Lock apply their `createcybernetics:emp_effect` for the hack duration (drains implant energy,
-freezes cyber-mobs); System Lock also switches off their toggle-wheel implants (`CyberwareToggleController`).
-Compiled against `curse.maven:cybernetics-1430192:<file id>` (compileOnly; dev runtime unless `-PnoCybernetics`), never shipped.
+## Takeover (possession/)
+`Possession`: construct takes the host's place (inventory minus captured chips, vitals, position, game mode), host goes
+spectator with camera on the construct. Construct isn't a ghost meanwhile (`GhostState.isConstruct` false, left out of
+the construct links), is drawn with the host's skin (`AbstractClientPlayerMixin`) and named as the host (`PlayerMixin`).
+Ends on relinquish (same hack), 5 min, logout, chip leaving the host, release, server stop; body death kills the host.
+30 min cooldown is set on the chip when it ends. `PossessionRecord` on both players + `PendingBodies` undo a crash at login.
+
+## Create: Chromeware (breenihilation): optional compat, with permission
+`compat/chromeware/ChromewareCompat`, called by name (Chromeware needs Create, which our build doesn't load):
+`Netrunning.apply(host, target, SHORT_CIRCUIT | CYBERWARE_MALFUNCTION)` for Short Circuit / System Lock on chromed
+targets (players with capacity used, or `chromeware:mechanical_targets`), `ImplantAbility.activate(host)` for
+Chrome Override. Checked against chromeware-1.2.1; on a mismatch it logs once and turns itself off.
 
 ## Capri mod (Ikeda): assets used with permission
 The author gave permission to use the mod's visuals (user report, 2026-11-04; keep that message on file). Used:

@@ -47,6 +47,10 @@ repositories {
         }
         filter { includeGroup "zuARv1N7"; includeGroup "twkfQtEc" }
     }
+    exclusiveContent {                                       // Create: Chromeware (optional compat), via CurseMaven
+        forRepository { maven { url = "https://www.cursemaven.com" } }
+        filter { includeGroup "curse.maven" }
+    }
 }
 
 base {
@@ -160,6 +164,9 @@ dependencies {
         localRuntime(vista)
         localRuntime(moonlight)
     }
+
+    // Create: Chromeware: optional. Compile-only (it needs Create at runtime, which dev runs don't load). Never shipped.
+    compileOnly("curse.maven:chromeware-${chromeware_project_id}:${chromeware_file_id}")
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

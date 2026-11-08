@@ -143,10 +143,10 @@ Ends on relinquish (same hack), 5 min, logout, chip leaving the host, release, s
 30 min cooldown is set on the chip when it ends. `PossessionRecord` on both players + `PendingBodies` undo a crash at login.
 
 ## Create: Chromeware (breenihilation): optional compat, with permission
-`compat/chromeware/ChromewareCompat`, called by name (Chromeware needs Create, which our build doesn't load):
+`compat/chromeware/ChromewareCompat` (gate) + `ChromewareHooks` (direct calls, compileOnly `curse.maven:chromeware-1755743:9503063`, not loaded at dev runtime because Chromeware needs Create):
 `Netrunning.apply(host, target, SHORT_CIRCUIT | CYBERWARE_MALFUNCTION)` for Short Circuit / System Lock on chromed
 targets (players with capacity used, or `chromeware:mechanical_targets`), `ImplantAbility.activate(host)` for
-Chrome Override. Checked against chromeware-1.2.1; on a mismatch it logs once and turns itself off.
+Chrome Override. Compiled against chromeware-1.2.1; a runtime failure logs once and turns the compat off.
 
 ## Capri mod (Ikeda): assets used with permission
 The author gave permission to use the mod's visuals (user report, 2026-11-04; keep that message on file). Used:

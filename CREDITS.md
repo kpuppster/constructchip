@@ -17,4 +17,5 @@
 - The quickhack lightning renderer follows Ikeda's Capri bolt look (path shape, widths, branching, flicker), re-implemented in our code with permission.
 - **breenihilation** ([Create: Chromeware](https://www.curseforge.com/minecraft/mc-mods/cyberpunk2077-mod)): optional
   compatibility only, with the author's permission. When it is installed, Short Circuit, System Lock and Chrome Override
-  call Chromeware's own quickhacks and implant abilities. Nothing from it is included in this mod.
+  call Chromeware's own quickhacks and implant abilities. Nothing from it is included in this mod; it is fetched at
+  build time to compile against (CurseMaven) and never shipped.

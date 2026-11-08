@@ -275,19 +275,34 @@ public final class Possession {
         MinecraftServer server = event.getServer();
         long now = server.overworld().getGameTime();
         for (Map.Entry<UUID, Session> e : List.copyOf(ACTIVE.entrySet())) {
-            ServerPlayer construct = server.getPlayerList().getPlayer(e.getKey());
-            ServerPlayer host = server.getPlayerList().getPlayer(e.getValue().host());
-            if (construct == null || host == null) {
-                end(server, e.getKey(), Reason.LEFT);
-            } else if (QuickhackService.hostOf(construct).map(h -> h != host).orElse(true)) {
-                end(server, e.getKey(), Reason.CHIP_REMOVED);
-            } else if (now >= e.getValue().endsAt()) {
-                end(server, e.getKey(), Reason.TIME_UP);
-            } else {
-                // vanilla drops a spectator's camera when they sneak: keep the host behind the construct's eyes
-                if (host.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) host.setGameMode(GameType.SPECTATOR);
-                if (host.getCamera() != construct) host.setCamera(construct);
+            try {
+                tickSession(server, now, e.getKey(), e.getValue());
+            } catch (RuntimeException ex) {
+                // never take the server down over a takeover: give the body back and log it
+                ConstructChip.LOGGER.error("Takeover by {} failed; ending it", e.getKey(), ex);
+                try {
+                    end(server, e.getKey(), Reason.LEFT);
+                } catch (RuntimeException ex2) {
+                    ACTIVE.remove(e.getKey());
+                    ConstructChip.LOGGER.error("Couldn't end it cleanly either", ex2);
+                }
             }
+        }
+    }
+
+    private static void tickSession(MinecraftServer server, long now, UUID constructId, Session session) {
+        ServerPlayer construct = server.getPlayerList().getPlayer(constructId);
+        ServerPlayer host = server.getPlayerList().getPlayer(session.host());
+        if (construct == null || host == null) {
+            end(server, constructId, Reason.LEFT);
+        } else if (QuickhackService.hostOf(construct).map(h -> h != host).orElse(true)) {
+            end(server, constructId, Reason.CHIP_REMOVED);
+        } else if (now >= session.endsAt()) {
+            end(server, constructId, Reason.TIME_UP);
+        } else {
+            // vanilla drops a spectator's camera when they sneak: keep the host behind the construct's eyes
+            if (host.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) host.setGameMode(GameType.SPECTATOR);
+            if (host.getCamera() != construct) host.setCamera(construct);
         }
     }
 

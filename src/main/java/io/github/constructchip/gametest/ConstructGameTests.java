@@ -302,7 +302,9 @@ public final class ConstructGameTests {
         var mineBlock = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("securitycraft", "mine"));
         h.setBlock(rel, mineBlock);
         BlockPos pos = h.absolutePos(rel);
-        var deactivated = net.minecraft.world.level.block.state.properties.BooleanProperty.create("deactivated");
+        @SuppressWarnings("unchecked")
+        var deactivated = (net.minecraft.world.level.block.state.properties.Property<Boolean>) mineBlock.getStateDefinition().getProperty("deactivated");
+        h.assertTrue(deactivated != null, "SecurityCraft mine has no 'deactivated' state");
         try {
             var first = io.github.constructchip.compat.securitycraft.SecurityCraftCompat.remoteSwitch(h.getLevel(), pos, host);
             h.assertTrue(first != null && first.succeeded(), "defuse: " + first);

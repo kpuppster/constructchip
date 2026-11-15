@@ -36,6 +36,9 @@ public final class CyberwareHacks {
             // Chromeware (optional): its own Short Circuit on anyone with chrome
             if (io.github.constructchip.compat.chromeware.ChromewareCompat.LOADED
                     && io.github.constructchip.compat.chromeware.ChromewareCompat.hack(ctx.host(), target, false)) hacked++;
+            // SecurityCraft (optional): a Sentry shuts down
+            if (io.github.constructchip.compat.securitycraft.SecurityCraftCompat.LOADED
+                    && io.github.constructchip.compat.securitycraft.SecurityCraftCompat.shutDown(target, ticks)) hacked++;
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 1));
             target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, ticks, 0));
             DamageSource jolt = ctx.host().damageSources().indirectMagic(ctx.construct(), ctx.host());
@@ -60,6 +63,9 @@ public final class CyberwareHacks {
             // Chromeware (optional): Cyberware Malfunction switches their chrome off
             if (io.github.constructchip.compat.chromeware.ChromewareCompat.LOADED
                     && io.github.constructchip.compat.chromeware.ChromewareCompat.hack(ctx.host(), target, true)) hacked++;
+            // SecurityCraft (optional): a Sentry shuts down
+            if (io.github.constructchip.compat.securitycraft.SecurityCraftCompat.LOADED
+                    && io.github.constructchip.compat.securitycraft.SecurityCraftCompat.shutDown(target, ticks)) hacked++;
             List<MobEffectInstance> buffs = target.getActiveEffects().stream().filter(x -> x.getEffect().value().isBeneficial()).toList();
             for (MobEffectInstance buff : buffs) target.removeEffect(buff.getEffect());
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ticks, 2));

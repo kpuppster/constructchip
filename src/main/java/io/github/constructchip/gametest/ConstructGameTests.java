@@ -289,4 +289,32 @@ public final class ConstructGameTests {
         }
         done(h, victim, host);
     }
+
+    /** With SecurityCraft loaded (dev runs and CI), Remote Switch defuses a real mine and arms it again. */
+    @GameTest(template = "empty")
+    public static void securityCraftMineDefusesAndArms(GameTestHelper h) {
+        if (!net.neoforged.fml.ModList.get().isLoaded("securitycraft")) {
+            h.succeed();
+            return;
+        }
+        ServerPlayer host = player(h, 3, 3);
+        BlockPos rel = new BlockPos(1, 1, 1);
+        var mineBlock = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath("securitycraft", "mine"));
+        h.setBlock(rel, mineBlock);
+        BlockPos pos = h.absolutePos(rel);
+        var deactivated = net.minecraft.world.level.block.state.properties.BooleanProperty.create("deactivated");
+        try {
+            var first = io.github.constructchip.compat.securitycraft.SecurityCraftCompat.remoteSwitch(h.getLevel(), pos, host);
+            h.assertTrue(first != null && first.succeeded(), "defuse: " + first);
+            h.assertTrue(h.getLevel().getBlockState(pos).getValue(deactivated), "mine still armed");
+            var second = io.github.constructchip.compat.securitycraft.SecurityCraftCompat.remoteSwitch(h.getLevel(), pos, host);
+            h.assertTrue(second != null && second.succeeded(), "arm: " + second);
+            h.assertTrue(!h.getLevel().getBlockState(pos).getValue(deactivated), "mine not armed again");
+            h.assertTrue(io.github.constructchip.compat.securitycraft.SecurityCraftCompat.remoteSwitch(h.getLevel(), h.absolutePos(new BlockPos(0, 0, 0)), host) == null,
+                    "a plain block was treated as a SecurityCraft device");
+        } finally {
+            h.setBlock(rel, Blocks.AIR);
+        }
+        done(h, host);
+    }
 }

@@ -168,6 +168,13 @@ dependencies {
     // Create: Chromeware: optional. Compile-only (it needs Create at runtime, which dev runs don't load). Never shipped.
     compileOnly("curse.maven:chromeware-${chromeware_project_id}:${chromeware_file_id}")
 
+    // SecurityCraft (MIT): optional. Compiled against, never shipped. Loaded in dev runs unless -PnoSecurityCraft.
+    def securitycraft = "curse.maven:security-craft-${securitycraft_project_id}:${securitycraft_file_id}"
+    compileOnly(securitycraft)
+    if (!project.hasProperty("noSecurityCraft")) {
+        localRuntime(securitycraft)
+    }
+
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

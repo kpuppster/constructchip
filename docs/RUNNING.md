@@ -150,3 +150,13 @@ With [Chromeware](https://www.curseforge.com/minecraft/mc-mods/cyberpunk2077-mod
 - **Chrome Override** (Support, tier 2, only shown with Chromeware): fires one of the host's implant abilities,
   Sandevistan first, then Berserk, Blood Pump, Optical Camo, Overclock or the arm implant.
 
+### SecurityCraft (optional)
+With [SecurityCraft](https://www.curseforge.com/minecraft/mc-mods/security-craft) installed:
+- **Short Circuit / System Lock** on a **Sentry** shut it down for 10 s / 30 s (it stops shooting).
+- **Remote Switch** on a SecurityCraft device:
+  - **Security Camera** or **Sonic Security System**: shut down for 20 s (hack it again to switch it back on).
+  - **Mines** (incl. Claymore, Bouncing Betty, Track Mine): defused; hack again to arm it.
+  - **Keypad**, keypad door / trapdoor / chest / barrel / furnace, **Key Panel**, **Display Case**, **Keycard Reader**:
+    cracked like a Codebreaker, as your host (doors open, safes open for the host).
+- This works on other players' devices too: hacking them is the point.
+

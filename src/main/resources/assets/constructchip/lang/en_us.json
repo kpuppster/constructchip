@@ -304,5 +304,12 @@
   "hud.constructchip.takeover_host": "%s is in control of your body  ·  %s",
   "message.constructchip.override": "Chrome Override: %s",
   "message.constructchip.override.none": "Your host has no chrome to override",
-  "message.constructchip.override.no_chromeware": "Chrome Override needs Create: Chromeware"
+  "message.constructchip.override.no_chromeware": "Chrome Override needs Create: Chromeware",
+  "message.constructchip.securitycraft.shut_down": "%s shut down for %s s",
+  "message.constructchip.securitycraft.rebooted": "%s is back online",
+  "message.constructchip.securitycraft.defused": "Defused %s",
+  "message.constructchip.securitycraft.armed": "Armed %s",
+  "message.constructchip.securitycraft.not_defusable": "%s can't be defused",
+  "message.constructchip.securitycraft.cracked": "Cracked %s",
+  "message.constructchip.securitycraft.failed": "Couldn't hack %s"
 }

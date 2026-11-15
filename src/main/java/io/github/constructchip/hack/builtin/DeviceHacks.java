@@ -48,6 +48,14 @@ public final class DeviceHacks {
             BlockPos pos = ctx.block().orElseThrow();
             ServerLevel level = ctx.level();
             ServerPlayer host = ctx.host();
+            // SecurityCraft (optional): cameras, mines, keypads and the like are hacked, not just switched
+            if (io.github.constructchip.compat.securitycraft.SecurityCraftCompat.LOADED) {
+                HackResult sc = io.github.constructchip.compat.securitycraft.SecurityCraftCompat.remoteSwitch(level, pos, host);
+                if (sc != null) {
+                    if (sc.succeeded()) HackFx.sparks(level, Vec3.atCenterOf(pos));
+                    return sc;
+                }
+            }
             if (!allowed(host, pos, ctx.face())) return HackResult.fail(Component.translatable("message.constructchip.device.protected"));
             BlockState state = level.getBlockState(pos);
             Block block = state.getBlock();

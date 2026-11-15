@@ -148,6 +148,11 @@ Ends on relinquish (same hack), 5 min, logout, chip leaving the host, release, s
 targets (players with capacity used, or `chromeware:mechanical_targets`), `ImplantAbility.activate(host)` for
 Chrome Override. Compiled against chromeware-1.2.1; a runtime failure logs once and turns the compat off.
 
+## SecurityCraft (MIT): optional compat
+`compat/securitycraft/SecurityCraftCompat` (gate, reactivation timer) + `SecurityCraftHooks` (its public `api`):
+`IEMPAffected` (Sentry via Short Circuit/System Lock; cameras and Sonic Security via Remote Switch, back on after the
+timer or at server stop), `IExplosive` (defuse / arm), `ICodebreakable` (crack as the host). Compile-only via CurseMaven.
+
 ## Capri mod (Ikeda): assets used with permission
 The author gave permission to use the mod's visuals (user report, 2026-11-04; keep that message on file). Used:
 chip art → chip item (captured: full color; blank: greyed derivative via a `constructchip:captured` item property) and the

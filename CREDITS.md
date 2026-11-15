@@ -19,3 +19,6 @@
   compatibility only, with the author's permission. When it is installed, Short Circuit, System Lock and Chrome Override
   call Chromeware's own quickhacks and implant abilities. Nothing from it is included in this mod; it is fetched at
   build time to compile against (CurseMaven) and never shipped.
+- **The SecurityCraft development team** ([SecurityCraft](https://github.com/Geforce132/SecurityCraft), MIT): optional
+  compatibility only, through its public API. Nothing from it is included in this mod; it is fetched at build time to
+  compile against (CurseMaven) and never shipped.

@@ -30,7 +30,6 @@
   "commands.constructchip.skill.tier": "Chip is now Mk.%s",
   "commands.constructchip.snapshot.none": "%s has no capture snapshot",
   "container.constructchip.host_inventory": "%s's inventory",
-  "container.constructchip.read_only": "Read-only",
   "entity.constructchip.chair_seat": "Seat",
   "entity.constructchip.chip_item": "Personality Construct Chip",
   "gamerule.allowConstructCapture": "Allow construct capture",

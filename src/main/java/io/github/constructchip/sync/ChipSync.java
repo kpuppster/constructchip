@@ -43,6 +43,8 @@ import io.github.constructchip.network.Net;
 public final class ChipSync {
     public static final ResourceLocation VITALS_LINK = ConstructChip.id("vitals_link");
     private static Map<UUID, UUID> lastLinks = Map.of();
+    /** Last chip status sent to each player; the once-a-second refresh only sends what changed. */
+    private static final Map<UUID, ChipStatusPayload> lastStatus = new java.util.concurrent.ConcurrentHashMap<>();
 
     private ChipSync() {}
 
@@ -61,13 +63,14 @@ public final class ChipSync {
             }
         }
         if (tick % 20 == 5) {
-            for (ServerPlayer player : server.getPlayerList().getPlayers()) sendChipStatus(player);
+            for (ServerPlayer player : server.getPlayerList().getPlayers()) refreshChipStatus(player);
         }
     }
 
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        lastStatus.remove(player.getUUID());
         Net.send(player, new ConstructLinksPayload(computeLinks(player.server)));
         sendChipStatus(player);
     }
@@ -105,14 +108,34 @@ public final class ChipSync {
                 id -> syncChip(host.server, id.chipId()), () -> sendChipStatus(host));
     }
 
+    @SubscribeEvent
+    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        lastStatus.remove(event.getEntity().getUUID());
+    }
+
+    /** Send the status only if it differs from what this player last got (the periodic refresh). */
+    private static void refreshChipStatus(ServerPlayer player) {
+        ChipStatusPayload now = chipStatus(player);
+        if (!now.equals(lastStatus.get(player.getUUID()))) send(player, now);
+    }
+
+    /** Send the status now, whether or not it changed (after a hack, an unlock, an install...). */
     public static void sendChipStatus(ServerPlayer player) {
+        send(player, chipStatus(player));
+    }
+
+    private static void send(ServerPlayer player, ChipStatusPayload payload) {
+        lastStatus.put(player.getUUID(), payload);
+        Net.send(player, payload);
+    }
+
+    private static ChipStatusPayload chipStatus(ServerPlayer player) {
         ServerPlayer host;
         boolean isHost;
         if (ChipTracker.isConstruct(player)) {
             Optional<ServerPlayer> h = QuickhackService.hostOf(player);
             if (h.isEmpty()) {
-                Net.send(player, ChipStatusPayload.NONE);
-                return;
+                return ChipStatusPayload.NONE;
             }
             host = h.get();
             isHost = false;
@@ -122,16 +145,15 @@ public final class ChipSync {
         }
         ItemStack chip = ChipTracker.installedChip(host);
         if (chip.isEmpty() || !ChipStacks.isCaptured(chip)) {
-            Net.send(player, ChipStatusPayload.NONE);
-            return;
+            return ChipStatusPayload.NONE;
         }
         String constructName = ChipStacks.identity(chip).map(id -> id.capturedName()).orElse("?");
         Registry<Skill> skills = ModSkills.get(player.server.registryAccess());
         ChipSkills chipSkills = ChipStacks.skills(chip);
         ChipStats stats = ChipStats.of(chipSkills, skills);
-        Net.send(player, new ChipStatusPayload(true, isHost, constructName,
+        return new ChipStatusPayload(true, isHost, constructName,
                 host.getGameProfile().getName(), ChipStacks.ram(chip), ChipStacks.timers(chip), chipSkills,
-                stats.ramCostMultiplier(), SkillPointCost.costOf(chipSkills.purchased())));
+                stats.ramCostMultiplier(), SkillPointCost.costOf(chipSkills.purchased()));
     }
 
     private static void sendHostStatus(ServerPlayer construct, ServerPlayer host) {

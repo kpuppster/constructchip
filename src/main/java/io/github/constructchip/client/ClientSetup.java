@@ -34,6 +34,7 @@ public final class ClientSetup {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         io.github.constructchip.possession.Possession.clientBodyName = ClientPossession::bodyName;
+        io.github.constructchip.ghost.GhostState.clientHidden = ClientEvents::hiddenFromMe;
         event.enqueueWork(() -> {
             ItemProperties.register(ModItems.PERSONALITY_CHIP.get(), ConstructChip.id("captured"),
                     (stack, level, entity, seed) -> ChipStacks.isCaptured(stack) ? 1f : 0f);

@@ -29,7 +29,6 @@ public class HostInventoryScreen extends AbstractContainerScreen<HostInventoryMe
     @Override
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
         g.drawString(font, title, 8, 6, 0xFF404040, false);
-        g.drawString(font, Component.translatable("container.constructchip.read_only"), 8, imageHeight - 12, 0xFF7A1020, false);
     }
 
     @Override

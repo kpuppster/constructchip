@@ -308,15 +308,13 @@ public final class ChipTracker {
     public static void sweep(MinecraftServer server) {
         long now = ChipRegistry.now(server);
         ChipRegistry registry = ChipRegistry.get(server);
-        for (UUID chipId : java.util.List.copyOf(registry.all().keySet())) {
-            registry.update(chipId, e -> {
-                State s = e.location().state();
-                boolean loose = s == State.CARRIED || s == State.DROPPED;
-                return loose && now - e.location().lastSeenTick() > STORED_TIMEOUT_TICKS
-                        ? e.withLocation(e.location().asStored())
-                        : e;
-            });
-        }
+        // only rewrite the entries that actually go stale (loose and unseen for too long)
+        java.util.List<UUID> stale = new java.util.ArrayList<>();
+        registry.all().forEach((chipId, e) -> {
+            State s = e.location().state();
+            if ((s == State.CARRIED || s == State.DROPPED) && now - e.location().lastSeenTick() > STORED_TIMEOUT_TICKS) stale.add(chipId);
+        });
+        for (UUID chipId : stale) registry.update(chipId, e -> e.withLocation(e.location().asStored()));
         HEARTBEAT_TICK.values().removeIf(t -> now - t > 20L);
     }
 

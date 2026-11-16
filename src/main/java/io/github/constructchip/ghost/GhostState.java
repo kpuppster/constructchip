@@ -11,6 +11,12 @@ import net.minecraft.world.entity.player.Player;
  * from {@code ConstructLinksPayload} (construct UUID → host UUID, installed constructs only).
  */
 public final class GhostState {
+    /**
+     * Client: is this entity a construct the local player must not see? Installed by the client setup (so this
+     * common class never touches client code). Used to make hidden constructs invisible, which also hides their shadow.
+     */
+    public static volatile java.util.function.Predicate<Entity> clientHidden = e -> false;
+
     /** Client mirror. Replaced wholesale on each sync. Empty on the server. */
     private static volatile Map<UUID, UUID> clientLinks = Map.of();
 

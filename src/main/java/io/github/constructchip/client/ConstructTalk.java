@@ -100,10 +100,7 @@ public final class ConstructTalk {
         int maxText = beside ? Math.min(320, sw - chatRight - 70) : Math.min(320, sw - 40);
 
         String name = current.name().toUpperCase(Locale.ROOT);
-        List<String> lines = new ArrayList<>();
-        for (FormattedText part : font.getSplitter().splitLines(current.text(), maxText, net.minecraft.network.chat.Style.EMPTY)) {
-            lines.add(part.getString());
-        }
+        List<String> lines = wrapped(font, current.text(), maxText);
         if (lines.isEmpty()) return;
         int widest = 0;
         for (String l : lines) widest = Math.max(widest, font.width(l));
@@ -168,6 +165,24 @@ public final class ConstructTalk {
                 lx += font.width(String.valueOf(line.charAt(c)));
             }
         }
+    }
+
+    private static String wrapText;
+    private static int wrapWidth;
+    private static List<String> wrapLines = List.of();
+
+    /** The line's text wrapped to the box width; worked out once per line (and again only if the width changes). */
+    private static List<String> wrapped(Font font, String text, int width) {
+        if (!text.equals(wrapText) || width != wrapWidth) {
+            List<String> out = new ArrayList<>();
+            for (FormattedText part : font.getSplitter().splitLines(text, width, net.minecraft.network.chat.Style.EMPTY)) {
+                out.add(part.getString());
+            }
+            wrapText = text;
+            wrapWidth = width;
+            wrapLines = List.copyOf(out);
+        }
+        return wrapLines;
     }
 
     /** Filled rectangle with the top-right and bottom-left corners cut off at 45 degrees. */

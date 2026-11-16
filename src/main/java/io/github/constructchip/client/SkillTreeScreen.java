@@ -31,7 +31,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
  * pages: scroll the mouse wheel (or press left/right, A/D) to turn them.
  */
 public class SkillTreeScreen extends Screen {
-    private static final int NODE = 22, STEP_X = 30, STEP_Y = 52, COLUMNS = 10;
+    private static final int NODE = 22, STEP_X = 30, STEP_Y = 52;
     private Button buyButton;
     private ResourceLocation lastHovered;
     private int page;
@@ -41,10 +41,18 @@ public class SkillTreeScreen extends Screen {
     }
 
     /** How many columns fit side by side, leaving room for the tier labels and page arrows. */
-    private int perPage() { return Mth.clamp((width - 70 - NODE) / STEP_X + 1, 1, COLUMNS); }
-    private int pages() { return (COLUMNS + perPage() - 1) / perPage(); }
+    /** Columns in the tree: one past the highest skill column, so a skill in a new column can never fall off. */
+    private int columns() {
+        Registry<Skill> registry = registry();
+        int max = 0;
+        if (registry != null) for (Skill s : registry) max = Math.max(max, s.column());
+        return max + 1;
+    }
+
+    private int perPage() { return Mth.clamp((width - 70 - NODE) / STEP_X + 1, 1, columns()); }
+    private int pages() { return (columns() + perPage() - 1) / perPage(); }
     private int firstColumn() { return page * perPage(); }
-    private int columnsShown() { return Math.min(perPage(), COLUMNS - firstColumn()); }
+    private int columnsShown() { return Math.min(perPage(), columns() - firstColumn()); }
     private boolean onPage(Skill s) { return s.column() >= firstColumn() && s.column() < firstColumn() + columnsShown(); }
 
     private int originX() { return (width - (columnsShown() - 1) * STEP_X - NODE) / 2; }
